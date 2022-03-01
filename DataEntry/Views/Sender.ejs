@@ -21,14 +21,31 @@
     <script>
 
         function startConv() {
-            var tr = document.getElementById('openConversations').insertRow();
-            var cStart = tr.insertCell(0);
-            var cCity = tr.insertCell(1);
-            var cTopic = tr.insertCell(2);
-            var cLanguage = tr.insertCell(3);
-            var cGender = tr.insertCell(4);
-            var cAge = tr.insertCell(5);
-            var cEnd = tr.insertCell(6);
+            // var tr = document.getElementById('openConversations').insertRow();
+            // var cStart = tr.insertCell(0);
+            // var cCity = tr.insertCell(1);
+            // var cTopic = tr.insertCell(2);
+            // var cLanguage = tr.insertCell(3);
+            // var cGender = tr.insertCell(4);
+            // var cAge = tr.insertCell(5);
+            // var cEnd = tr.insertCell(6);
+
+            io.on("connection", (socket) => {
+                console.log("new user connected");
+                socket.on("result", (result) => { console.log(result);
+                                                var mysql=result;       });
+            });
+
+
+            var mysqlElement = document.getElementById('phoneNumber').insertRow();
+            var cStart = mysql.insertCell(0);
+            var cCity = mysql.insertCell(1);
+            var cTopic = mysql.insertCell(2);
+            var cLanguage = mysql.insertCell(3);
+            var cGender = mysql.insertCell(4);
+            var cAge = mysql.insertCell(5);
+            var cEnd = mysql.insertCell(6);
+
 
             const date = Date.now();
             const dateTimeFormat = new Intl.DateTimeFormat('en', { year: 'numeric', month: 'short', day: '2-digit', hour: 'numeric', minute: 'numeric' })
@@ -57,7 +74,6 @@
             message.gender = row.cells[4].getElementsByTagName('select')[0].value;
             message.age = (row.cells[5].getElementsByTagName('input')[0].value || 18);
             message.totalTime = (parseInt(Date.now()) - parseInt(message.id)) / 1000; // seconds
-            
 
 
             socket.emit("callDetails", message);

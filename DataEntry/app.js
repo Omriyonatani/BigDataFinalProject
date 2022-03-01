@@ -22,10 +22,8 @@ app.get('/', (req, res) => res.render('sender'))
 io.on("connection", (socket) => {
     console.log("new user connected");
     socket.on("totalWaitingCalls", (msg) => { console.log(msg.totalWaiting) /* send to Dashboard real-time */ });
-    socket.on("callDetails", (msg) => { console.log(msg)
-                                        kafka.publish(msg);
-                                        db_connection.publish(msg);
-                                    });
+    socket.on("callDetails", (msg) => { console.log(msg) // kafka.publish(msg); 
+                                                                                });
 });
 
 
