@@ -20,71 +20,109 @@
     </script>
     <script>
 
-        function startConv() {
-            // var tr = document.getElementById('openConversations').insertRow();
-            // var cStart = tr.insertCell(0);
-            // var cCity = tr.insertCell(1);
-            // var cTopic = tr.insertCell(2);
-            // var cLanguage = tr.insertCell(3);
-            // var cGender = tr.insertCell(4);
-            // var cAge = tr.insertCell(5);
-            // var cEnd = tr.insertCell(6);
+        function startConv() { 
 
-            io.on("connection", (socket) => {
-                console.log("new user connected");
-                socket.on("result", (result) => { console.log(result);
-                                                var mysql=result;       });
-            });
-
-
-            var mysqlElement = document.getElementById('phoneNumber').insertRow();
-            var cStart = mysql.insertCell(0);
-            var cCity = mysql.insertCell(1);
-            var cTopic = mysql.insertCell(2);
-            var cLanguage = mysql.insertCell(3);
-            var cGender = mysql.insertCell(4);
-            var cAge = mysql.insertCell(5);
-            var cEnd = mysql.insertCell(6);
-
-
+            var tr = document.getElementById('openConversations').insertRow();
+            var cStart = tr.insertCell(0);
+            var cCity = tr.insertCell(1);
+            var cTopic = tr.insertCell(2);
+            var cLanguage = tr.insertCell(3);
+            var cPrevCalls= tr.insertCell(4);
+            var cGender = tr.insertCell(5);
+            var cAge = tr.insertCell(6);
+            var cEnd = tr.insertCell(7);
+           
+           
+           
             const date = Date.now();
             const dateTimeFormat = new Intl.DateTimeFormat('en', { year: 'numeric', month: 'short', day: '2-digit', hour: 'numeric', minute: 'numeric' })
             const [{ value: month }, , { value: day }, , { value: year }, , { value: hour }, , { value: minute }] = dateTimeFormat.formatToParts(date)
-            
-            cStart.innerHTML = "<div id='" + date + "''>" + `${day}-${month}-${year} ,${hour}:${minute}` + "</div>";
+     
+                    
+            var phNumber=  getPhoneNumber();
+            var DB_data  ;
+            cPrevCalls.innerHTML = `<input type='number' min=${0} max=${0} value =${0} >`;
             cCity.innerHTML = "<select><option value='jerusalem'>ירושלים</option><option value='naaria'>נהריה</option><option value='haifa'>חיפה</option><option value='telAviv'>תל אביב</option><option value='ashdod'>אשדוד</option><option value='Ashkelon'>אשקלון</option><option value='beerSheva'>באר שבע</option></select>";
             cTopic.innerHTML = "<select><option value='Join'> הצטרפות </option><option value='service'>שירות</option><option value='report'>תלונה</option><option value='end service'>בקשת ניתוק</option></select>";
             cLanguage.innerHTML = "<select><option value='hebrew'>עברית</option><option value='english'>אנגלית</option><option value='amharic'>אמהרית</option><option value='russian'>רוסית</option><option value='arabic'>ערבית</option><option value='thai'>תאילנדית</option></select>";
             cAge.innerHTML = "<input type='number' min='0' max='120'/>";
-            cGender.innerHTML = "<select><option value='male'>גבר</option><option value='female'>אישה</option></select>";
-            cEnd.innerHTML = "<button onclick='reportEndCall(this.parentNode.parentNode)'>סיום</button>";
-        }
+            cGender.innerHTML = "<select><option value='male'>גבר</option><option value='female'>אישה</option></select>";        
+            
 
+
+            cCity.innerHTML = `<select><option value=${address}>${address}</option></select>`;
+            cLanguage.innerHTML = `<select><option value=${language}>${language}</option></select>`;
+            cAge.innerHTML = `<input type='number' min=0 max=120 value=${age} >`;
+            cGender.innerHTML = `<select><option value=${gender}>${gender}</option></select>`;
+            cPrevCalls.innerHTML = `<input type='number' min=${PrevCalls} max=${PrevCalls} value =${PrevCalls} > </input>`;
+            cEnd.innerHTML = "<button onclick='reportEndCall(this.parentNode.parentNode)'>סיום</button>";
+
+        }
+        
+
+         // getting the phone number from the database
+        function getPhoneNumber() {
+            
+            var phNumber = [    "500022558",
+                                "502211864",
+                                "502255223",
+                                "502255749",
+                                "502277495",
+                                "523322665",
+                                "524477115",
+                                "524563218",
+                                "525488569",
+                                "525588552",
+                                "527455886",
+                                "529635875",
+                                "529966524",
+                                "532211887",
+                                "535554447",
+                                "538626154",
+                                "539875412",
+                                "541425142",
+                                "545698745",
+                                "545789999",
+                                "547414741",
+                                "549632541",
+                                "549922125",
+                                "555544554",
+                                "555566558"];
+
+
+             
+               var index = Math.floor(Math.random() * 25);
+               var resPhone= phNumber[index];            
+            var tr1 = document.getElementById('PhoneNumber').insertRow();
+            var cPhoneNumber = tr1.insertCell(0);
+            cPhoneNumber.innerHTML =  ` <tr><th scope=row>Phone Number : </th><td value=0${resPhone}>\t 0${resPhone}</td> </tr> `;
+            return resPhone;
+            }
         function reportEndCall(row) {
+           
             var totalCalls = parseInt(document.getElementById("total").value) || 0;
             if (parseInt(totalCalls) > 0) {
                 document.getElementById("total").value = (--totalCalls) + "";
-            }
-
+                }
             var message = {};
-            message.id = row.cells[0].getElementsByTagName('div')[0].id;
-            message.city = row.cells[1].getElementsByTagName('select')[0].value;
-            message.topic = row.cells[2].getElementsByTagName('select')[0].value;
-            message.language = row.cells[3].getElementsByTagName('select')[0].value;
-            message.gender = row.cells[4].getElementsByTagName('select')[0].value;
-            message.age = (row.cells[5].getElementsByTagName('input')[0].value || 18);
-            message.totalTime = (parseInt(Date.now()) - parseInt(message.id)) / 1000; // seconds
-
+            message.id = "a";
+            message.city = "b";
+            message.topic = "c";
+            message.language = "d";
+            message.prevCalls = "e";
+            message.gender ="f";
+            message.age = "g";
+            message.totalTime = "h"; // seconds
 
             socket.emit("callDetails", message);
             deleteRow(row);
         }
-
+       
         function deleteRow(row) {
             var i = row.rowIndex;
             document.getElementById('openConversations').deleteRow(i);
-        }
-
+            document.getElementById('PhoneNumber').deleteRow(i-1);
+            }
 
     </script>
 </head>
@@ -97,12 +135,15 @@
     <select><option value='Emergency'>חירום</option><option>שגרת חירום</option><option>רגיעה</option></select>
     <hr>
     <input type="button" onclick="startConv()" value="Answer Call" />
+    <table id="PhoneNumber" border="1" style="background-color: burlywood;">
+    </table>
     <table id="openConversations" border="1" style="background-color: burlywood;">
         <tr>
             <th>Start Time</th>
             <th>City</th>
             <th>Topic</th>
             <th>Language</th>
+            <th>Prev. Calls</th>
             <th>Gender</th>
             <th>Age</th>
             <th>End</th>

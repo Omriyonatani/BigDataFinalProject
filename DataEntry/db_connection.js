@@ -1,59 +1,57 @@
 var mysql = require('mysql');
 const express = require('express');
+const res = require('express/lib/response');
 const app = express();
-var server = require('http').createServer(app);
-const io = require("socket.io")(server);
+// var server = require('http').createServer(app);
+// const io = require("socket.io")(server);
 
 
-var con = mysql.createConnection({
-  host: "localhost",
-  user: "root",
-  password: "13121994",
-  database: 'bigdatadb'
-});
+// var answer = RowDataPacket();
 
 
-// con.connect(function(err) {
-//   if (err) throw err;
-//   console.log("Connected!");
-//   con.query("CREATE DATABASE bigDataDB", function (err, result) {
-//     if (err) throw err;
-//     console.log("Database created");
-//   });
-// });
+function getData(phoneNumber){
 
-// con.connect(function(err) {
-//   if (err) throw err;
-//   console.log("Connected!");
-//   var sql = 'SELECT * FROM customers WHERE phoneNumber = 0502211864';
-//   con.query(sql, function (err, result) {
-//       if (err) throw err;
-//       console.log("HTML page loaded");
-//   });
-// });
-
-
-
-var obj = {};
-router.get('/data', function(req, res){
-
-    connection.query('SELECT * FROM customers', function(err, result) {
-        if(err){
-            throw err;
-        } else {
-            obj = {print: result};
-            res.render('print', obj);                
-        }
+    var con = mysql.createConnection({
+      host: "localhost",
+      user: "root",
+      password: "13121994",
+      database: 'bigdatadb'
     });
-});
+
+    var data ={};
+        con.query(`SELECT * FROM customers WHERE phoneNumber = ${phoneNumber}`, function(err, result) {
+            if(err){
+                throw err;
+            }
+            // answer =JSON.stringify(result);
+            answer = result;
+             // console.log(answer);
+           return answer;
+        });
+      //   con.query(`UPDATE customers SET previouscalls = previouscalls + 1 WHERE ${phoneNumber}`, function(err, result) {
+      //     if(err){
+      //         throw err;
+      //     }         
+      // });
+        return res;
+  }
+
+  module.exports.getData = getData ;
+
+  // UPDATE table SET field = field + 1 WHERE [...]
+
+
+
+
+// });
 
 
 // we need to make "message" to be global- to use in line 36 (con.connect)
 // we need to normalized the table (NF3)
-io.on("connection",(socket) => {
-  socket.emit('result',{ result });
-  console.log(result);
-})
+// io.on("connection",(socket) => {
+//   socket.emit('result',{ result });
+//   console.log(result);
+// })
 
 
 
