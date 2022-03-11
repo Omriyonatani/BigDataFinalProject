@@ -18,6 +18,20 @@ app.use(express.static("public"));
 
 app.get('/', (req, res) => res.render('sender'))
 
+// Pull the values from the DB
+const myDB = mysql.asyncCall();
+
+
+// here we need to render the data (previous calls number) to the ejs sender file. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+myDB.then(function(result) {
+    // console.log(result[0]['previouscalls']);
+    app.get('./Views/Sender', function(req, res) {
+        res.render('/Sender', {data:result});
+    });
+});
+
 
 
 
@@ -25,7 +39,7 @@ app.get('/', (req, res) => res.render('sender'))
 io.on("connection", (socket) => {
     console.log("new user connected");
     socket.on("totalWaitingCalls", (msg) => { console.log(msg.totalWaiting) });
-    socket.on("callDetails", (msg) => {/* console.log(msg);/*kafka.publish(msg)*/ });
+    socket.on("callDetails", (msg) => { console.log(msg);   /*kafka.publish(msg)*/ });
 });
 
 

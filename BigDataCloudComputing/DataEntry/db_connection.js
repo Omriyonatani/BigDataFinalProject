@@ -4,45 +4,41 @@ const express = require('express');
 const app = express();
 // var server = require('http').createServer(app);
 // const io = require("socket.io")(server);
-// var answer = RowDataPacket();
 
+
+  // Connect to the data base and make an async call to the values of the db
+  function pullFromDB(){
+    var con = mysql.createConnection({
+      host: "localhost",
+      user: "root",
+      password: "13121994",
+      database: 'bigdatadb'
+    });
+    return new Promise(
+      res => {
+    con.query(`SELECT * FROM customers`, function (err, result) {
+      if (err) {
+        throw err;
+      }
+      res(result);
+    })});
+  }
+
+  // The async call function
+  async function asyncCall(){
+    console.log('async turned on');
+    const result = await pullFromDB();
+    // console.log(result);
+    return result;
+  }
+
+
+  module.exports.asyncCall = asyncCall;
 
   
-  var con = mysql.createConnection({
-    host: "localhost",
-    user: "root",
-    password: "R0546379423m",
-    database: 'bigdatadb'
-});
- con.query(`SELECT * FROM customers`, function (err, result) {
-    if (err) {
-      throw err;
-    }
-    // myData=result;
-    // console.log(result);
 
-  });
-  // console.log(myData);
-
-//   con.query(`UPDATE customers SET previouscalls = previouscalls + 1 WHERE ${phoneNumber}`, function(err, result) {
+//  con.query(`UPDATE customers SET previouscalls = previouscalls + 1 WHERE ${phoneNumber}`, function(err, result) {
 //     if(err){
 //         throw err;
-//     }         
-// });
-
-
- 
-
-
-// myData = getData();
-// console.log(myData);
-// module.exports.getData = getData;
-
-
-
-// we need to make "message" to be global- to use in line 36 (con.connect)
-// we need to normalized the table (NF3)
-// io.on("connection",(socket) => {
-//   socket.emit('result',{ result });
-//   console.log(result);
-// })
+//     }
+//   });

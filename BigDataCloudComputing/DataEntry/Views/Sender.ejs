@@ -19,7 +19,6 @@
         }
     </script>
     <script>
-
         function startConv() {
             var tr = document.getElementById('openConversations').insertRow();
             var cStart = tr.insertCell(0);
@@ -36,15 +35,25 @@
             const [{ value: month }, , { value: day }, , { value: year }, , { value: hour }, , { value: minute }] = dateTimeFormat.formatToParts(date)
 
             var phNum = getPhoneNumber();
+            var previousCalls = 0;
+
+            // var myResult=result;
+
+
+            // we need to take the "answer" from the app.js file (data there) and use it here at cPrevCalls..... (line 49) ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+            //res.render(data)'
+            // we need to get all the data to here and make .prevcalls.. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+            // var previousCalls = getPrevCalls();
             cStart.innerHTML = "<div id='" + date + "''>" + `${day}-${month}-${year} ,${hour}:${minute}` + "</div>";
             cCity.innerHTML = "<select><option value='jerusalem'>ירושלים</option><option value='naaria'>נהריה</option><option value='haifa'>חיפה</option><option value='telAviv'>תל אביב</option><option value='ashdod'>אשדוד</option><option value='Ashkelon'>אשקלון</option><option value='beerSheva'>באר שבע</option></select>";
             cTopic.innerHTML = "<select><option value='Medical'>טיפול רפואי</option><option value='drugs'>תרופות</option><option value='food'>מזון</option><option value='water'>מים</option><option value='shelter'>מיגון</option><option value='information'>מידע</option><option value='evacuation'>פינוי</option></select>";
             cLanguage.innerHTML = "<select><option value='hebrew'>עברית</option><option value='english'>אנגלית</option><option value='amharic'>אמהרית</option><option value='russian'>רוסית</option><option value='arabic>ערבית</option><option value='thai'>תאילנדית</option></select>";
             cAge.innerHTML = "<input type='number' min='0' max='120'/>";
             cGender.innerHTML = "<select><option value='male'>גבר</option><option value='female'>אישה</option></select>";
-            cPrevCalls.innerHTML = `<input type='number' min='0' max='120' value = '${phNum}' />` ;
+            cPrevCalls.innerHTML = `<input type='number' min='0' max='120' value = '${~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~}' />` ;
             cEnd.innerHTML = "<button onclick='reportEndCall(this.parentNode.parentNode)'>סיום</button>";
         }
+
 
         function reportEndCall(row) {
             var totalCalls = parseInt(document.getElementById("total").value) || 0;
@@ -71,10 +80,10 @@
             document.getElementById('openConversations').deleteRow(i);
             document.getElementById('PhoneNumber').deleteRow(i-1);
         }
+
         function getPhoneNumber() {
-            
             var phNumber = ["500022558","502211864","502255223","502255749","502277495","523322665","524477115",
-                            "524563218","525488569","525588552","527455886","529635875","529966524","532211887",                                "535554447",
+                            "524563218","525488569","525588552","527455886","529635875","529966524","532211887", "535554447",
                             "538626154","539875412","541425142","545698745","545789999","547414741","549632541",
                             "549922125","555544554","555566558"];           
             var index = Math.floor(Math.random() * 25);
@@ -93,7 +102,7 @@
     <input type="number" id="total" min="0" max="200" value="0">
     <input type="button" value="Set" onclick="sendMessage(total.value)" />
     &nbsp;
-    <select><option value='Emergency'>חירום</option><option>שגרת חירום</option><option>רגיעה</option></select>
+    <select><option value='Holidays'>חגים</option><option value='Summer vacation'>חופשת קיץ</option><option value='Normal days'>ימים רגילים</option></select>
     <hr>
     <input type="button" onclick="startConv()" value="Answer Call" />
     <table id="PhoneNumber" border="1" style="background-color: burlywood;"></table>
