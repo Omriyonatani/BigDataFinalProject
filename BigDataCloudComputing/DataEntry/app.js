@@ -26,9 +26,12 @@ const myDB = mysql.asyncCall();
 
 
 myDB.then(function(result) {
-    // console.log(result[0]['previouscalls']);
-    app.get('./Views/Sender', function(req, res) {
-        res.render('/Sender', {data:result});
+    result=JSON.parse(JSON.stringify(result));
+    // console.log(result);
+    app.get('/Views/Sender', function(req, res) {
+        
+        // console.log("seconed = " + result[0]['previouscalls']);
+        res.render('Sender', { data: result});
     });
 });
 
@@ -44,6 +47,6 @@ io.on("connection", (socket) => {
 
 
 
-server.listen(port, () => console.log(`Ariel app listening at http://localhost:${port}`));
+server.listen(port, () => console.log(`Ariel app listening at http://localhost:${port}/Views/Sender`));
 
 
