@@ -36,23 +36,60 @@
             const dateTimeFormat = new Intl.DateTimeFormat('en', { year: 'numeric', month: 'short', day: '2-digit', hour: 'numeric', minute: 'numeric' })
             const [{ value: month }, , { value: day }, , { value: year }, , { value: hour }, , { value: minute }] = dateTimeFormat.formatToParts(date)
 
-            
-             
-           let pn = '<%=data%>';
            var phNum = getPhoneNumber();
-
-
+            
+           var initData = JSON.parse('<%-JSON.stringify(data)%>');
+           for (let index = 0; index < initData.length; index++) {
+               var phone_Number_from_data = initData[index].phoneNumber;
+               if (phone_Number_from_data == phNum) {      
+                    var previous_Calls_from_data = initData[index].previouscalls;
+                    var address_from_data = initData[index].address;
+                    var gender_from_data = initData[index].gender;
+                    var age_from_data = initData[index].age;  
+                    var topic_from_data = initData[index].topic;     
+               }
+           }    alert(`age = ${age_from_data} \n address = ${address_from_data} \n gender = ${gender_from_data}`);
            // we need to take the "answer" from the app.js file (data there) and use it here at cPrevCalls..... (line 49) ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             //res.render(data)'
             // we need to get all the data to here and make .prevcalls.. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             
             cStart.innerHTML = "<div id='" + date + "''>" + `${day}-${month}-${year} ,${hour}:${minute}` + "</div>";
-            cCity.innerHTML = "<select><option value='jerusalem'>ירושלים</option><option value='naaria'>נהריה</option><option value='haifa'>חיפה</option><option value='telAviv'>תל אביב</option><option value='ashdod'>אשדוד</option><option value='Ashkelon'>אשקלון</option><option value='beerSheva'>באר שבע</option></select>";
-            cTopic.innerHTML = "<select><option value='Medical'>טיפול רפואי</option><option value='drugs'>תרופות</option><option value='food'>מזון</option><option value='water'>מים</option><option value='shelter'>מיגון</option><option value='information'>מידע</option><option value='evacuation'>פינוי</option></select>";
-            cLanguage.innerHTML = "<select><option value='hebrew'>עברית</option><option value='english'>אנגלית</option><option value='amharic'>אמהרית</option><option value='russian'>רוסית</option><option value='arabic>ערבית</option><option value='thai'>תאילנדית</option></select>";
-            cAge.innerHTML = "<input type='number' min='0' max='120'/>";
-            cGender.innerHTML = "<select><option value='male'>גבר</option><option value='female'>אישה</option></select>";
-            cPrevCalls.innerHTML = `<input   value = '${pn[0].previouscalls}' disabled />` ;
+            cCity.innerHTML = `<select>
+                                <option value='${address_from_data}'>${address_from_data}</option>
+                                <option value='jerusalem'>ירושלים</option>
+                                <option value='naaria'>נהריה</option>
+                                <option value='haifa'>חיפה</option>
+                                <option value='telAviv'>תל אביב</option>
+                                <option value='ashdod'>אשדוד</option>
+                                <option value='Ashkelon'>אשקלון</option>
+                                <option value='beerSheva'>באר שבע</option>
+                                </select>`;
+            cTopic.innerHTML = `<select>
+                                    <option value='${topic_from_data}'>${topic_from_data}</option>
+                                    <option value='Medical'>טיפול רפואי</option>
+                                    <option value='drugs'>תרופות</option>
+                                    <option value='food'>מזון</option>
+                                    <option value='water'>מים</option>
+                                    <option value='shelter'>מיגון</option>
+                                    <option value='information'>מידע</option>
+                                    <option value='evacuation'>פינוי</option>
+                                    </select>`;
+            cLanguage.innerHTML = `<select>
+                                    <option value='hebrew'>עברית</option>
+                                    <option value='english'>אנגלית</option>
+                                    <option value='amharic'>אמהרית</option>
+                                    <option value='russian'>רוסית</option>
+                                    <option value='arabic>ערבית</option>
+                                    <option value='thai'>תאילנדית</option>
+                                    </select>`;
+            cAge.innerHTML = `<input value='${age_from_data}' disabled/>`;
+            cGender.innerHTML = `<select>
+                                    <option value='${gender_from_data}'>${gender_from_data}</option>
+                                    <option value='male'>גבר</option>
+                                    <option value='female'>אישה</option>
+                                </select>`;
+            cPrevCalls.innerHTML = ` <input  value='${previous_Calls_from_data}'  disabled />` ;
+         
             cEnd.innerHTML = `<button onclick='reportEndCall(this.parentNode.parentNode,${phNum})'>סיום</button>`;
         }
 
@@ -62,7 +99,7 @@
             if (parseInt(totalCalls) > 0) {
                 document.getElementById("total").value = (--totalCalls) + "";
             }
-
+            
             var message = {};
             message.phoneNumber = phNum;
             message.id = row.cells[0].getElementsByTagName('div')[0].id;
@@ -93,11 +130,11 @@
             var resPhone= phNumber[index];
             var tr1 = document.getElementById('PhoneNumber').insertRow();
             var cPhoneNumber = tr1.insertCell(0);
-            cPhoneNumber.innerHTML =  ` <tr><th type='text' scope=row/>Phone Number : </th><td value=0${resPhone}>\t 0${resPhone}</td> </tr> `;
+            cPhoneNumber.innerHTML =  `<tr> Phone Number : </tr> <input value='0${resPhone}' disabled /> `;
             return resPhone;
             }
-
     </script>
+    
 </head>
 
 <body onload="initSocket()">
@@ -108,7 +145,7 @@
     <select><option value='Holidays'>חגים</option><option value='Summer vacation'>חופשת קיץ</option><option value='Normal days'>ימים רגילים</option></select>
     <hr>
     <input type="button" onclick="startConv()" value="Answer Call" />
-    <table id="PhoneNumber" border="1" style="background-color: burlywood;"></table>
+    <table id="PhoneNumber" border="1" style="background-color: burlywood;" ></table>
     <table id="openConversations" border="1" style="background-color: burlywood;">
         <tr>
             <th>Start Time</th>
