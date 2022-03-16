@@ -29,7 +29,6 @@ myDB.then(function(result) {
     result=JSON.parse(JSON.stringify(result));
     // console.log(result);
     app.get('/Views/Sender', function(req, res) {
-        
         // console.log("seconed = " + result[0]['previouscalls']);
         res.render('Sender', { data: result});
     });
@@ -42,7 +41,9 @@ myDB.then(function(result) {
 io.on("connection", (socket) => {
     console.log("new user connected");
     socket.on("totalWaitingCalls", (msg) => { console.log(msg.totalWaiting) });
-    socket.on("callDetails", (msg) => { console.log(msg);   /*kafka.publish(msg)*/ });
+    socket.on("callDetails", (msg) => {
+        mysql.updateDB(msg); 
+        console.log(msg);   /*kafka.publish(msg)*/ });
 });
 
 

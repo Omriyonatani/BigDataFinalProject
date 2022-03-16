@@ -31,14 +31,31 @@ const app = express();
     // console.log(result);
     return result;
   }
+  function updateDB(data){
 
-
+    var con = mysql.createConnection({
+      host: "localhost",
+      user: "root",
+      password: "R0546379423m",
+      database: 'bigdatadb'
+    });
+    /** subscriptions, period, age, previouscalls, topic */
+    var phoneNumber = data.phoneNumber
+    // need to fined a way to update the product in the database~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    con.query(`UPDATE customers 
+               SET previouscalls = previouscalls + 1, address = '${data.city}',
+               topic = '${data.topic}' 
+               WHERE phoneNumber= ${phoneNumber} `, function(err, result) {
+      if(err){
+          throw err;
+      }
+      console.log("Database is updated...");
+    });
+    }
+  module.exports.updateDB=updateDB;
   module.exports.asyncCall = asyncCall;
 
   
 
-//  con.query(`UPDATE customers SET previouscalls = previouscalls + 1 WHERE ${phoneNumber}`, function(err, result) {
-//     if(err){
-//         throw err;
-//     }
-//   });
+ 
+

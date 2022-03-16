@@ -24,14 +24,14 @@
             var tr = document.getElementById('openConversations').insertRow();
             var cStart = tr.insertCell(0);
             var cCity = tr.insertCell(1);
-            var cTopic = tr.insertCell(2);
-            var cLanguage = tr.insertCell(3);
-            var cGender = tr.insertCell(4);
-            var cAge = tr.insertCell(5);
-            var cPrevCalls = tr.insertCell(6);
-            var cEnd = tr.insertCell(7);
-
-
+            var cPeriod = tr.insertCell(2);
+            var cGender = tr.insertCell(3);
+            var cAge = tr.insertCell(4);
+            var cPrevCalls = tr.insertCell(5);
+            var cTopic = tr.insertCell(6);
+            var cProduct = tr.insertCell(7);
+            var cEnd = tr.insertCell(8);
+           
             const date = Date.now();
             const dateTimeFormat = new Intl.DateTimeFormat('en', { year: 'numeric', month: 'short', day: '2-digit', hour: 'numeric', minute: 'numeric' })
             const [{ value: month }, , { value: day }, , { value: year }, , { value: hour }, , { value: minute }] = dateTimeFormat.formatToParts(date)
@@ -40,24 +40,61 @@
             
            var initData = JSON.parse('<%-JSON.stringify(data)%>');
            for (let index = 0; index < initData.length; index++) {
+               //need to add the hebrew words where needed (like i did in the address) ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 
                var phone_Number_from_data = initData[index].phoneNumber;
                if (phone_Number_from_data == phNum) {      
                     var previous_Calls_from_data = initData[index].previouscalls;
-                    var address_from_data = initData[index].address;
-                    var gender_from_data = initData[index].gender;
+                    var address_from_data =[ initData[index].address ,' '] ;
+                   switch (address_from_data[0]) { 
+                       case 'jerusalem':
+                           address_from_data[1] ='ירושלים';
+                           break;
+                       case 'Naharia':
+                           address_from_data[1] = 'נהריה';
+                           break;
+                        case 'Tel Aviv':
+                            address_from_data[1] = 'תל אביב';
+                            break;
+                        case 'Haifa':
+                            address_from_data[1] = 'חיפה';
+                            break;
+                          case 'ashdod':
+                             address_from_data[1]= 'אשדוד';
+                            break;
+                          case 'Ashkelon':
+                            address_from_data[1]='אשקלון';
+                            break;
+                          case 'Beer sheva':
+                            address_from_data[1]= 'באר שבע';
+                            break;
+                          case 'Raanana':
+                            address_from_data[1] = 'רעננה';
+                             break;
+                         default:
+                            address_from_data[1] = 'תל אביב';
+                           break;
+                   }
+                    var gender_from_data =[ initData[index].gender ,' '];
+                    if(gender_from_data[0] == 'Male') {
+                        gender_from_data[1] = 'גבר';
+                    }
+                    else { 
+                        gender_from_data[1]='אישה';
+                         }
+                    
                     var age_from_data = initData[index].age;  
                     var topic_from_data = initData[index].topic;     
                }
-           }    alert(`age = ${age_from_data} \n address = ${address_from_data} \n gender = ${gender_from_data}`);
+           }    
            // we need to take the "answer" from the app.js file (data there) and use it here at cPrevCalls..... (line 49) ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             //res.render(data)'
             // we need to get all the data to here and make .prevcalls.. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             
             cStart.innerHTML = "<div id='" + date + "''>" + `${day}-${month}-${year} ,${hour}:${minute}` + "</div>";
             cCity.innerHTML = `<select>
-                                <option value='${address_from_data}'>${address_from_data}</option>
+                                <option value='${address_from_data[0]}'>${address_from_data[1]}</option>
                                 <option value='jerusalem'>ירושלים</option>
-                                <option value='naaria'>נהריה</option>
+                                <option value='Naharia'>נהריה</option>
                                 <option value='haifa'>חיפה</option>
                                 <option value='telAviv'>תל אביב</option>
                                 <option value='ashdod'>אשדוד</option>
@@ -66,30 +103,31 @@
                                 </select>`;
             cTopic.innerHTML = `<select>
                                     <option value='${topic_from_data}'>${topic_from_data}</option>
-                                    <option value='Medical'>טיפול רפואי</option>
-                                    <option value='drugs'>תרופות</option>
-                                    <option value='food'>מזון</option>
-                                    <option value='water'>מים</option>
-                                    <option value='shelter'>מיגון</option>
-                                    <option value='information'>מידע</option>
-                                    <option value='evacuation'>פינוי</option>
-                                    </select>`;
-            cLanguage.innerHTML = `<select>
-                                    <option value='hebrew'>עברית</option>
-                                    <option value='english'>אנגלית</option>
-                                    <option value='amharic'>אמהרית</option>
-                                    <option value='russian'>רוסית</option>
-                                    <option value='arabic>ערבית</option>
-                                    <option value='thai'>תאילנדית</option>
-                                    </select>`;
+                                    <option value='report'>תלונה</option>
+                                    <option value='service'>שירות</option>
+                                    <option value='disconnect'>בקשת ניתוק</option>
+                                    <option value='join'>הצטרפות</option>
+                                </select>`;
+            cPeriod.innerHTML = `<select> 
+                                    <option value='regular'>ימים רגילים</option>
+                                    <option value='Summer vacation'>חופשותקיץ</option>
+                                    <option value='Holidays'>חגים</option>
+                                </select>`;
+                               
             cAge.innerHTML = `<input value='${age_from_data}' disabled/>`;
             cGender.innerHTML = `<select>
-                                    <option value='${gender_from_data}'>${gender_from_data}</option>
+                                    <option value='${gender_from_data[0]}'>${gender_from_data[1]}</option>
                                     <option value='male'>גבר</option>
                                     <option value='female'>אישה</option>
                                 </select>`;
             cPrevCalls.innerHTML = ` <input  value='${previous_Calls_from_data}'  disabled />` ;
-         
+            cProduct.innerHTML = `<select>
+                                    <option value='${'aa'}'>${'aa'}</option>
+                                    <option value='Internet'>אינטרנט</option>
+                                    <option value='Cables'>כבלים</option>
+                                    <option value='Cellular'>סלולרי</option>
+                                    <option value='Internet,Cables,Cellular'>הכל</option>
+                                    </select>`;
             cEnd.innerHTML = `<button onclick='reportEndCall(this.parentNode.parentNode,${phNum})'>סיום</button>`;
         }
 
@@ -104,13 +142,14 @@
             message.phoneNumber = phNum;
             message.id = row.cells[0].getElementsByTagName('div')[0].id;
             message.city = row.cells[1].getElementsByTagName('select')[0].value;
-            message.topic = row.cells[2].getElementsByTagName('select')[0].value;
-            message.language = row.cells[3].getElementsByTagName('select')[0].value;
-            message.gender = row.cells[4].getElementsByTagName('select')[0].value;
-            message.age = (row.cells[5].getElementsByTagName('input')[0].value || 18);
-            message.prevCalls = row.cells[6].getElementsByTagName('input')[0].value ;
+            message.Period = row.cells[2].getElementsByTagName('select')[0].value;
+            message.gender = row.cells[3].getElementsByTagName('select')[0].value;
+            message.age = (row.cells[4].getElementsByTagName('input')[0].value || 18);
+            message.prevCalls = row.cells[5].getElementsByTagName('input')[0].value ;
+            message.topic = row.cells[6].getElementsByTagName('select')[0].value;
+            message.Product = row.cells[7].getElementsByTagName('select')[0].value;
             message.totalTime = (parseInt(Date.now()) - parseInt(message.id)) / 1000; // seconds
-
+            
             socket.emit("callDetails", message);
             deleteRow(row);
         }
@@ -139,7 +178,7 @@
 
 <body onload="initSocket()">
     Total Waiting calls:
-    <input type="number" id="total" min="0" max="200" value="0">
+    <input type="number" id="total" min="0" max="200" value='0'>
     <input type="button" value="Set" onclick="sendMessage(total.value)" />
     &nbsp;
     <select><option value='Holidays'>חגים</option><option value='Summer vacation'>חופשת קיץ</option><option value='Normal days'>ימים רגילים</option></select>
@@ -150,11 +189,12 @@
         <tr>
             <th>Start Time</th>
             <th>City</th>
-            <th>Topic</th>
-            <th>Language</th>
+            <th>Period</th>
             <th>Gender</th>
             <th>Age</th>
             <th>Prev. Calls</th>
+            <th>Topic</th>
+            <th>Product</th>
             <th>End</th>
         </tr>
     </table>
