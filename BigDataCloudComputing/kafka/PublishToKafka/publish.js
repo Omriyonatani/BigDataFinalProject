@@ -5,17 +5,17 @@ const Kafka = require("node-rdkafka");
 
 // use you own parameters
 const kafkaConf = {
-  "group.id": "cloudkarafka-example",
-  "metadata.broker.list": "moped-01.srvs.cloudkafka.com:9094,moped-02.srvs.cloudkafka.com:9094,moped-03.srvs.cloudkafka.com:9094".split(","),
+  "group.id": "kafka",
+  "metadata.broker.list": "tricycle-01.srvs.cloudkafka.com:9094,tricycle-02.srvs.cloudkafka.com:9094,tricycle-03.srvs.cloudkafka.com:9094".split(","),
   "socket.keepalive.enable": true,
   "security.protocol": "SASL_SSL",
   "sasl.mechanisms": "SCRAM-SHA-256",
-  "sasl.username": "mo0oa5gi",
-  "sasl.password": "4ozx-X3Eaj0H9bvA96qmmD9MY-WRMkIA",
+  "sasl.username": "w63twr24",
+  "sasl.password": "t_ahmFzCFRTbT4Q7YF-oCtXEv8hU5nSW",
   "debug": "generic,broker,security"
 };
 
-const prefix = "mo0oa5gi-";
+const prefix = "w63twr24-";
 const topic = `${prefix}new`;
 const producer = new Kafka.Producer(kafkaConf);
 
