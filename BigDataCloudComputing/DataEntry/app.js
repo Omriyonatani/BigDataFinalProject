@@ -36,7 +36,8 @@ io.on("connection", (socket) => {
     socket.on("callDetails", (msg) => {
         mysql.updateDB(msg); 
         console.log(msg);  
-        kafka.publish(msg)});
+        // kafka.publish(msg)
+    });
 });
 
 

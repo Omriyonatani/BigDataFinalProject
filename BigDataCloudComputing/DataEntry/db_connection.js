@@ -11,7 +11,7 @@ const app = express();
     var con = mysql.createConnection({
       host: "localhost",
       user: "root",
-      password: "R0546379423m",
+      password: "13121994",
       database: 'bigdatadb'
     });
     return new Promise(
@@ -36,14 +36,15 @@ const app = express();
     var con = mysql.createConnection({
       host: "localhost",
       user: "root",
-      password: "R0546379423m",
+      password: "13121994",
       database: 'bigdatadb'
     });
     /** subscriptions, period, age, previouscalls, topic */
-    var phoneNumber = data.phoneNumber
+    var phoneNumber = data.phoneNumber;
     // need to fined a way to update the product in the database~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    con.query(`UPDATE customers 
-               SET previouscalls = previouscalls + 1, address = '${data.city}',
+    con.query(`UPDATE customers SET 
+               previouscalls = previouscalls + 1,
+               address = '${data.city}',
                topic = '${data.topic}' 
                WHERE phoneNumber= ${phoneNumber} `, function(err, result) {
       if(err){
@@ -51,7 +52,8 @@ const app = express();
       }
       console.log("Database is updated...");
     });
-    }
+  }
+  
   module.exports.updateDB=updateDB;
   module.exports.asyncCall = asyncCall;
 
