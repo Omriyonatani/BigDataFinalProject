@@ -2,7 +2,7 @@ const express = require('express');
 const app = express();
 var server = require('http').createServer(app);
 
-const port = 3000
+const port = 3001
 
 //------------ kafka------------
 const kafka = require('./publish');
