@@ -8,7 +8,7 @@ const port = 3000
 const redis = require('ioredis')
 
 const conn = {
-    port: 6379,
+    port: 3002,
     host: "127.0.0.1",
     db: 0
 };
