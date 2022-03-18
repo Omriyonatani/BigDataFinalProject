@@ -8,9 +8,9 @@ const port = 3001
 const kafka = require('./publish');
 //------------
 
-
-app.get('/', (req, res) => res.send("<a href='/send'>Send</a> <br/><a href=''>View</a>"));
-app.get('/send', (req, res) => {kafka.publish("whats up");res.send('message was sent')});
+//maybe we don't need these two lines (12-13)
+// app.get('/', (req, res) => res.send("<a href='/send'>Send</a> <br/><a href=''>View</a>"));
+// app.get('/send', (req, res) => {kafka.publish("whats up");res.send('message was sent')});
 
 
 server.listen(port, () => console.log(`Ariel app listening at http://localhost:${port}`));

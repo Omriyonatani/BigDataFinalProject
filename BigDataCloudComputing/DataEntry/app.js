@@ -3,9 +3,9 @@ const app = express();
 var server = require('http').createServer(app);
 const io = require("socket.io")(server);
 const mysql = require("./db_connection");
-const port = 3000
+const port = 3001
 const bodyParser = require('body-parser');
-
+const kafka = require("../kafka/PublishToKafka/publish");
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
@@ -34,9 +34,9 @@ io.on("connection", (socket) => {
     console.log("new user connected");
     socket.on("totalWaitingCalls", (msg) => { console.log(msg.totalWaiting) });
     socket.on("callDetails", (msg) => {
-        mysql.updateDB(msg); 
+        // mysql.updateDB(msg); 
         console.log(msg);  
-        kafka.publish(msg)});
+        kafka.publish(msg);});
 });
 
 
