@@ -8,7 +8,7 @@ const kafka = require("../kafka/ConsumeFromKafka/consume")
 const redis = require('ioredis')
 
 const conn = {
-    port: 3002,
+    port: 6379,
     host: "127.0.0.1",
     db: 0
 };
@@ -24,20 +24,21 @@ const data = kafka.getDataFromeKafka();
 
 data.then(function(result){
     result=JSON.parse(JSON.stringify(result));   
+    const customer = {
+            city : result.city,
+            Period : result.Period,
+            gender : result.gender,
+            age: result.age,
+            prevCalls : result.prevCalls,
+            topic : result.topic,
+            Product : result.Product,
+            totalTime : result.totalTime
+    };
+    var key = `0${result.phoneNumber}`;
     
-     var phoneNumber = result.phoneNumber;
-    var city = result.city;
-    var Period= result.Period;
-    var gender= result.gender;
-    var age= result.age;
-    var prevCalls= result.prevCalls;
-    var topic = result.topic
-    var Product = result.Product;
-    var totalTime = result.totalTime;
-    redisDb.hmset(`user:${phoneNumber}` , "city"  ,city, "Period" ,Period, "gender" ,gender, "age" ,age, "prevCalls" ,prevCalls, "topic", topic, "Product",Product  );
-    redisDb.hmget(phoneNumber);
-}
-)
+    redisDb.hmset(key,customer );
+    
+});
 
 
 
