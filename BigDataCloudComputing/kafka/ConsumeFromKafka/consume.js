@@ -10,7 +10,7 @@ const kafkaConf = {
   "security.protocol": "SASL_SSL",
   "sasl.mechanisms": "SCRAM-SHA-256",
   "sasl.username": "w63twr24",
-  "sasl.password": "t_ahmFzCFRTbT4Q7YF-oCtXEv8hU5nSW",
+  "sasl.password": "aFBdS6zxflHeaCif4m8rnF4GFjhhc6Zp",
   "debug": "generic,broker,security"
 };
 
@@ -19,6 +19,7 @@ const topic = `${prefix}new`;
 const producer = new Kafka.Producer(kafkaConf);
 
 const genMessage = m => new Buffer.alloc(m.length,m);
+
 //const prefix = process.env.CLOUDKARAFKA_USERNAME;
 const topics = [topic];
 const consumer = new Kafka.KafkaConsumer(kafkaConf, {
@@ -31,24 +32,23 @@ async function getDataFromeKafka(){
   // console.log(result);
   return result;
 }
+
 function pullDataFromKafa(){
-  return new Promise( res =>{ 
+  return new Promise( res => {
+    consumer.connect();
     consumer.on("error", function(err) {
       console.error(err);
     });
     consumer.on("ready", function(arg) {
-      console.log(`Consumer ${arg.name} ready`);
-      consumer.subscribe(topics);
-      consumer.consume();
+    console.log(`Consumer ${arg.name} ready`);
+    consumer.subscribe(topics);
+    consumer.consume();
     });
-    
     consumer.on("data", function(m) {
       // insert into MongoDB and Radis
-    //  console.log(m.value.toString());
-    });
-    consumer.on("disconnected", function(arg) {
-      process.exit();
-    });
+      res(m.value.toString());
+      // console.log(m.value.toString());
+      });
     consumer.on('event.error', function(err) {
       console.error(err);
       process.exit(1);
@@ -56,14 +56,11 @@ function pullDataFromKafa(){
     consumer.on('event.log', function(log) {
       // console.log(log);
     });
-    consumer.on("data", function(m) {
-      // insert into MongoDB and Radis
-      res(m.value.toString())
-    //  console.log(m.value.toString());
+    consumer.on("disconnected", function(arg) {
+      // delete the subscribe 
+      process.exit();
     });
-    consumer.connect();
   });
-
 }
 
 module.exports.getDataFromeKafka= getDataFromeKafka;

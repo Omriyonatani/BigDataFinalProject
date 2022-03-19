@@ -8,11 +8,12 @@ const kafka = require("../kafka/ConsumeFromKafka/consume")
 const redis = require('ioredis')
 
 const conn = {
-    port: 6379,
+    port: 3002,
     host: "127.0.0.1",
     db: 0
 };
 
+// Connect to redis
 const redisDb = new redis(conn);
 
 // app.get('/', (req, res) => {
@@ -25,25 +26,21 @@ const data = kafka.getDataFromeKafka();
 data.then(function(result){
     result=JSON.parse(JSON.stringify(result));   
     const customer = {
-            city : result.city,
-            Period : result.Period,
-            gender : result.gender,
-            age: result.age,
-            prevCalls : result.prevCalls,
-            topic : result.topic,
-            Product : result.Product,
-            totalTime : result.totalTime
+            city : `${result[2].city}`,
+            Period : `${result[3].Period}`,
+            gender : `${result[4].gender}`,
+            age: `${result[5].age}`,
+            prevCalls : `${result[6].prevCalls}`,
+            topic : `${result[7].topic}`,
+            Product : `${result[8].Product}`,
+            totalTime : `${result[9].totalTime}`
     };
     var key = `0${result.phoneNumber}`;
-    
-    redisDb.hmset(key,customer );
-    
+    console.log(result);
+    console.log("~~~~~~~ between result and customer ~~~~~~~~~~");
+    console.log(customer);
+    redisDb.hmset(key,customer);
 });
-
-
-
-
-
 
 /*
 // app.get('/readx', (req, res) => {  

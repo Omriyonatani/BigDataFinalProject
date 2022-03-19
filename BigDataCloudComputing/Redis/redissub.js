@@ -1,6 +1,13 @@
 const Redis = require('ioredis');
 
-const redis = new Redis();
+const conn = {
+    port: 3002,
+    host: "127.0.0.1",
+    db: 0
+};
+
+
+const redis = new Redis(conn);
 
 const channel = 'messages';
 

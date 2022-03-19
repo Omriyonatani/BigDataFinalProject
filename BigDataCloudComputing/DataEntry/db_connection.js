@@ -11,7 +11,7 @@ const app = express();
     var con = mysql.createConnection({
       host: "localhost",
       user: "root",
-      password: "R0546379423m",
+      password: "13121994",
       database: 'bigdatadb'
     });
     return new Promise(
@@ -31,8 +31,8 @@ const app = express();
     // console.log(result);
     return result;
   }
-  function updateDB(data){
 
+  function updateDB(data){
     var con = mysql.createConnection({
       host: "localhost",
       user: "root",

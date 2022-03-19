@@ -11,7 +11,7 @@ const kafkaConf = {
   "security.protocol": "SASL_SSL",
   "sasl.mechanisms": "SCRAM-SHA-256",
   "sasl.username": "w63twr24",
-  "sasl.password": "t_ahmFzCFRTbT4Q7YF-oCtXEv8hU5nSW",
+  "sasl.password": "aFBdS6zxflHeaCif4m8rnF4GFjhhc6Zp",
   "debug": "generic,broker,security"
 };
 
