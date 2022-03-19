@@ -36,13 +36,12 @@ io.on("connection", (socket) => {
     socket.on("callDetails", (msg) => {
         // mysql.updateDB(msg); 
         console.log(msg);  
-<<<<<<< HEAD
+ 
         kafka.publish(msg);});
-=======
+
         // kafka.publish(msg)
     });
->>>>>>> 6d093ae0955062b6646ebb5182c6e791b92b7491
-});
+
 
 
 
