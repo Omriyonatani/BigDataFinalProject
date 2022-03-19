@@ -5,43 +5,35 @@ const express = require('express')
 const app = express()
 const port = 3000
 const kafka = require("../kafka/ConsumeFromKafka/consume")
-const redis = require('ioredis')
+const redis = require('../Redis/redissub')
 
-const conn = {
-    port: 3002,
-    host: "127.0.0.1",
-    db: 0
-};
 
-// Connect to redis
-const redisDb = new redis(conn);
+
+
+// const conn = {
+//     port: 3002,
+//     host: "127.0.0.1",
+//     db: 0
+// };
+
+// // Connect to redis
+// const redisDb = new redis(conn);
 
 // app.get('/', (req, res) => {
 //   res.send('Web Server with redis db is up')
 // })
-
-
+function redisReadWrite(){
+const redis = redis.redisSUB();
 const data = kafka.getDataFromeKafka();
 
-data.then(function(result){
-    result=JSON.parse(JSON.stringify(result));   
-    const customer = {
-            city : `${result[2].city}`,
-            Period : `${result[3].Period}`,
-            gender : `${result[4].gender}`,
-            age: `${result[5].age}`,
-            prevCalls : `${result[6].prevCalls}`,
-            topic : `${result[7].topic}`,
-            Product : `${result[8].Product}`,
-            totalTime : `${result[9].totalTime}`
-    };
-    var key = `0${result.phoneNumber}`;
-    console.log(result);
-    console.log("~~~~~~~ between result and customer ~~~~~~~~~~");
-    console.log(customer);
-    redisDb.hmset(key,customer);
+data.then( function(result){
+    result=  JSON.parse(result);     
+    var key = `0${result["phoneNumber"]}`;    
+    redisDb.hmset(key,result);
 });
+}
 
+module.exports.redisReadWrite = redisReadWrite;
 /*
 // app.get('/readx', (req, res) => {  
 redisDb.get('x', (err, reply) => {

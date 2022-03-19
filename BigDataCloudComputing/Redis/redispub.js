@@ -1,27 +1,28 @@
 const express = require('express')
 const app = express()
+const redis = require('../Redis/redisreadwrite')
 const port = 3003
 
-const Redis = require('ioredis');
 
-const redis = new Redis();
 
-const channel = 'messages'
+// const redis = new Redis(conn);
 
-app.get('/', (req, res) => {
-  res.send('Web Server with redis publisher is up')
-})
+// const channel = 'messages'
 
-app.get('/start', (req, res) => {
-  redis.publish(channel, 'started');
-  res.send('Starting message wes sent')
-})
+// app.get('/', (req, res) => {
+//   res.send('Web Server with redis publisher is up')
+// })
 
-app.get('/stop', (req, res) => {
-  redis.publish(channel, 'stopped');
-  res.send('Stoping message wes sent')
-})
+const redisReadWrite = redis.redisReadWrite();
 
-app.listen(port, () => {
-  console.log(`publisher is listening at http://localhost:${port}`)
-})
+  
+ 
+
+// app.get('/stop', (req, res) => {
+//   redis.publish(channel, 'stopped');
+//   res.send('Stoping message wes sent')
+// })
+
+// app.listen(port, () => {
+//   console.log(`publisher is listening at http://localhost:${port}`)
+// })
