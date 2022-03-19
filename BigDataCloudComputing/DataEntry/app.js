@@ -39,7 +39,6 @@ io.on("connection", (socket) => {
  
         kafka.publish(msg);});
 
-        // kafka.publish(msg)
     });
 
 
