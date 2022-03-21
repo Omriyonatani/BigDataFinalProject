@@ -152,10 +152,12 @@
         }
 
         function getPhoneNumber() {
-            var phNumber = ["500022558","502211864","502255223","502255749","502277495","523322665","524477115",
-                            "524563218","525488569","525588552","527455886","529635875","529966524","532211887", "535554447",
-                            "538626154","539875412","541425142","545698745","545789999","547414741","549632541",
-                            "549922125","555544554","555566558"];           
+            var initData = JSON.parse('<%-JSON.stringify(data)%>');
+            var phNumber = [];
+            for (let index = 0; index < initData.length; index++) {
+                phNumber[index]= initData[index].phoneNumber;  
+            }
+          
             var index = Math.floor(Math.random() * 25);
             var resPhone= phNumber[index];
             var tr1 = document.getElementById('PhoneNumber').insertRow();
