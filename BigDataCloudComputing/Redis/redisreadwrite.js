@@ -5,35 +5,41 @@ const express = require('express')
 const app = express()
 const port = 3000
 const kafka = require("../kafka/ConsumeFromKafka/consume")
-const redis = require('../Redis/redissub')
+const redis = require('ioredis')
+const { async } = require('jshint/src/prod-params')
 
 
+const conn = {
+    port: 3002,
+    host: "127.0.0.1",
+    db: 0
+};
 
-
-// const conn = {
-//     port: 3002,
-//     host: "127.0.0.1",
-//     db: 0
-// };
-
-// // Connect to redis
-// const redisDb = new redis(conn);
+// Connect to redis
+const redisDb = new redis(conn);
 
 // app.get('/', (req, res) => {
 //   res.send('Web Server with redis db is up')
 // })
-function redisReadWrite(){
-const redis = redis.redisSUB();
-const data = kafka.getDataFromeKafka();
 
-data.then( function(result){
-    result=  JSON.parse(result);     
-    var key = `0${result["phoneNumber"]}`;    
-    redisDb.hmset(key,result);
-});
+// Function that read data from redis to dashboard
+function FromRedisToDashboard(){
+    
 }
 
-module.exports.redisReadWrite = redisReadWrite;
+// Function that write data from kafka to redis
+  function FromKafkaToRedis(){
+    data.then( function(result){
+      result=  JSON.parse(result);     
+        var key = `0${result["phoneNumber"]}`;    
+        console.log(key);
+        redisDb.hmset(key,result);
+        
+    });
+}
+
+
+FromKafkaToRedis();
 /*
 // app.get('/readx', (req, res) => {  
 redisDb.get('x', (err, reply) => {
