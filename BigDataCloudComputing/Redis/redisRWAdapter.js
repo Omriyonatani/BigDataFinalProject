@@ -1,13 +1,10 @@
 // https://docs.redis.com/latest/rs/references/client_references/client_ioredis/
 // https://thisdavej.com/guides/redis-node/
 // https://helderesteves.com/the-crash-course-on-node-redis/
-const express = require('express')
-const app = express()
-const port = 3000
 const kafka = require("../kafka/ConsumeFromKafka/consume")
 const redis = require('ioredis')
-const { async } = require('jshint/src/prod-params')
 
+// Adapter between Kafka and Redis 
 
 const conn = {
     port: 3002,
@@ -18,28 +15,27 @@ const conn = {
 // Connect to redis
 const redisDb = new redis(conn);
 
-// app.get('/', (req, res) => {
-//   res.send('Web Server with redis db is up')
-// })
-
 // Function that read data from redis to dashboard
-function FromRedisToDashboard(){
-    
+async function FromRedisToDashboard(){
+    // pull keys from redis with "Scan" command.
+    redisNowData = await redisDb.scan(0);
+    // return the values (that are the Database's keys)
+    return redisNowData[1];
 }
 
 // Function that write data from kafka to redis
-  function FromKafkaToRedis(){
-    data.then( function(result){
-      result=  JSON.parse(result);     
-        var key = `0${result["phoneNumber"]}`;    
-        console.log(key);
-        redisDb.hmset(key,result);
-        
-    });
+function FromKafkaToRedis(result){
+    // parse the result from "ToString" to JSON. 
+    result = JSON.parse(result);
+    var key = `0${result["phoneNumber"]}`;    
+    // console.log(key);
+    redisDb.hmset(key,result);
 }
 
+module.exports.FromKafkaToRedis= FromKafkaToRedis;
+module.exports.FromRedisToDashboard= FromRedisToDashboard;
 
-FromKafkaToRedis();
+
 /*
 // app.get('/readx', (req, res) => {  
 redisDb.get('x', (err, reply) => {
@@ -74,8 +70,9 @@ redisDb.lrange('values',0,-1 ,(err, reply) => {
 // })
 
 
+// app.get('/', (req, res) => {
+//   res.send('Web Server with redis db is up')
+// })
+
 
 */
-app.listen(port, () => {
-  console.log(`Example app listening at http://localhost:${port}`)
-})

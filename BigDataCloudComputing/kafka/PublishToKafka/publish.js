@@ -3,6 +3,11 @@
 const uuid = require("uuid");
 const Kafka = require("node-rdkafka");
 
+
+
+// From data entry to kafka
+
+
 // use you own parameters
 const kafkaConf = {
   "group.id": "kafka",
