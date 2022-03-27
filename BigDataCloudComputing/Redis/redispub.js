@@ -2,7 +2,7 @@ const express = require('express')
 const app = express()
 const RedisAdapter = require('../Redis/redisRWAdapter')
 const redis = require('ioredis');
-const { redisSUB } = require('./redissub');
+
 // From redis to Dashboard
 
 const conn = {
@@ -13,16 +13,33 @@ const conn = {
 const redisDb = new redis(conn);
 const channel = 'messages'
 
+
+ function readCallback(){
+    RedisAdapter.FromRedisToDashboard().then(res=>{
+        // check if the data is changed
+        let dataForPublish = JSON.stringify(res);
+        redisDb.publish(channel, dataForPublish );
+        console.log(dataForPublish);
+        setTimeout(readCallback, 5000);
+        
+    });
+}
+   
+
+readCallback();
+
+/*
 // We pulled the data from Redis, to publish it to the subscribers message channels
-redisNowData = RedisAdapter.FromRedisToDashboard().then(result => {
-        for (let index = 0; index < result.length; index++) {
+RedisAdapter.FromRedisToDashboard().then(result => {
+    for (let index = 0; index < result.length; index++) {
             const element = result[index];
-            console.log(element);
-            finalResult = redisDb.hgetall(element).then(dataForPublish => {
+            // console.log(element);
+            redisDb.hgetall(element).then(dataForPublish => {
                 dataForPublish = JSON.stringify(dataForPublish);
                 redisDb.publish(channel, dataForPublish);
-                console.log(dataForPublish);
+                // console.log(dataForPublish);
             });
         }
     }
 );
+*/

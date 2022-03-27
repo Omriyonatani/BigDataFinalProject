@@ -15,13 +15,36 @@ const conn = {
 // Connect to redis
 const redisDb = new redis(conn);
 
+
 // Function that read data from redis to dashboard
 async function FromRedisToDashboard(){
     // pull keys from redis with "Scan" command.
-    redisNowData = await redisDb.scan(0);
-    // return the values (that are the Database's keys)
-    return redisNowData[1];
+   let redisNowData = await redisDb.scan(0);
+   let data=[];
+   let values = redisNowData[1];
+   for (let index = 0; index < values.length; index++){
+        if(values.length > data.length){
+                const element = values[index];
+                console.log(element);
+                await redisDb.hgetall(element).then(dataForPublish => {
+                    data.push(dataForPublish);
+            });
+         }
+    }
+    // return the values
+    return data;
 }
+
+// async function hasChanged(oldData){
+//     let newData = await redisDb.scan(0);
+//     if(newData[1].length != oldData.length){
+//         return true;
+//     }
+//     return false;
+// }
+
+
+
 
 // Function that write data from kafka to redis
 function FromKafkaToRedis(result){
@@ -34,7 +57,7 @@ function FromKafkaToRedis(result){
 
 module.exports.FromKafkaToRedis= FromKafkaToRedis;
 module.exports.FromRedisToDashboard= FromRedisToDashboard;
-
+module.exports.hasChanged = hasChanged;
 
 /*
 // app.get('/readx', (req, res) => {  

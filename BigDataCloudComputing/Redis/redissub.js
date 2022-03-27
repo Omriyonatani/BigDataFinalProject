@@ -14,10 +14,12 @@ const conn = {
 const redis = new Redis(conn);
 const channel = 'messages';
 
+ ()=>{
 redis.on('message', (channel, message) => {
     console.log(`Received the following message from ${channel}: ${message}`);
+    return message;
 });
-
+}
 redis.subscribe(channel, (error, count) => {
     if (error) {
         throw new Error(error);
@@ -25,7 +27,9 @@ redis.subscribe(channel, (error, count) => {
 });
 
 
-
+module.exports.flushAll = ()=>{
+    redis.flushall();
+}
 
 
 
