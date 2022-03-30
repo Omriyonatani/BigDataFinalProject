@@ -21,6 +21,7 @@ app.get('/', (req, res) => res.render('sender'))
 const myDB = mysql.asyncCall();
 myDB.then(function(result) {
     result=JSON.parse(JSON.stringify(result));
+    // need to check if we can do it with socket ( io.emit() )
     app.get('/Views/Sender', function(req, res) {
         res.render('Sender', { data: result});
     });

@@ -57,7 +57,6 @@ function FromKafkaToRedis(result){
 
 module.exports.FromKafkaToRedis= FromKafkaToRedis;
 module.exports.FromRedisToDashboard= FromRedisToDashboard;
-module.exports.hasChanged = hasChanged;
 
 /*
 // app.get('/readx', (req, res) => {  

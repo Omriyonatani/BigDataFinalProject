@@ -13,13 +13,22 @@
             //socket is global
             socket = io.connect();
             alert("connected");
+            getTotalCalls();
         }
-
+        function getTotalCalls(){
+            var totalCalls = parseInt(document.getElementById("total").value) || 0;
+            // if (parseInt(totalCalls) < 200) {
+                // totalCalls=0;
+                document.getElementById("total").value = (totalCalls +  Math.floor(Math.random() * 200)) + "";
+            // }
+        }
+        
         function sendMessage(total) {
             socket.emit("totalWaitingCalls", { totalWaiting: total });
         }
     </script>
     <script>
+       
         function startConv() {
             var tr = document.getElementById('openConversations').insertRow();
             var cStart = tr.insertCell(0);
@@ -31,6 +40,7 @@
             var cProduct = tr.insertCell(6);
             var cEnd = tr.insertCell(7);
            
+        
             const date = Date.now();
             const dateTimeFormat = new Intl.DateTimeFormat('en', { year: 'numeric', month: 'short', day: '2-digit', hour: 'numeric', minute: 'numeric' })
             const [{ value: month }, , { value: day }, , { value: year }, , { value: hour }, , { value: minute }] = dateTimeFormat.formatToParts(date)
@@ -140,7 +150,8 @@
             message.topic = row.cells[5].getElementsByTagName('select')[0].value;
             message.Product = row.cells[6].getElementsByTagName('select')[0].value;
             message.totalTime = (parseInt(Date.now()) - parseInt(message.id)) / 1000; // seconds
-            
+            message.totalCalls= parseInt(document.getElementById("total").value) || 0;
+
             socket.emit("callDetails", message);
             deleteRow(row);
         }

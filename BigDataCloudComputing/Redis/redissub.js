@@ -14,19 +14,23 @@ const conn = {
 const redis = new Redis(conn);
 const channel = 'messages';
 
- ()=>{
-redis.on('message', (channel, message) => {
-    console.log(`Received the following message from ${channel}: ${message}`);
-    return message;
+async function getData(){
+    return new Promise (res=>{
+        redis.on('message', (channel, message) => {
+        // console.log(`Received the following message from ${channel}: ${message}`);
+        res(message);
+    });
 });
+ 
 }
+   
 redis.subscribe(channel, (error, count) => {
     if (error) {
         throw new Error(error);
     }
 });
 
-
+module.exports.getData=getData;
 module.exports.flushAll = ()=>{
     redis.flushall();
 }

@@ -8,10 +8,34 @@ app.use(express.static('public'))
 
 app.set('view engine', 'ejs')
 
+function updateWaitingCalls(){
+    var dataFromRedis= redisSub.getData();
+    dataFromRedis.then( res =>{
+      var data = JSON.parse(res);
+      var totalTime=0 ;
+
+      for (let index = 0; index < data.length; index++) {
+        totalTime += parseFloat( data[index].totalTime);   
+      }
+      // console.log(totalTime);
+      var averageTime = (totalTime / data.length).toFixed(2);
+      var waitingCalls = {
+        districtId:"average waiting time",
+        value: averageTime
+      }
+      // console.log(data.length);
+      // console.log(waitingCalls.value);
+
+      io.emit('waitingCalls', waitingCalls);
+
+      });
+    setTimeout(updateWaitingCalls,1000);
+}
+updateWaitingCalls();
 app.get('/', (req, res) => {
   var data = {
     cards: [
-      {districtId:"haifa", title: "חיפה", value: 500, unit: "חבילות", fotterIcon: "", fotterText: "נפח ממוצע", icon: "content_copy" },
+      {districtId:"average waiting time", title: "זמן המתנה ממוצע", value:"", unit: "", fotterIcon: "timer", fotterText: "", icon: "access_alarm" },
       {districtId:"dan", title: "דן", value: 1500, unit: "חבילות", fotterIcon: "", fotterText: "נפח ממוצע", icon: "store" },
       {districtId:"central", title: "מרכז", value: 3500, unit: "חבילות", fotterIcon: "", fotterText: "נפח ממוצע", icon: "info_outline" },
       {districtId:"Erase", title: "Erase todays data", value: 0, unit: "Flush all", fotterIcon: "", fotterText: "מחק הכל ", icon: "add_shopping_cart" }
@@ -20,10 +44,10 @@ app.get('/', (req, res) => {
   res.render("pages/dashboard", data)
 })
 
-app.get('/setData/:districtId/:value', function (req, res) {
-  io.emit('newdata',{districtId:req.params.districtId,value:req.params.value})
-  res.send(req.params.value)
-})
+// app.get('/setData/:districtId/:value', function (req, res) {
+//   io.emit('newdata',{districtId:req.params.districtId,value:req.params.value})
+//   res.send(req.params.value)
+// })
 
 
 const server = express()
@@ -32,11 +56,13 @@ const server = express()
 const io = socketIO(server);
 
 //------------
-// io.on('connection', (socket) => {  
-//   socket.on('newdata', (msg) => {
-//     console.log(msg);
-//     io.emit('newdata', msg);
-//   });
-// });
+io.on('connection', (socket) => {  
+  // socket.on('newdata', (msg) => {
+  //   console.log(msg);
+  //   io.emit('newdata', msg);
+  // });
+  
+ 
+});
 //-----------
 
