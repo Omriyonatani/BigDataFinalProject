@@ -29,7 +29,7 @@ The above copyright notice and this permission notice shall be included in all c
       function totalCalls(){
         socket.on('waitingCalls', function (msg) {
           var element = document.getElementById(msg.districtId);
-          element.innerText = msg.value + " sec";
+          element.innerText = msg.value + " sec" ;
         })
         setTimeout(totalCalls,1000);
       }

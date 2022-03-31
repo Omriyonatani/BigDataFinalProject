@@ -18,7 +18,12 @@ function updateWaitingCalls(){
         totalTime += parseFloat( data[index].totalTime);   
       }
       // console.log(totalTime);
-      var averageTime = (totalTime / data.length).toFixed(2);
+      if (totalTime != 0 ) {
+        var averageTime = (totalTime / data.length).toFixed(2);
+      } else {
+        var averageTime = 0;
+      }
+      
       var waitingCalls = {
         districtId:"average waiting time",
         value: averageTime
@@ -31,8 +36,10 @@ function updateWaitingCalls(){
       });
     setTimeout(updateWaitingCalls,1000);
 }
-updateWaitingCalls();
+
+
 app.get('/', (req, res) => {
+  updateWaitingCalls();
   var data = {
     cards: [
       {districtId:"average waiting time", title: "זמן המתנה ממוצע", value:"", unit: "", fotterIcon: "timer", fotterText: "", icon: "access_alarm" },
