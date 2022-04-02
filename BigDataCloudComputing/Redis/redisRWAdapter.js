@@ -25,7 +25,7 @@ async function FromRedisToDashboard(){
    for (let index = 0; index < values.length; index++){
         if(values.length > data.length){
                 const element = values[index];
-                console.log(element);
+                // console.log(element);
                 await redisDb.hgetall(element).then(dataForPublish => {
                     data.push(dataForPublish);
             });

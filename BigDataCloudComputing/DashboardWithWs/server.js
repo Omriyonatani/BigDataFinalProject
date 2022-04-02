@@ -2,6 +2,8 @@ const express = require('express')
 const app = express();
 const socketIO = require('socket.io');
 const redisSub = require('../Redis/redissub')
+const redisPub = require('../Redis/redispub')
+redisPub;
 const port=3000;
 
 app.use(express.static('public'))
@@ -14,11 +16,12 @@ function updateWaitingCalls(){
       var data = JSON.parse(res);
       
       var totalTime=0 ;
-      var totalCalls = data[data.length-1].totalCalls;
-      console.log(data);
+      var totalCalls = 0;
+      // console.log(data);
 
       for (let index = 0; index < data.length; index++) {
-        totalTime += parseFloat( data[index].totalTime);   
+        totalTime += parseFloat( data[index].totalTime); 
+        totalCalls = data[index].totalCalls;  
       }
       // console.log(totalTime);
       if (totalTime != 0 ) {
@@ -53,7 +56,6 @@ app.get('/', (req, res) => {
     cards: [
       {districtId:"average waiting time", title: "זמן המתנה ממוצע", value:"0", unit: "", fotterIcon: "timer", fotterText: "", icon: "access_alarm" },
       {districtId:"number of waiting calls", title: "מספר שיחות ממתינות", value: "", unit: "שיחות", fotterIcon: "", fotterText: "...", icon: "call" },
-
       {districtId:"central", title: "מרכז", value: 3500, unit: "חבילות", fotterIcon: "", fotterText: "נפח ממוצע", icon: "info_outline" },
       {districtId:"Erase", title: "Erase todays data", value: 0, unit: "Flush all", fotterIcon: "", fotterText: "מחק הכל ", icon: "add_shopping_cart" }
     ]

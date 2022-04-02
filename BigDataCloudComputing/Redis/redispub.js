@@ -19,7 +19,7 @@ const channel = 'messages'
         // check if the data is changed
         let dataForPublish = JSON.stringify(res);
         redisDb.publish(channel, dataForPublish );
-        console.log(dataForPublish);
+        // console.log(dataForPublish);
         setTimeout(readCallback, 5000);
         
     });

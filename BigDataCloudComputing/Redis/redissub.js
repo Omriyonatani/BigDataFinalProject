@@ -1,4 +1,5 @@
 const Redis = require('ioredis');
+const RedisAdapter = require('../Redis/redisRWAdapter')
 
 // From Dashboard to Redis
 // init the data of the day by click on dashboards button.
