@@ -21,6 +21,7 @@ The above copyright notice and this permission notice shall be included in all c
       var socket = io.connect();
       function setWs() {
         totalCalls();
+        totalWaitingCalls();
         socket.on('newdata', function (msg) {
           var element = document.getElementById(msg.districtId);
           element.innerText = msg.value;
@@ -34,8 +35,19 @@ The above copyright notice and this permission notice shall be included in all c
         })
         setTimeout(totalCalls,1000);
       }
+
+      function totalWaitingCalls(){
+        socket.on('totalWaitingCalls', function (msg) {
+          var element = document.getElementById(msg.districtId);
+          element.innerText = msg.value + " calls" ;
+        })
+        setTimeout(totalWaitingCalls,1000);
+      }
+
      
       function flushAll(){
+        var Flush = "delet data from redis";
+        socket.emit("delete",Flush);
         alert("data has been deleted..");
       }
       

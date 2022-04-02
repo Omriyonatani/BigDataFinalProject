@@ -135,7 +135,7 @@
 
 
         function reportEndCall(row,phNum) {
-            var totalCalls = parseInt(document.getElementById("total").value) || 0;
+            var totalCalls = parseInt(document.getElementById("total").value);
             if (parseInt(totalCalls) > 0) {
                 document.getElementById("total").value = (--totalCalls) + "";
             }
@@ -150,7 +150,7 @@
             message.topic = row.cells[5].getElementsByTagName('select')[0].value;
             message.Product = row.cells[6].getElementsByTagName('select')[0].value;
             message.totalTime = (parseInt(Date.now()) - parseInt(message.id)) / 1000; // seconds
-            message.totalCalls= parseInt(document.getElementById("total").value) || 0;
+            message.totalCalls= parseInt(document.getElementById("total").value);
 
             socket.emit("callDetails", message);
             deleteRow(row);
