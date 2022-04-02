@@ -16,14 +16,20 @@ function updateWaitingCalls(){
       var data = JSON.parse(res);
       
       var totalTime=0 ;
-      var totalCalls = 0;
+      var totalCalls = Infinity;
       // console.log(data);
-
+      //going over the data and calculating the average waiting time in the last 10 min'
       for (let index = 0; index < data.length; index++) {
-        totalTime += parseFloat( data[index].totalTime); 
-        totalCalls = data[index].totalCalls;  
+        if ((parseInt(Date.now()) - parseInt(data[index].id)) < 600000 ) {
+          totalTime += parseFloat( data[index].totalTime); 
+        }
+        //searching for the total waitning calls and update if there is some lower totalCalls value
+        for (let i = 0; i < data.length; i++) {
+          if(totalCalls > data[i].totalCalls){
+            totalCalls=data[i].totalCalls;
+          }
+        }
       }
-      // console.log(totalTime);
       if (totalTime != 0 ) {
         var averageTime = (totalTime / data.length).toFixed(2);
       } else {
@@ -46,6 +52,7 @@ function updateWaitingCalls(){
       io.emit('waitingCalls', waitingCallsLast10min);
       io.emit('totalWaitingCalls', totalWaitingCalls)
       });
+      // 5 min update 
     setTimeout(updateWaitingCalls,1000);
 }
 
@@ -56,8 +63,8 @@ app.get('/', (req, res) => {
     cards: [
       {districtId:"average waiting time", title: "זמן המתנה ממוצע", value:"0", unit: "", fotterIcon: "timer", fotterText: "", icon: "access_alarm" },
       {districtId:"number of waiting calls", title: "מספר שיחות ממתינות", value: "", unit: "שיחות", fotterIcon: "", fotterText: "...", icon: "call" },
-      {districtId:"central", title: "מרכז", value: 3500, unit: "חבילות", fotterIcon: "", fotterText: "נפח ממוצע", icon: "info_outline" },
-      {districtId:"Erase", title: "Erase todays data", value: 0, unit: "Flush all", fotterIcon: "", fotterText: "מחק הכל ", icon: "add_shopping_cart" }
+      // {districtId:"central", title: "מרכז", value: 3500, unit: "חבילות", fotterIcon: "", fotterText: "נפח ממוצע", icon: "info_outline" },
+      // {districtId:"Erase", title: "Erase todays data", value: 0, unit: "Flush all", fotterIcon: "", fotterText: "מחק הכל ", icon: "add_shopping_cart" }
     ]
   }
   res.render("pages/dashboard", data)

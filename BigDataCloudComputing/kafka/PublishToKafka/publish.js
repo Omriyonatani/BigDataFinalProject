@@ -2,6 +2,7 @@
 
 const uuid = require("uuid");
 const Kafka = require("node-rdkafka");
+const { async } = require("jshint/src/prod-params");
 
 
 
@@ -34,5 +35,6 @@ producer.connect();
 module.exports.publish= function(msg)
 {   
   m=JSON.stringify(msg);
+
   producer.produce(topic, -1, genMessage(m), uuid.v4());     
 }

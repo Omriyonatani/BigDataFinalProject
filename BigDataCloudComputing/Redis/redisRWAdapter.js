@@ -4,6 +4,7 @@
 const kafka = require("../kafka/ConsumeFromKafka/consume")
 const redis = require('ioredis')
 
+kafka.consume();
 // Adapter between Kafka and Redis 
 
 const conn = {
@@ -22,15 +23,27 @@ async function FromRedisToDashboard(){
    let redisNowData = await redisDb.scan(0);
    let data=[];
    let values = redisNowData[1];
+  
+//    console.log("start");
    for (let index = 0; index < values.length; index++){
-        if(values.length > data.length){
-                const element = values[index];
+   
+        // console.log("data length =" +data.length );
+        // console.log( `index = ${index}`);
+        // console.log("values length =" + values.length);
+        if(values.length >= data.length){
+            
+                let element = values[index];
                 // console.log(element);
                 await redisDb.hgetall(element).then(dataForPublish => {
-                    data.push(dataForPublish);
+                    
+                     data.push(dataForPublish);
+                    
             });
          }
+         
     }
+    // console.log("end")
+    // console.log(`data ----\n ${JSON.stringify(data)}`);
     // return the values
     return data;
 }
@@ -47,12 +60,13 @@ async function FromRedisToDashboard(){
 
 
 // Function that write data from kafka to redis
-function FromKafkaToRedis(result){
+async function FromKafkaToRedis(result){
     // parse the result from "ToString" to JSON. 
+    // console.log(`inserting ${result} to redis\n`);
     result = JSON.parse(result);
     var key = `0${result["phoneNumber"]}`;    
     // console.log(key);
-    redisDb.hmset(key,result);
+    await redisDb.hmset(key,result);
 }
 
 module.exports.FromKafkaToRedis= FromKafkaToRedis;

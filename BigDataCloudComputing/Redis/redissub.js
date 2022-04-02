@@ -1,6 +1,5 @@
 const Redis = require('ioredis');
 const RedisAdapter = require('../Redis/redisRWAdapter')
-
 // From Dashboard to Redis
 // init the data of the day by click on dashboards button.
 // "clear the date's data"
@@ -16,20 +15,25 @@ const redis = new Redis(conn);
 const channel = 'messages';
 
 async function getData(){
+    redis.subscribe(channel, (error, count) => {
+        if (error) {
+            throw new Error(error);
+        }
+    });
     return new Promise (res=>{
         redis.on('message', (channel, message) => {
-        // console.log(`Received the following message from ${channel}: ${message}`);
+        console.log(`${message}`);
         res(message);
+        // redis.unsubscribe();
+        // redis.removeListener('message',()=>{
+        //     console.log("unsubscribe is done");
+        // });
     });
 });
  
 }
    
-redis.subscribe(channel, (error, count) => {
-    if (error) {
-        throw new Error(error);
-    }
-});
+
 
 
 module.exports.getData=getData;
