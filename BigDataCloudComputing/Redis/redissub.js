@@ -30,9 +30,11 @@ redis.subscribe(channel, (error, count) => {
     }
 });
 
+
 module.exports.getData=getData;
 module.exports.flushAll = ()=>{
-    redis.flushall();
+    RedisAdapter.flushAll();
+    
 }
 
 

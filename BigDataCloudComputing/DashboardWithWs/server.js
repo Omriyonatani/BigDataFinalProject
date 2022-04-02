@@ -12,6 +12,7 @@ function updateWaitingCalls(){
     var dataFromRedis= redisSub.getData();
     dataFromRedis.then( res =>{
       var data = JSON.parse(res);
+      
       var totalTime=0 ;
       var totalCalls = data[data.length-1].totalCalls;
       console.log(data);
@@ -52,6 +53,7 @@ app.get('/', (req, res) => {
     cards: [
       {districtId:"average waiting time", title: "זמן המתנה ממוצע", value:"0", unit: "", fotterIcon: "timer", fotterText: "", icon: "access_alarm" },
       {districtId:"number of waiting calls", title: "מספר שיחות ממתינות", value: "", unit: "שיחות", fotterIcon: "", fotterText: "...", icon: "call" },
+
       {districtId:"central", title: "מרכז", value: 3500, unit: "חבילות", fotterIcon: "", fotterText: "נפח ממוצע", icon: "info_outline" },
       {districtId:"Erase", title: "Erase todays data", value: 0, unit: "Flush all", fotterIcon: "", fotterText: "מחק הכל ", icon: "add_shopping_cart" }
     ]
@@ -76,8 +78,9 @@ io.on('connection', (socket) => {
   //   console.log(msg);
   //   io.emit('newdata', msg);
   // });
-  
- 
+  socket.on("delete", (Flush)=>{
+    redisSub.flushAll();
+  })
 });
 //-----------
 
