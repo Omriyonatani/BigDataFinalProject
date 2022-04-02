@@ -57,7 +57,10 @@ function FromKafkaToRedis(result){
 
 module.exports.FromKafkaToRedis= FromKafkaToRedis;
 module.exports.FromRedisToDashboard= FromRedisToDashboard;
-
+module.exports.flushAll = ()=>{
+    redisDb.flushdb("async");
+    
+}
 /*
 // app.get('/readx', (req, res) => {  
 redisDb.get('x', (err, reply) => {
