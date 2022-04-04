@@ -20,6 +20,12 @@ The above copyright notice and this permission notice shall be included in all c
     <script>
       var socket = io.connect();
       function setWs() {
+        
+        // const dateTimeFormat = new Intl.DateTimeFormat('en', { year: 'numeric', month: 'short', day: '2-digit', hour: 'numeric', minute: 'numeric' })
+        // var element = document.getElementById("time");
+        // const [{ value: month }, , { value: day }, , { value: year }, , { value: hour }, , { value: minute }] = dateTimeFormat.formatToParts(date)
+        // element.innerText = ` ${day}-${month}-${year} \n${hour}:${minute}`;
+        setClock();
         totalCalls();
         totalWaitingCalls();
         socket.on('newdata', function (msg) {
@@ -28,6 +34,15 @@ The above copyright notice and this permission notice shall be included in all c
         })
         
       }
+      function setClock(){
+        const date = Date.now();
+        const dateTimeFormat = new Intl.DateTimeFormat('en', { year: 'numeric', month: 'short', day: '2-digit', hour: 'numeric', minute: 'numeric' })
+        var element = document.getElementById("time");
+        const [{ value: month }, , { value: day }, , { value: year }, , { value: hour }, , { value: minute }] = dateTimeFormat.formatToParts(date)
+        element.innerText = `${hour}:${minute}\n ${day}-${month}-${year} `;
+        setTimeout(setClock,1000);
+      }
+     
       function totalCalls(){
         socket.on('waitingCalls', function (msg) {
           var element = document.getElementById(msg.districtId);
@@ -39,7 +54,12 @@ The above copyright notice and this permission notice shall be included in all c
       function totalWaitingCalls(){
         socket.on('totalWaitingCalls', function (msg) {
           var element = document.getElementById(msg.districtId);
-          element.innerText = msg.value + " calls" ;
+          if (msg.value != null) {
+           element.innerText = msg.value + " calls" ;
+         }else{
+          element.innerText = 0 + " calls" ;
+         }
+          
         })
         setTimeout(totalWaitingCalls,1000);
       }

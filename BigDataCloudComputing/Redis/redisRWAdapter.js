@@ -17,7 +17,7 @@ const conn = {
 const redisDb = new redis(conn);
 
 
-// Function that read data from redis to dashboard
+// Function that read data from redis  and publish it to channel "messages"
 async function FromRedisToDashboard(){
     // pull keys from redis with "Scan" command.
    let redisNowData = await redisDb.scan(0);
@@ -31,11 +31,9 @@ async function FromRedisToDashboard(){
         // console.log( `index = ${index}`);
         // console.log("values length =" + values.length);
         if(values.length >= data.length){
-            
                 let element = values[index];
                 // console.log(element);
-                await redisDb.hgetall(element).then(dataForPublish => {
-                    
+                await redisDb.hgetall(element).then(dataForPublish => { 
                      data.push(dataForPublish);
                     
             });
@@ -48,13 +46,6 @@ async function FromRedisToDashboard(){
     return data;
 }
 
-// async function hasChanged(oldData){
-//     let newData = await redisDb.scan(0);
-//     if(newData[1].length != oldData.length){
-//         return true;
-//     }
-//     return false;
-// }
 
 
 

@@ -1,4 +1,5 @@
 const Redis = require('ioredis');
+const { async } = require('jshint/src/prod-params');
 const RedisAdapter = require('../Redis/redisRWAdapter')
 // From Dashboard to Redis
 // init the data of the day by click on dashboards button.
@@ -13,22 +14,21 @@ const conn = {
 
 const redis = new Redis(conn);
 const channel = 'messages';
+redis.subscribe(channel, (error, count) => {
+    if (error) {
+        throw new Error(error);
+    }
+});
+// redis.setMaxListeners(50000);
 
 async function getData(){
-    redis.subscribe(channel, (error, count) => {
-        if (error) {
-            throw new Error(error);
-        }
-    });
+   redis.removeAllListeners();
     return new Promise (res=>{
-        redis.on('message', (channel, message) => {
-        console.log(`${message}`);
-        res(message);
-        // redis.unsubscribe();
-        // redis.removeListener('message',()=>{
-        //     console.log("unsubscribe is done");
-        // });
-    });
+        redis.on('message',async (channel, message) => {
+            // console.log(`${message}`);
+            res(message);
+        });
+       
 });
  
 }
