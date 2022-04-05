@@ -43,21 +43,15 @@ The above copyright notice and this permission notice shall be included in all c
           var element = document.getElementById(msg.districtId);
           element.innerText = msg.value + " sec" ;
         })
-        setTimeout(totalCalls,1000);
+        setTimeout(totalCalls,100);
       }
 
       function totalWaitingCalls(){
         socket.on('totalWaitingCalls', function (msg) {
           var element = document.getElementById(msg.districtId);
-          if (msg.value != null) {
-           
            element.innerText = msg.value + " calls" ;
-         }else{
-          element.innerText = 0 + " calls" ;
-         }
-          
         })
-        setTimeout(totalWaitingCalls,1000);
+        setTimeout(totalWaitingCalls,100);
       }
 
      

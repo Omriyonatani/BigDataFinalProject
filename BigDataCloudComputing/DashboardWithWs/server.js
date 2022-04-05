@@ -50,6 +50,9 @@ function updateWaitingCalls(){
         districtId:"average waiting time",
         value: averageTime
       }
+      if (totalCalls == Infinity) {
+           totalCalls=0;
+      }     
 
       var totalWaitingCalls = {
         districtId:"number of waiting calls",
