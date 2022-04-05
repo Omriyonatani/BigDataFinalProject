@@ -58,14 +58,15 @@ function updateWaitingCalls(){
 
       // console.log(data.length);
       // console.log(waitingCalls.value);
-      
+     
       //updating new data by using socket.io
       io.emit('waitingCalls', waitingCallsLast10min);
-      io.emit('totalWaitingCalls', totalWaitingCalls)
+      io.emit('totalWaitingCalls', totalWaitingCalls);
       });
       // 5 min update 
     setTimeout(updateWaitingCalls,1000);
 }
+
 
 
 app.get('/', (req, res) => {
