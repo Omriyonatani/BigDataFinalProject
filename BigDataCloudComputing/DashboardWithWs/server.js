@@ -58,10 +58,6 @@ function updateWaitingCalls(){
         districtId:"number of waiting calls",
         value: totalCalls
       }
-
-      // console.log(data.length);
-      // console.log(waitingCalls.value);
-     
       //updating new data by using socket.io
       io.emit('waitingCalls', waitingCallsLast10min);
       io.emit('totalWaitingCalls', totalWaitingCalls);
@@ -79,16 +75,10 @@ app.get('/', (req, res) => {
       {districtId:"average waiting time", title: "זמן המתנה ממוצע", value:"0", unit: "", fotterIcon: "timer", fotterText: "", icon: "access_alarm" },
       {districtId:"number of waiting calls", title: "מספר שיחות ממתינות", value: "", unit: "שיחות", fotterIcon: "", fotterText: "...", icon: "call" },
       {districtId:"time", title: "שעה ", value: "", unit: "", fotterIcon: "", fotterText: "שעה ותאריך", icon: "access_time_rounded" },
-      // {districtId:"Erase", title: "Erase todays data", value: 0, unit: "Flush all", fotterIcon: "", fotterText: "מחק הכל ", icon: "add_shopping_cart" }
     ]
   }
   res.render("pages/dashboard", data)
 })
-
-// app.get('/setData/:districtId/:value', function (req, res) {
-//   io.emit('newdata',{districtId:req.params.districtId,value:req.params.value})
-//   res.send(req.params.value)
-// })
 
 
 const server = express()
