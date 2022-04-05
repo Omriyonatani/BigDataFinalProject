@@ -11,9 +11,7 @@ Coded by Creative Tim
 The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software. -->
 <!DOCTYPE html>
 <html>
-
 <head>
- 
   <%- include("../partials/headers") %>
     <!--ariel ws-->
     <script src="/socket.io/socket.io.js"></script>
@@ -27,7 +25,6 @@ The above copyright notice and this permission notice shall be included in all c
           var element = document.getElementById(msg.districtId);
           element.innerText = msg.value;
         })
-        
       }
       function setClock(){
         const date = Date.now();
