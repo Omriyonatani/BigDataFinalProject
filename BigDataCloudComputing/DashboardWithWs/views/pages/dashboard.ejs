@@ -21,10 +21,6 @@ The above copyright notice and this permission notice shall be included in all c
         setClock();
         totalCalls();
         totalWaitingCalls();
-        socket.on('newdata', function (msg) {
-          var element = document.getElementById(msg.cardId);
-          element.innerText = msg.value;
-        })
       }
       function setClock(){
         const date = Date.now();
@@ -62,7 +58,7 @@ The above copyright notice and this permission notice shall be included in all c
     <!--ariel ws -->
 </head>
 
-<body class="dark-edition" onload="setWs()" >
+<body class="" onload="setWs()" >
   <div class="wrapper " >
     <%- include("../partials/sidebar") %>
       <div class="main-panel" >
