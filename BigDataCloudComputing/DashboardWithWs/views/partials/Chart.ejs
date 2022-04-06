@@ -1,3 +1,8 @@
+<div class="card">
+  <div class="card-header card-header-warning">
+    <h4 class="card-title">waiting Calls </h4>
+    <!-- <p class="card-category">New employees on 15th September, 2016</p> -->
+  </div>
 <div>
     <canvas id="myChart" width="900" height="400"></canvas>
   </div>
@@ -8,23 +13,23 @@
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script>
 
-  
+    //creating the time array with 5 min' aggregation
     function getTimeRanges(interval, language = window.navigator.language) {
-    const ranges = [];
-    const date = new Date();
-    const format = {
-        hour: 'numeric',
-        minute: 'numeric',
-    };
+      const ranges = [];
+      const date = new Date();
+      const format = {
+          hour: 'numeric',
+          minute: 'numeric',
+      };
 
-    for (let minutes = 0; minutes < 24 * 60; minutes = minutes + interval) {
-        date.setHours(0);
-        date.setMinutes(minutes);
-        ranges.push(date.toLocaleTimeString(language, format));
+      for (let minutes = 0; minutes < 24 * 60; minutes = minutes + interval) {
+          date.setHours(0);
+          date.setMinutes(minutes);
+          ranges.push(date.toLocaleTimeString(language, format));
+      }
+
+        return ranges;
     }
-
-    return ranges;
-}
 
 
   
@@ -51,11 +56,16 @@
       config
     );
   </script>
-
-<div>
-  <canvas id="myChart2" width="900" height="500"></canvas>
 </div>
-<script>
+<div class="card">
+  <div class="card-header card-header-warning">
+    <h4 class="card-title">Waiting Call time</h4>
+    <!-- <p class="card-category">New employees on 15th September, 2016</p> -->
+  </div>
+  <div>
+    <canvas id="myChart2" width="900" height="500"></canvas>
+  </div>
+  <script>
 
   const labels2 = getTimeRanges(5,'ru') 
 
@@ -92,27 +102,22 @@
     data: data2,
     options: {}
   };
-</script>
-<script>
   const myChart2 = new Chart(
     document.getElementById('myChart2'),
     config2
   );
 </script>
-
-
-
-
-
-<div>
-  <canvas id="myChart3" width="350" height="350"></canvas>
 </div>
-<script>
 
-  
 
-  
-
+<div class="card " style="width: 20rem;">
+  <div class="card-header card-header-tabs card-header-primary" >
+    <h4 class="card-title">Call Topic</h4>
+  </div>
+  <div>
+  <canvas id="myChart3" width="350" height="350"></canvas>
+  </div>
+  <script>
   const data3 = {
   labels: [
     'Join',
@@ -128,8 +133,9 @@
       'rgb(54, 162, 235)',
       'rgb(255, 205, 86)'
     ],
-    hoverOffset: 8
-  }]
+    hoverOffset: 8,
+  }],
+
 };
 
   const config3 = {
@@ -144,3 +150,4 @@
     config3
   );
 </script>
+</div>
