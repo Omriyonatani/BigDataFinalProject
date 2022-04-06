@@ -47,7 +47,7 @@ function updateWaitingCalls(){
       }
       
       var waitingCallsLast10min = {
-        districtId:"average waiting time",
+        cardId:"average waiting time",
         value: averageTime
       }
       if (totalCalls == Infinity) {
@@ -55,7 +55,7 @@ function updateWaitingCalls(){
       }     
 
       var totalWaitingCalls = {
-        districtId:"number of waiting calls",
+        cardId:"number of waiting calls",
         value: totalCalls
       }
       //updating new data by using socket.io
@@ -72,9 +72,9 @@ app.get('/', (req, res) => {
   updateWaitingCalls();
   var data = {
     cards: [
-      {districtId:"average waiting time", title: "זמן המתנה ממוצע", value:"0", unit: "", fotterIcon: "timer", fotterText: "", icon: "access_alarm" },
-      {districtId:"number of waiting calls", title: "מספר שיחות ממתינות", value: "", unit: "שיחות", fotterIcon: "", fotterText: "...", icon: "call" },
-      {districtId:"time", title: "שעה ", value: "", unit: "", fotterIcon: "", fotterText: "שעה ותאריך", icon: "access_time_rounded" },
+      {cardId:"average waiting time", title: "זמן המתנה ממוצע", value:"0", unit: "", fotterIcon: "timer", fotterText: "", icon: "access_alarm" },
+      {cardId:"number of waiting calls", title: "מספר שיחות ממתינות", value: "", unit: "שיחות", fotterIcon: "", fotterText: "...", icon: "call" },
+      {cardId:"time", title: "שעה ", value: "", unit: "", fotterIcon: "", fotterText: "שעה ותאריך", icon: "access_time_rounded" },
     ]
   }
   res.render("pages/dashboard", data)
