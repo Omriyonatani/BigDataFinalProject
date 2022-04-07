@@ -3,9 +3,11 @@
     <h4 class="card-title">waiting Calls </h4>
     <!-- <p class="card-category">New employees on 15th September, 2016</p> -->
   </div>
-<div>
-    <canvas id="myChart" width="900" height="400"></canvas>
-  </div>
+<div style="width: auto; overflow-x: scroll " >
+<div style="width:7000px; height:auto">
+  <canvas id="myChart" width="2000" height="100"></canvas>
+</div>
+</div>
   <script src="/socket.io/socket.io.js"></script>
     <script>
       var socket = io.connect();
@@ -48,20 +50,32 @@
     const config = {
       type: 'line',
       data: data,
-      options: {}
+      options: {
+        plugins: {
+            legend: {
+                display: false,
+        }
+      },
+        scales: {
+          y:{
+            min: 0,
+            max:200
+          }
+        }
+       
+      }
     };
 
     const myChart = new Chart(
-      document.getElementById('myChart'),
-      config
-    );
+      document.getElementById('myChart'),config);
   </script>
 </div>
+
 <div class="card">
-  <!-- <div class="card-header card-header-info"> -->
+  
     <div class="card-header card-header-tabs card-header-primary" >
     <h4 class="card-title">Waiting Call time</h4>
-    <!-- <p class="card-category">New employees on 15th September, 2016</p> -->
+    
   </div>
   <div>
     <canvas id="myChart2" width="900" height="500"></canvas>
