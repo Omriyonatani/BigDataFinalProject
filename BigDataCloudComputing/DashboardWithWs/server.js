@@ -22,10 +22,12 @@ function updateWaitingCalls(){
       var data_length = 0;
       var totalTime=0 ;
       var totalCalls = Infinity;
+      var topicsCount= countCallsTopics(data)
+      var waitingTime =0;
       // console.log(data);
       //going over the data and calculating the average waiting time in the last 10 min'
       for (let index = 0; index < data.length; index++) {
-        // console.log((parseInt(Date.now()) - parseInt(data[index].id)));
+        waitingTime += parseFloat( data[index].totalTime);
         if ((parseInt(Date.now()) - parseInt(data[index].id)) < 600000 ) {
           totalTime += parseFloat( data[index].totalTime); 
           data_length+=1;
@@ -33,12 +35,15 @@ function updateWaitingCalls(){
           totalTime += 0;
           data_length = 1;
         }
+
         //searching for the total waitning calls and update if there is some lower totalCalls value
         for (let i = 0; i < data.length; i++) {
           if(totalCalls > data[i].totalCalls){
             totalCalls=data[i].totalCalls;
           }
         }
+
+        
       }
       if (totalTime != 0 ) {
         var averageTime = (totalTime / data_length).toFixed(2);
@@ -58,14 +63,48 @@ function updateWaitingCalls(){
         cardId:"number of waiting calls",
         value: totalCalls
       }
+      var CallsTopicsCount = {
+        cardId:"calls topics count",
+        value: topicsCount
+      }
+
+      var waitingTimeSum = {
+        cardId:"waiting time sum",
+        value: waitingTime
+      }
+
       //updating new data by using socket.io
       io.emit('average waiting time', waitingCallsLast10min);
       io.emit('totalWaitingCalls', totalWaitingCalls);
+      io.emit('calls topics',CallsTopicsCount);
+      io.emit('waiting time',waitingTimeSum)
       });
       // 5 min update 
     setTimeout(updateWaitingCalls,1000);
 }
 
+function countCallsTopics(data){
+  var join=0,disconnect=0,service=0,report=0;
+
+  for (let index = 0; index < data.length; index++) {
+    
+    switch (data[index].topic) {
+      case 'disconnect':
+        disconnect+=1;
+        break;
+      case 'service':
+        service+=1;
+        break;
+      case 'report':
+        report+=1;
+        break;
+      case 'join':
+        join+=1;
+        break;
+    }
+  }
+  return [join,disconnect,service,report]
+}
 
 
 app.get('/', (req, res) => {

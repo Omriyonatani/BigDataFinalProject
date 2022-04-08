@@ -42,7 +42,10 @@ module.exports.consume = ()=>{
   consumer.on("data", function(m) {
     // insert into MongoDB and Redis
     // console.log(`consumer on data = ${m.value}\n`)
-    redis.FromKafkaToRedis(m.value);
+   
+      redis.FromKafkaToRedis(m.value);
+
+    
   });
 }
 consumer.on('event.error', function(err) {

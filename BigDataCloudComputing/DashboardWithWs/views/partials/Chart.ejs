@@ -7,7 +7,6 @@
     <div style="width:7000px; height:auto">
       <canvas id="myChart" width="2000" height="100"></canvas>
     </div>
-
   </div>
   <script src="/socket.io/socket.io.js"></script>
   <script>
@@ -39,16 +38,16 @@
         socket.on("totalWaitingCalls", (msg)=> {
           res(msg.value);
         });
-      });
-      // setTimeout(insertWatingCalls , 1000)
-      
+      });      
     }
+   
+    
+     
+   function startFromNow(){
+    let i=0;
     let newPoint=[];
     var today = new Date();
     const labels = getTimeRanges(5, 'ru')
-     
-    // alert("hour = " + h +"\nmin = " + min)
-    let i=0;
     var TimeInMin = (parseInt(today.getHours()) * 60) + parseInt(today.getMinutes());
     while(i< labels.length){
 
@@ -61,14 +60,18 @@
       }
       i+=1;
     }
-   
+    return newPoint;
+  }
+
+  let newPoint1 = startFromNow();
+  const labels1 = getTimeRanges(5, 'ru')
+
     const data = {
-      labels: labels,
+      labels: labels1,
       datasets: [{
-        label: 'Waiting Calls',
         backgroundColor: 'rgb(255, 99, 132)',
         borderColor: 'rgb(255, 99, 132)',
-        data: newPoint,
+        data: newPoint1,
       }, ]
     };
 
@@ -94,15 +97,15 @@
     const myChart = new Chart(
       document.getElementById('myChart'), config);
 
-    function addData(chart) {
+    function addData(chart= myChart) {
       chart.data.datasets.forEach((dataset) => {
         insertWatingCalls().then(data=>{ 
         dataset.data.push(data);
         })
-        myChart.update();
+     
       });
       myChart.update();
-      setTimeout(addData,1000)
+      setTimeout(addData,30000)
     }
     addData(myChart);
   </script>
@@ -112,37 +115,37 @@
   <div class="card-header card-header-warning card-header-primary">
     <h4 class="card-title">Waiting Call time</h4>
   </div>
-  <div>
-    <canvas id="myChart2" width="900" height="500"></canvas>
+  <div style="width: auto; overflow-x: scroll ">
+    <div style="width:7000px; height:auto">
+      <canvas id="myChart2" width="2000" height="100"></canvas>
+    </div>
   </div>
   <script>
     const labels2 = getTimeRanges(5, 'ru')
-
+    
+    async function insertWatingTimeSum(){
+      return new Promise (res=>{
+        socket.on("waiting time", (msg)=> {
+          res(msg.value);
+        });
+      });      
+    }
+    let newPoint2 = startFromNow();
     const data2 = {
-      labels: [12, 13, 14, 15, 16, 17, 18],
+      labels: labels2,
       datasets: [{
-        label: 'Waiting Call time',
         backgroundColor: [
-
-          'rgba(255, 99, 132, 1)',
-          'rgba(255, 159, 64, 1)',
-          'rgba(255, 205, 86, 1)',
-          'rgba(75, 192, 192, 1)',
-          'rgba(54, 162, 235, 1)',
-          'rgba(153, 102, 255, 1)',
-          'rgba(201, 203, 207, 1)'
+        'rgba(255, 99, 132, 1)',
+        'rgba(255, 159, 64, 1)',
+        'rgba(255, 205, 86, 1)',
+        'rgba(75, 192, 192, 1)',
+        'rgba(54, 162, 235, 1)',
+        'rgba(153, 102, 255, 1)',
+        'rgba(201, 203, 207, 1)'
         ],
         borderColor: 'rgb(33, 99, 132)',
-        data: [100, 10, 5, 2, 20, 30, 45],
-        backgroundColor: [
-          'rgba(255, 99, 132, 1)',
-          'rgba(255, 159, 64, 1)',
-          'rgba(255, 205, 86, 1)',
-          'rgba(75, 192, 192, 1)',
-          'rgba(54, 162, 235, 1)',
-          'rgba(153, 102, 255, 1)',
-          'rgba(201, 203, 207, 1)'
-        ],
+        data: newPoint2,
+        
       }]
     };
 
@@ -157,10 +160,26 @@
         },
       }
     };
-    const myChart2 = new Chart(
-      document.getElementById('myChart2'),
-      config2
-    );
+    const myChart2 = new Chart(document.getElementById('myChart2'),config2);
+    
+    function updateWaitingTimeSum(chart= myChart2 ) {
+      chart.data.datasets.forEach((dataset) => {
+        insertWatingTimeSum().then(data=>{ 
+        dataset.data.push(data);
+        
+        dataset.backgroundColor.push(`rgba(
+                                        ${Math.floor(Math.random() * 255)},
+                                        ${Math.floor(Math.random() * 255)},
+                                        ${Math.floor(Math.random() * 255)}, 1)`)
+        })
+     
+      });
+      myChart2.update();
+      setTimeout( updateWaitingTimeSum,30000)
+    }
+   
+    updateWaitingTimeSum(myChart2);
+
 
   </script>
 </div>
@@ -174,7 +193,16 @@
     <canvas id="myChart3" width="350" height="350"></canvas>
   </div>
   <script>
-    const data3 = {
+    let callsTopics= [1,1,1,1]
+
+    async function insertCallsTopic(){
+      return new Promise (res=>{
+        socket.on("calls topics", (msg)=> {
+          res(msg.value);
+        });
+      });      
+    }
+      const data3 = {
       labels: [
         'Join',
         'disconnect',
@@ -183,11 +211,12 @@
       ],
       datasets: [{
         label: 'Call Topic',
-        data: [300, 50, 100],
+        data: callsTopics,
         backgroundColor: [
           'rgb(255, 99, 132)',
           'rgb(54, 162, 235)',
-          'rgb(255, 205, 86)'
+          'rgb(255, 205, 86)',
+          'rgb(0, 102, 102)'
         ],
         hoverOffset: 8,
       }],
@@ -200,12 +229,19 @@
 
     };
 
-  </script>
-  <script>
-    const myChart3 = new Chart(
-      document.getElementById('myChart3'),
-      config3
-    );
-
+ 
+    const myChart3 = new Chart(document.getElementById('myChart3'),config3);
+    
+    function updateTopics(chart= myChart3) {
+      chart.data.datasets.forEach((dataset) => {
+        insertCallsTopic().then(data=>{ 
+        dataset.data = data;
+        })
+     
+      });
+      myChart3.update();
+      setTimeout(updateTopics,30000)
+    }
+    updateTopics();
   </script>
 </div>
