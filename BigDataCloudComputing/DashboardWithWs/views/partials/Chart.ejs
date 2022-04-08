@@ -7,6 +7,7 @@
     <div style="width:7000px; height:auto">
       <canvas id="myChart" width="2000" height="100"></canvas>
     </div>
+
   </div>
   <script src="/socket.io/socket.io.js"></script>
   <script>
@@ -33,17 +34,41 @@
       return ranges;
     }
 
-
-
+    async function insertWatingCalls(){
+      return new Promise (res=>{
+        socket.on("totalWaitingCalls", (msg)=> {
+          res(msg.value);
+        });
+      });
+      // setTimeout(insertWatingCalls , 1000)
+      
+    }
+    let newPoint=[];
+    var today = new Date();
     const labels = getTimeRanges(5, 'ru')
+     
+    // alert("hour = " + h +"\nmin = " + min)
+    let i=0;
+    var TimeInMin = (parseInt(today.getHours()) * 60) + parseInt(today.getMinutes());
+    while(i< labels.length){
 
+      var labelsInMin = (parseInt(labels[i].split(":")[0]) * 60) + parseInt(labels[i].split(":")[1]);
+      if (TimeInMin > labelsInMin) {
+        newPoint.push(0);
+      }
+      else{
+        break;
+      }
+      i+=1;
+    }
+   
     const data = {
       labels: labels,
       datasets: [{
         label: 'Waiting Calls',
         backgroundColor: 'rgb(255, 99, 132)',
         borderColor: 'rgb(255, 99, 132)',
-        data: [0, 10, 5, 2, 20, 30, 45],
+        data: newPoint,
       }, ]
     };
 
@@ -69,6 +94,17 @@
     const myChart = new Chart(
       document.getElementById('myChart'), config);
 
+    function addData(chart) {
+      chart.data.datasets.forEach((dataset) => {
+        insertWatingCalls().then(data=>{ 
+        dataset.data.push(data);
+        })
+        myChart.update();
+      });
+      myChart.update();
+      setTimeout(addData,1000)
+    }
+    addData(myChart);
   </script>
 </div>
 
@@ -113,7 +149,13 @@
     const config2 = {
       type: 'bar',
       data: data2,
-      options: {}
+      options: {
+        plugins: {
+          legend: {
+            display: false,
+          }
+        },
+      }
     };
     const myChart2 = new Chart(
       document.getElementById('myChart2'),

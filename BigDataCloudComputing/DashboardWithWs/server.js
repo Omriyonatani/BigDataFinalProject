@@ -59,7 +59,7 @@ function updateWaitingCalls(){
         value: totalCalls
       }
       //updating new data by using socket.io
-      io.emit('waitingCalls', waitingCallsLast10min);
+      io.emit('average waiting time', waitingCallsLast10min);
       io.emit('totalWaitingCalls', totalWaitingCalls);
       });
       // 5 min update 

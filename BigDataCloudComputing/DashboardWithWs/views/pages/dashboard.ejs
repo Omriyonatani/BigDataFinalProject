@@ -11,80 +11,99 @@ Coded by Creative Tim
 The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software. -->
 <!DOCTYPE html>
 <html>
-<head>
-  <%- include("../partials/headers") %>
+
+  <head>
+    <%- include("../partials/headers") %>
     <!--ariel ws-->
     <script src="/socket.io/socket.io.js"></script>
     <script>
       var socket = io.connect();
+
       function setWs() {
         setClock();
         totalCalls();
         totalWaitingCalls();
       }
-      function setClock(){
+
+      function setClock() {
         const date = Date.now();
-        const dateTimeFormat = new Intl.DateTimeFormat('en', { year: 'numeric', month: 'short', day: '2-digit', hour: 'numeric', minute: 'numeric' })
+        const dateTimeFormat = new Intl.DateTimeFormat('en', {
+          year: 'numeric',
+          month: 'short',
+          day: '2-digit',
+          hour: 'numeric',
+          minute: 'numeric'
+        })
         var element = document.getElementById("time");
-        const [{ value: month }, , { value: day }, , { value: year }, , { value: hour }, , { value: minute }] = dateTimeFormat.formatToParts(date)
+        const [{
+          value: month
+        }, , {
+          value: day
+        }, , {
+          value: year
+        }, , {
+          value: hour
+        }, , {
+          value: minute
+        }] = dateTimeFormat.formatToParts(date)
         element.innerText = `${hour}:${minute}\n ${day}-${month}-${year} `;
-        setTimeout(setClock,1000);
-      }
-     
-      function totalCalls(){
-        socket.on('waitingCalls', function (msg) {
-          var element = document.getElementById(msg.cardId);
-          element.innerText = msg.value + " sec" ;
-        })
-        setTimeout(totalCalls,100);
+        setTimeout(setClock, 1000);
       }
 
-      function totalWaitingCalls(){
-        socket.on('totalWaitingCalls', function (msg) {
+      function totalCalls() {
+        socket.on('average waiting time', function(msg) {
           var element = document.getElementById(msg.cardId);
-           element.innerText = msg.value + " calls" ;
+          element.innerText = msg.value + " sec";
         })
-        setTimeout(totalWaitingCalls,100);
+        setTimeout(totalCalls, 100);
       }
 
-     
-      function flushAll(){
+      function totalWaitingCalls() {
+        socket.on('totalWaitingCalls', function(msg) {
+          var element = document.getElementById(msg.cardId);
+          element.innerText = msg.value + " calls";
+        })
+        setTimeout(totalWaitingCalls, 10);
+      }
+
+
+      function flushAll() {
         var Flush = "delet data from redis";
-        socket.emit("delete",Flush);
+        socket.emit("delete", Flush);
         alert("data has been deleted..");
       }
-      
+
     </script>
     <!--ariel ws -->
-</head>
+  </head>
 
-<body class="" onload="setWs()" >
-  <div class="wrapper " >
-    <%- include("../partials/sidebar") %>
-      <div class="main-panel" >
+  <body class="" onload="setWs()">
+    <div class="wrapper ">
+      <%- include("../partials/sidebar") %>
+      <div class="main-panel">
         <%- include("../partials/navbar") %>
-          <div class="content">
-            <div class="container-fluid">
-              <div class="row" >
-                <!--start-->
-                <% cards.forEach(function(card) { %>
-                  <%- include("../partials/card",card) %>
-                    <% }); %>
-                      <!--end-->
-              </div>
-              <div class="row">
-                <%- include("../partials/Chart") %>
-              </div>
-              <div class="row">
-                <%- include("../partials/taskscard") %>
-                  <%- include("../partials/employeeslist") %>
-              </div>
+        <div class="content">
+          <div class="container-fluid">
+            <div class="row">
+              <!--start-->
+              <% cards.forEach(function(card) { %>
+              <%- include("../partials/card",card) %>
+              <% }); %>
+              <!--end-->
+            </div>
+            <div class="row">
+              <%- include("../partials/Chart") %>
+            </div>
+            <div class="row">
+              <%- include("../partials/taskscard") %>
+              <%- include("../partials/employeeslist") %>
             </div>
           </div>
-          <%- include("../partials/footer") %>
+        </div>
+        <%- include("../partials/footer") %>
       </div>
-  </div>
-  <%- include("../partials/dashcode") %>
-</body>
+    </div>
+    <%- include("../partials/dashcode") %>
+  </body>
 
 </html>
