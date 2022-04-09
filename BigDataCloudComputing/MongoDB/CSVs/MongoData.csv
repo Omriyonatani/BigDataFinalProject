@@ -1,0 +1,18 @@
+"phoneNumber","id","city","gender","age","prevCalls","topic","Product","totalTime","totalCalls"
+524563218,"1649510016086","Ramat gan","Male","18","13","service","Cables",2.064,79
+532211887,"1649510076160","Jerusalem","Male","18","18","join","Internet,Cables",2.849,74
+541425142,"1649510020410","Acre","Female","18","11","report","Internet,Cellular",57.364,76
+538626154,"1649514337654","Raanana","Male","18","24","join","Internet,Cellular",1.534,27
+545789999,"1649514334760","Raanana","Male","26","13","join","Cables,Cellular",1.775,28
+549632541,"1649514506462","Beer sheva","Female","18","12","join","Cellular",2.347,23
+524477115,"1649514485392","Ramat aviv","Male","18","16","disconnect","Internet,Cellular",2.535,24
+527455886,"1649514485215","Ariel","Male","18","14","join","Internet,Cables",2.078,25
+529635875,"1649514485055","Raanana","Female","18","19","service","Internet",1.594,26
+502255749,"1649514522538","Tel Aviv","Female","18","13","join","Internet,Cables",1.362,22
+539875412,"1649514522714","Kfar saba","Female","18","12","join","Internet",1.844,21
+525588552,"1649514710680","Omer","Male","18","11","join","Cables",4.479,36
+500022558,"1649514709819","Haifa","Male","18","11","report","Internet,Cellular",4.41,37
+502255749,"1649514704623","Tel Aviv","Female","18","13","join","Internet,Cables",8.874,38
+502277495,"1649514751988","Hertzelia","Male","18","20","report","Internet,Cables",3.197,35
+502211864,"1649514751524","Kfar bara","Male","18","13","service","Internet,Cables,Cellular",4.261,34
+539875412,"1649514751362","Kfar saba","Female","18","12","join","Internet",5.261,33

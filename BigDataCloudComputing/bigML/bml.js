@@ -5,10 +5,10 @@
 
 var bigml = require('bigml');
 // replace the username and the API KEY of your own
-var connection = new bigml.BigML('COLMANIOT','643703b53a9bf23e67252eef36d6a9890b367fa8')
+var connection = new bigml.BigML('RaafatMarzuq','2a5da361441e10eaee2258ad814e5f2d764181b0')
 
 var source = new bigml.Source(connection);
-source.create('./iris.csv', function(error, sourceInfo) {
+source.create('../MongoDB/CSVs/MongoData', function(error, sourceInfo) {
   if (!error && sourceInfo) {
     var dataset = new bigml.Dataset(connection);
     dataset.create(sourceInfo, function(error, datasetInfo) {

@@ -3,7 +3,7 @@
 const uuid = require("uuid");
 const Kafka = require("node-rdkafka");
 const redis = require(`../../Redis/redisRWAdapter`)
-
+const MongoDB = require("../../MongoDB/MongoDB")
 const kafkaConf = {
   "group.id": "kafka",
   "metadata.broker.list": "tricycle-01.srvs.cloudkafka.com:9094,tricycle-02.srvs.cloudkafka.com:9094,tricycle-03.srvs.cloudkafka.com:9094".split(","),
@@ -44,6 +44,7 @@ module.exports.consume = ()=>{
     // console.log(`consumer on data = ${m.value}\n`)
    
       redis.FromKafkaToRedis(m.value);
+      MongoDB.insertToMongoDB(m.value);
 
     
   });

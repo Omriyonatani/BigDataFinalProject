@@ -1,0 +1,64 @@
+const { MongoClient, ServerApiVersion } = require('mongodb')
+const uri = "mongodb+srv://raafat:eRcywty8yYOG6s9q@cluster0.phfg8.mongodb.net/CallCenter?retryWrites=true&w=majority";
+const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true, serverApi: ServerApiVersion.v1 });
+const { Parser } = require('json2csv');
+var fs = require('fs');
+
+
+
+async function insertToMongoDB(data){
+    
+    client.connect(err => {
+    const collection = client.db("CallCenter").collection("Customers");
+        // perform actions on the collection object
+        // client.close(); 
+    });
+    client.connect(async function(err, db) {
+        data= JSON.parse(data)
+        if (err) throw err;
+        var dbo = db.db("CallCenter");
+        dbo.collection("Customers").insertOne(data, function(err, res) {
+          if (err) throw err;
+        //  db.close();
+        }); 
+      });
+      
+
+}
+
+function exportToCsv(){
+    client.connect(function(err, db) {
+        if (err) throw err;
+        var dbo = db.db("CallCenter");
+        var query = { };
+        dbo.collection("Customers").find(query).toArray(function(err, result) {
+          if (err) throw err;
+          var fields = ['phoneNumber', 'id', 'city', 'gender', 'age', 'prevCalls','topic','Product','totalTime','totalCalls'];
+          const opts = { fields };
+          //   var fieldNames = ['PhoneNumber', 'Id', 'City', 'Gender', 'Age', 'PrevCalls','Topic','Product','TotalTime','TotalCalls'];
+          try {
+            const parser = new Parser(opts);
+            const csv = parser.parse(result);
+            var path='./CSVs/MongoData.csv';
+            fs.writeFile(path, csv, function(err,data) {
+                if (err) {throw err;}
+               
+            });
+          } catch (err) {
+            console.error(err);
+          }
+          db.close();
+        });
+      });
+
+}
+/**
+
+const fields = ['field1', 'field2', 'field3'];
+
+
+ */
+
+exportToCsv();
+
+module.exports.insertToMongoDB = insertToMongoDB;
