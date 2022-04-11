@@ -14,11 +14,13 @@
     "ejs": "^3.1.6",
     "express": "^4.17.3",
     "express-ejs-layouts": "^2.5.1",
+    "hebrew-transliteration": "^2.0.3",
     "ioredis": "^4.28.5",
     "mysql": "^2.18.1",
     "node-gyp": "^9.0.0",
     "nodemon": "^2.0.4",
     "socket.io": "^2.4.1",
+    "translate": "^1.4.1",
     "utf-8-validate": "^5.0.2",
     "uuid": "^8.1.0"
   }

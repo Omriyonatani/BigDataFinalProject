@@ -134,8 +134,7 @@
     const data2 = {
       labels: labels2,
       datasets: [{
-        backgroundColor: [
-        ],
+        backgroundColor: 'rgba(95,158,160,1)',
         borderColor: 'rgb(33, 99, 132)',
         data: newPoint2,
         
@@ -160,10 +159,10 @@
         insertWatingTimeSum().then(data=>{ 
         dataset.data.push(data);
         
-        dataset.backgroundColor.push(`rgba(
-                                        ${Math.floor(Math.random() * 255)},
-                                        ${Math.floor(Math.random() * 255)},
-                                        ${Math.floor(Math.random() * 255)}, 1)`)
+        // dataset.backgroundColor.push(`rgba(
+        //                                 ${Math.floor(Math.random() * 255)},
+        //                                 ${Math.floor(Math.random() * 255)},
+        //                                 ${Math.floor(Math.random() * 255)}, 1)`)
         })
      
       });

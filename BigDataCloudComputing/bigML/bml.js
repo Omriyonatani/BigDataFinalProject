@@ -8,7 +8,7 @@ var bigml = require('bigml');
 var connection = new bigml.BigML('RaafatMarzuq','2a5da361441e10eaee2258ad814e5f2d764181b0')
 
 var source = new bigml.Source(connection);
-source.create('../MongoDB/CSVs/MongoData', function(error, sourceInfo) {
+source.create('./MongoData.csv', function(error, sourceInfo) {
   if (!error && sourceInfo) {
     var dataset = new bigml.Dataset(connection);
     dataset.create(sourceInfo, function(error, datasetInfo) {
@@ -17,7 +17,8 @@ source.create('../MongoDB/CSVs/MongoData', function(error, sourceInfo) {
         model.create(datasetInfo, function (error, modelInfo) {
           if (!error && modelInfo) {
             var prediction = new bigml.Prediction(connection);
-            prediction.create(modelInfo, {'petal length': 1},function(error, prediction) { console.log(JSON.stringify(prediction));console.log(prediction.code)}); 
+            prediction.create(modelInfo, {'petal length': 1},function(error, prediction) {
+               console.log(JSON.stringify(prediction));console.log(prediction.code)}); 
           }
         });
       }

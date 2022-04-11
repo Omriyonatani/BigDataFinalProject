@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <%- include("../partials/headers") %>
+    <!--ariel ws-->
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        var socket = io.connect();
+    </script>
+</head>
+<body style="background-image: url(images/bg2.jpg);">
+    <div class="wrapper ">
+        <%- include("../partials/sidebar") %>
+        <div class="main-panel">
+          <%- include("../partials/navbar") %>
+          <div class="content">
+            <div class="container-fluid">
+                <div class="row">
+                <%- include("../partials/tables") %>
+                </div>
+                <div class="row">
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</body>

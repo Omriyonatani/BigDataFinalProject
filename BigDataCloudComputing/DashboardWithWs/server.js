@@ -2,7 +2,8 @@ const express = require('express')
 const app = express();
 const socketIO = require('socket.io');
 const redisSub = require('../Redis/redissub')
-const redisPub = require('../Redis/redispub')
+const redisPub = require('../Redis/redispub');
+const Mongo= require('../MongoDB/MongoDB')
 
 
 
@@ -118,7 +119,11 @@ app.get('/', (req, res) => {
   }
   res.render("pages/dashboard", data)
 })
+app.get('/tables',(req, res) => {
+  res.render("pages/tables")
+ 
 
+})
 
 const server = express()
   .use(app)

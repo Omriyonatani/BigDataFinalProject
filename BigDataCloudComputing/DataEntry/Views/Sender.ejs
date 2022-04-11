@@ -56,46 +56,22 @@
                if (phone_Number_from_data == phNum) {      
                     var previous_Calls_from_data = initData[index].previouscalls;
                     var address_from_data =[ initData[index].address ,' '] ;
-                   switch (address_from_data[0]) { 
-                       case 'jerusalem':
-                           address_from_data[1] ='ירושלים';
-                           break;
-                       case 'Naharia':
-                           address_from_data[1] = 'נהריה';
-                           break;
-                        case 'Tel Aviv':
-                            address_from_data[1] = 'תל אביב';
-                            break;
-                        case 'Haifa':
-                            address_from_data[1] = 'חיפה';
-                            break;
-                          case 'ashdod':
-                             address_from_data[1]= 'אשדוד';
-                            break;
-                          case 'Ashkelon':
-                            address_from_data[1]='אשקלון';
-                            break;
-                          case 'Beer sheva':
-                            address_from_data[1]= 'באר שבע';
-                            break;
-                          case 'Raanana':
-                            address_from_data[1] = 'רעננה';
-                             break;
-                         default:
-                            address_from_data[1] = 'צריך לעדכן את כל הערים';
-                           break;
-                   }
-                    var gender_from_data =[ initData[index].gender ,' '];
-                    if(gender_from_data[0] == 'Male') {
-                        gender_from_data[1] = 'גבר';
+                    address_from_data[1]= translateAddress(address_from_data[0]);
+                    
+                   
+                var gender_from_data =[ initData[index].gender ,' '];
+                if(gender_from_data[0] == 'Male') {
+                    gender_from_data[1] = 'גבר';
+                }
+                else { 
+                    gender_from_data[1]='אישה';
                     }
-                    else { 
-                        gender_from_data[1]='אישה';
-                         }
                     
                     var age_from_data = initData[index].age;
-                    var topic_from_data = initData[index].topic;
-                    var products_from_data = initData[index].product;
+                    var topic_from_data = [initData[index].topic];
+                    topic_from_data.push(translateTopic(initData[index].topic))
+                    var products_from_data=[initData[index].product]
+                    products_from_data.push(translateProduct( initData[index].product)); 
                }
            }            
             cStart.innerHTML = "<div id='" + date + "''>" + `${day}-${month}-${year} ,${hour}:${minute}` + "</div>";
@@ -104,13 +80,28 @@
                                 <option value='jerusalem'>ירושלים</option>
                                 <option value='Naharia'>נהריה</option>
                                 <option value='haifa'>חיפה</option>
-                                <option value='telAviv'>תל אביב</option>
+                                <option value='tel Aviv'>תל אביב</option>
                                 <option value='ashdod'>אשדוד</option>
                                 <option value='Ashkelon'>אשקלון</option>
-                                <option value='beerSheva'>באר שבע</option>
+                                <option value='beer Sheva'>באר שבע</option>
+                                <option value='Rishon Letzion'>ראשון לציון</option>
+                                <option value='Holon'>חולון</option>
+                                <option value='Ofakim'>אופקים</option>
+                                <option value='Tel Sheva'>תל שבע</option>
+                                <option value='Acre'>עכו</option>
+                                <option value='Ariel'>אריאל</option>
+                                <option value='Omer'>עומר</option>
+                                <option value='Ramat gan'>רמת גן</option>
+                                <option value='Ramat aviv'>רמת אביב</option>
+                                <option value='Zihron yaakov'>זכרון יעקוב</option>
+                                <option value='Hertzelia'>הרצליה</option>
+                                <option value='Ramat hasharon'>רמת השרון</option>
+                                <option value='Kfar bara'>כפר ברא</option>
+                                <option value='Kfar saba'>כפר סבא</option>
+                                <option value='Raanana'>רעננה</option>
                                 </select>`;
             cTopic.innerHTML = `<select>
-                                    <option value='${topic_from_data}'>${topic_from_data}</option>
+                                    <option value='${topic_from_data[0]}'>${topic_from_data[1]}</option>
                                     <option value='report'>תלונה</option>
                                     <option value='service'>שירות</option>
                                     <option value='disconnect'>בקשת ניתוק</option>
@@ -124,7 +115,7 @@
                                 </select>`;
             cPrevCalls.innerHTML = ` <input  value='${previous_Calls_from_data}'  disabled />` ;
             cProduct.innerHTML = `<select>
-                                    <option value='${products_from_data}'>${products_from_data}</option>
+                                    <option value='${products_from_data[0]}'>${products_from_data[1]}</option>
                                     <option value='Internet'>אינטרנט</option>
                                     <option value='Cables'>כבלים</option>
                                     <option value='Cellular'>סלולרי</option>
@@ -133,6 +124,131 @@
             cEnd.innerHTML = `<button onclick='reportEndCall(this.parentNode.parentNode,${phNum})'>סיום</button>`;
         }
 
+
+
+        
+        function translateTopic(topic){
+            switch (topic) {
+                case 'join':
+                    return 'הצטרפות';
+                    break;
+                case 'disconnect':
+                    return 'ניתוק'
+                    break;
+                case 'service':
+                    return 'שירות';
+                    break;
+                case 'report':
+                    return 'תלונה';
+                    break;
+            
+                
+            }
+        }
+        function translateProduct(product){
+            var arr = product.split(',');
+            var translated_topic= '';
+       
+            for (let index = 0; index < arr.length; index++) {
+                const element = arr[index];
+                switch (element) {
+                    case 'Cellular':
+                        if ( index == 0) {
+                            translated_topic = 'סלולרי';
+                        }else{
+                            translated_topic+= ',סלולרי'
+                        }
+                        break;
+                    case 'Cables':
+                        if (index == 0) {
+                                translated_topic = 'כבלים';
+                            }else{
+                                translated_topic+= ',כבלים'
+                            }
+                            break;
+                    case 'Internet':
+                        if (index == 0) {
+                                translated_topic = 'אינטרנט';
+                            }else{
+                                translated_topic+= ',אינטרנט'
+                            }
+                            break;
+                }
+            }
+            return translated_topic;
+        }
+        function translateAddress(address){
+
+            switch (address) { 
+                       case 'jerusalem':
+                           return'ירושלים';
+                           break;
+                       case 'Naharia':
+                           return 'נהריה';
+                           break;
+                        case 'Tel Aviv':
+                            return 'תל אביב';
+                            break;
+                        case 'Haifa':
+                              return 'חיפה';
+                            break;
+                        case 'ashdod':
+                                return'אשדוד';
+                            break;
+                        case 'Ashkelon':
+                              return'אשקלון';
+                            break;
+                        case 'Beer sheva':
+                             return 'באר שבע';
+                            break;
+                        case 'Raanana':
+                             return 'רעננה';
+                             break;
+                        case 'Kfar saba':
+                            return 'כפר סבא';
+                            break;
+                        case 'Kfar bara':
+                            return 'כפרברא';
+                            break;
+                        case 'Ramat hasharon':
+                            return 'רמת השרון';
+                            break;
+                        case 'Hertzelia':
+                            return 'הרצליה';
+                            break;
+                        case 'Zihron yaakov':
+                            return 'זכרון יעקוב';
+                            break;
+                        case 'Ramat aviv':
+                            return 'רמת אביב';
+                            break;
+                        case 'Ramat gan':
+                            return 'רמת גן';
+                            break;
+                        case 'Omer':
+                            return 'עומר';
+                            break;
+                        case 'Ariel':
+                            return 'אריאל';
+                            break;
+                        case 'Acre':
+                            return 'עכו';
+                            break;
+                        case 'Tel sheva':
+                            return 'תל שבע';
+                            break;
+                        case 'Ofakim':
+                            return 'אופקים';
+                            break;
+                        case 'Holon':
+                            return 'חולון';
+                            break;
+                       case 'Rishon lezion':
+                           return 'ראשון לציון';
+                           break;
+                   }
+        }
+        
 
         function reportEndCall(row,phNum) {
             var totalCalls = parseInt(document.getElementById("total").value);
@@ -151,6 +267,7 @@
             message.Product = row.cells[6].getElementsByTagName('select')[0].value;
             message.totalTime = (parseInt(Date.now()) - parseInt(message.id)) / 1000; // seconds
             message.totalCalls= parseInt(document.getElementById("total").value);
+            message.season = document.getElementById('season').value;
 
             socket.emit("callDetails", message);
             deleteRow(row);
@@ -183,9 +300,13 @@
 <body onload="initSocket()">
     Total Waiting calls:
     <input type="number" id="total" min="0" max="200" value='0'>
-    <input type="button" value="Set" onclick="sendMessage(total.value)" />
+    <!-- <input type="button" value="Set" onclick="sendMessage(total.value)" /> -->
     &nbsp;
-    <select><option value='Holidays'>חגים</option><option value='Summer vacation'>חופשת קיץ</option><option value='Normal days'>ימים רגילים</option></select>
+    <select id="season">
+        <option value='Holidays'>חגים</option>
+        <option value='Summer vacation'>חופשת קיץ</option>
+        <option value='Normal days'>ימים רגילים</option>
+    </select>
     <hr>
     <input type="button" onclick="startConv()" value="Answer Call" />
     <table id="PhoneNumber" border="1" style="background-color: burlywood;" ></table>

@@ -25,7 +25,6 @@ async function insertToMongoDB(data){
       
 
 }
-
 function exportToCsv(){
     client.connect(function(err, db) {
         if (err) throw err;
@@ -35,11 +34,10 @@ function exportToCsv(){
           if (err) throw err;
           var fields = ['phoneNumber', 'id', 'city', 'gender', 'age', 'prevCalls','topic','Product','totalTime','totalCalls'];
           const opts = { fields };
-          //   var fieldNames = ['PhoneNumber', 'Id', 'City', 'Gender', 'Age', 'PrevCalls','Topic','Product','TotalTime','TotalCalls'];
           try {
             const parser = new Parser(opts);
             const csv = parser.parse(result);
-            var path='./CSVs/MongoData.csv';
+            var path='../bigML/MongoData.csv';
             fs.writeFile(path, csv, function(err,data) {
                 if (err) {throw err;}
                
@@ -52,13 +50,9 @@ function exportToCsv(){
       });
 
 }
-/**
-
-const fields = ['field1', 'field2', 'field3'];
 
 
- */
 
-exportToCsv();
 
 module.exports.insertToMongoDB = insertToMongoDB;
+module.exports.exportToCsv = exportToCsv;
