@@ -20,6 +20,9 @@ The above copyright notice and this permission notice shall be included in all c
       var socket = io.connect();
 
       function setWs() {
+        document.getElementById("1").className ="nav-item active";
+        document.getElementById("2").className ="nav-item ";
+
         setClock();
         totalCalls();
         totalWaitingCalls();
