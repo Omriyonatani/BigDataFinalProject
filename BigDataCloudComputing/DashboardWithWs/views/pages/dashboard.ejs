@@ -19,9 +19,11 @@ The above copyright notice and this permission notice shall be included in all c
     <script>
       var socket = io.connect();
 
+      
       function setWs() {
         document.getElementById("1").className ="nav-item active";
         document.getElementById("2").className ="nav-item ";
+        document.getElementById("3").className ="nav-item ";
 
         setClock();
         totalCalls();
@@ -55,6 +57,8 @@ The above copyright notice and this permission notice shall be included in all c
 
       function totalCalls() {
         socket.on('average waiting time', function(msg) {
+         
+         
           var element = document.getElementById(msg.cardId);
           element.innerText = msg.value + " sec";
         })
@@ -63,10 +67,13 @@ The above copyright notice and this permission notice shall be included in all c
 
       function totalWaitingCalls() {
         socket.on('totalWaitingCalls', function(msg) {
+          var today = new Date();
+          var TimeInMin = (parseInt(today.getHours()) * 60) + parseInt(today.getMinutes());
+          sessionStorage.setItem(`total Waiting Calls at ${TimeInMin}`,msg.value);
           var element = document.getElementById(msg.cardId);
           element.innerText = msg.value + " calls";
         })
-        setTimeout(totalWaitingCalls, 10);
+        setTimeout(totalWaitingCalls, 100);
       }
 
 

@@ -15,14 +15,14 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.set('view engine', 'ejs');
 app.use(express.static("public"));
 
-app.get('/', (req, res) => res.render('sender'))
+
 
 // Pull the values from the DB
 const myDB = mysql.asyncCall();
 myDB.then(function(result) {
     result=JSON.parse(JSON.stringify(result));
     // need to check if we can do it with socket ( io.emit() )
-    app.get('/Views/Sender', function(req, res) {
+    app.get('/', function(req, res) {
         res.render('Sender', { data: result});
     });
 });
@@ -44,6 +44,6 @@ io.on("connection", (socket) => {
 
 
 
-server.listen(port, () => console.log(`Ariel app listening at http://localhost:${port}/Views/Sender`));
+server.listen(port, () => console.log(`Ariel app listening at http://localhost:${port}`));
 
 

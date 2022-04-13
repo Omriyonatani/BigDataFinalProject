@@ -104,7 +104,7 @@
                                     <option value='${topic_from_data[0]}'>${topic_from_data[1]}</option>
                                     <option value='report'>תלונה</option>
                                     <option value='service'>שירות</option>
-                                    <option value='disconnect'>בקשת ניתוק</option>
+                                    <option value='disconnect'>ניתוק</option>
                                     <option value='join'>הצטרפות</option>
                                 </select>`;
             cAge.innerHTML = `<input value='${age_from_data}' disabled/>`;
@@ -297,7 +297,7 @@
     
 </head>
 
-<body onload="initSocket()" >
+<body onload="initSocket()"  >
     Total Waiting calls:
     <input type="number" id="total" min="0" max="200" value='0'>
     <!-- <input type="button" value="Set" onclick="sendMessage(total.value)" /> -->

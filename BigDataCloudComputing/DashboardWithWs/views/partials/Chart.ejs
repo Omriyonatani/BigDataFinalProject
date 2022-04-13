@@ -35,7 +35,11 @@
 
     async function insertWatingCalls(){
       return new Promise (res=>{
+        
         socket.on("totalWaitingCalls", (msg)=> {
+          var today = new Date();
+          var TimeInMin = (parseInt(today.getHours()) * 60) + parseInt(today.getMinutes());
+          sessionStorage.setItem(`total Waiting Calls at ${TimeInMin}`,msg.value);
           res(msg.value);
         });
       });      
@@ -43,17 +47,26 @@
    
     
      
-   function startFromNow(){
+   function startFromNow(str){
     let i=0;
     let newPoint=[];
+   
+    const labels = getTimeRanges(5, 'ru') 
     var today = new Date();
-    const labels = getTimeRanges(5, 'ru')
     var TimeInMin = (parseInt(today.getHours()) * 60) + parseInt(today.getMinutes());
     while(i< labels.length){
 
       var labelsInMin = (parseInt(labels[i].split(":")[0]) * 60) + parseInt(labels[i].split(":")[1]);
       if (TimeInMin > labelsInMin) {
-        newPoint.push(0);
+       var data_from_storage = sessionStorage.getItem(`${str} at ${labelsInMin}`);
+        if(data_from_storage != null )  {
+         
+         newPoint.push(data_from_storage);
+         }else{
+          newPoint.push(0)
+          
+        }
+        
       }
       else{
         break;
@@ -63,7 +76,7 @@
     return newPoint;
   }
 
-  let newPoint1 = startFromNow();
+  let newPoint1 = startFromNow("total Waiting Calls");
   const labels1 = getTimeRanges(5, 'ru')
 
     const data = {
@@ -105,7 +118,7 @@
      
       });
       myChart.update();
-      setTimeout(addData,30000)
+      setTimeout(addData,300000)
     }
     addData(myChart);
   </script>
@@ -126,11 +139,15 @@
     async function insertWatingTimeSum(){
       return new Promise (res=>{
         socket.on("waiting time", (msg)=> {
+          var today = new Date();
+          var TimeInMin = (parseInt(today.getHours()) * 60) + parseInt(today.getMinutes());
+          sessionStorage.setItem(`waiting time at ${TimeInMin}`,msg.value);
+        
           res(msg.value);
         });
       });      
     }
-    let newPoint2 = startFromNow();
+    let newPoint2 = startFromNow("waiting time");
     const data2 = {
       labels: labels2,
       datasets: [{
@@ -158,16 +175,11 @@
       chart.data.datasets.forEach((dataset) => {
         insertWatingTimeSum().then(data=>{ 
         dataset.data.push(data);
-        
-        // dataset.backgroundColor.push(`rgba(
-        //                                 ${Math.floor(Math.random() * 255)},
-        //                                 ${Math.floor(Math.random() * 255)},
-        //                                 ${Math.floor(Math.random() * 255)}, 1)`)
-        })
+       })
      
       });
       myChart2.update();
-      setTimeout( updateWaitingTimeSum,30000)
+      setTimeout( updateWaitingTimeSum,300000)
     }
    
     updateWaitingTimeSum(myChart2);
@@ -185,11 +197,25 @@
     <canvas id="myChart3" width="350" height="350"></canvas>
   </div>
   <script>
-    let callsTopics= [1,1,1,1]
+    var today = new Date();
+    var TimeInMin = (parseInt(today.getHours()) * 60) + parseInt(today.getMinutes());
+    var storage_topics= sessionStorage.getItem(`topics at ${TimeInMin}`);
+    let callsTopics=[] ;
+    if (storage_topics != null ) {
+      
+      let callsTopics1 = storage_topics.split(',');
+      callsTopics= [callsTopics1[0],callsTopics1[1],callsTopics1[2],callsTopics1[3]]
+    }else{
+      callsTopics= [1,1,1,1];
+    }
+    
 
     async function insertCallsTopic(){
       return new Promise (res=>{
         socket.on("calls topics", (msg)=> {
+          var today = new Date();
+          var TimeInMin = (parseInt(today.getHours()) * 60) + parseInt(today.getMinutes());
+          sessionStorage.setItem(`topics at ${TimeInMin}`,msg.value)
           res(msg.value);
         });
       });      
@@ -232,7 +258,7 @@
      
       });
       myChart3.update();
-      setTimeout(updateTopics,30000)
+      setTimeout(updateTopics,300000)
     }
     updateTopics();
   </script>

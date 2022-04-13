@@ -32,7 +32,7 @@ function exportToCsv(){
         var query = { };
         dbo.collection("Customers").find(query).toArray(function(err, result) {
           if (err) throw err;
-          var fields = ['phoneNumber', 'id', 'city', 'gender', 'age', 'prevCalls','topic','Product','totalTime','totalCalls'];
+          var fields = ['phoneNumber', 'id', 'city', 'gender', 'age', 'prevCalls','topic','Product','totalTime','totalCalls','season'];
           const opts = { fields };
           try {
             const parser = new Parser(opts);

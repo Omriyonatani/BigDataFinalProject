@@ -14,12 +14,13 @@ source.create('./MongoData.csv', function(error, sourceInfo) {
     dataset.create(sourceInfo, function(error, datasetInfo) {
       if (!error && datasetInfo) {
         var model = new bigml.Model(connection);
-        model.create(datasetInfo, function (error, modelInfo) {
+        model.create(datasetInfo,{ 'objective_field': "000006" }, function (error, modelInfo) {
           if (!error && modelInfo) {
             var prediction = new bigml.Prediction(connection);
-            prediction.create(modelInfo, {'petal length': 1},function(error, prediction) {
+            prediction.create(modelInfo,{ 'objective_field': "000006" },function(error, prediction) {
                console.log(JSON.stringify(prediction));console.log(prediction.code)}); 
           }
+          console.log("\nModel number = " + modelInfo.resource);
         });
       }
     });

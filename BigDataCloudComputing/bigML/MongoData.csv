@@ -1,34 +1,108 @@
-"phoneNumber","id","city","gender","age","prevCalls","topic","Product","totalTime","totalCalls"
-524563218,"1649510016086","Ramat gan","Male","18","13","service","Cables",2.064,79
-532211887,"1649510076160","Jerusalem","Male","18","18","join","Internet,Cables",2.849,74
-541425142,"1649510020410","Acre","Female","18","11","report","Internet,Cellular",57.364,76
-538626154,"1649514337654","Raanana","Male","18","24","join","Internet,Cellular",1.534,27
-545789999,"1649514334760","Raanana","Male","26","13","join","Cables,Cellular",1.775,28
-549632541,"1649514506462","Beer sheva","Female","18","12","join","Cellular",2.347,23
-524477115,"1649514485392","Ramat aviv","Male","18","16","disconnect","Internet,Cellular",2.535,24
-527455886,"1649514485215","Ariel","Male","18","14","join","Internet,Cables",2.078,25
-529635875,"1649514485055","Raanana","Female","18","19","service","Internet",1.594,26
-502255749,"1649514522538","Tel Aviv","Female","18","13","join","Internet,Cables",1.362,22
-539875412,"1649514522714","Kfar saba","Female","18","12","join","Internet",1.844,21
-525588552,"1649514710680","Omer","Male","18","11","join","Cables",4.479,36
-500022558,"1649514709819","Haifa","Male","18","11","report","Internet,Cellular",4.41,37
-502255749,"1649514704623","Tel Aviv","Female","18","13","join","Internet,Cables",8.874,38
-502277495,"1649514751988","Hertzelia","Male","18","20","report","Internet,Cables",3.197,35
-502211864,"1649514751524","Kfar bara","Male","18","13","service","Internet,Cables,Cellular",4.261,34
-539875412,"1649514751362","Kfar saba","Female","18","12","join","Internet",5.261,33
-502277495,"1649668258674","Hertzelia","Male","18","20","report","Internet,Cables",2.55,146
-523322665,"1649668259025","Zihron yaakov","Male","18","11","disconnect","Internet,Cables",3.113,145
-539875412,"1649668256070","Kfar saba","Female","18","12","join","Internet",4.348,147
-525588552,"1649670813052","Omer","Male","18","11","join","Cables",2.426,183
-539875412,"1649670809501","Kfar saba","Female","18","12","join","Internet",2.517,185
-538626154,"1649670809994","Raanana","Male","18","24","join","Internet,Cellular",1.337,186
-502255223,"1649670812864","Ramat hasharon","Male","18","17","disconnect","Internet,Cables",1.825,184
-502255223,"1649670903571","Ramat hasharon","Male","18","17","disconnect","Internet,Cables",1.574,182
-539875412,"1649670903723","Kfar saba","Female","18","12","join","Internet",1.966,181
-529966524,"1649670903919","Naharia","Male","18","24","report","Internet,Cables,Cellular",2.274,180
-545789999,"1649670904107","Raanana","Male","26","13","join","Cables,Cellular",2.698,179
-545789999,"1649700700449","Raanana","Male","26","13","join","Cables,Cellular",10.048,144
-545789999,"1649700701638","Raanana","Male","26","13","join","Cables,Cellular",20.553,143
-524563218,"1649700700670","Ramat gan","Male","18","13","service","Cables",24.988,142
-555566558,"1649700772054","Holon","Male","18","66","report","Internet,Cellular",2.083,141
-535554447,"1649700772432","Ariel","Male","18","18","join","Cables",2.771,140
+"phoneNumber","id","city","gender","age","prevCalls","topic","Product","totalTime","totalCalls","season"
+524563218,"1649510016086","Ramat gan","Male","18","13","service","Cables",2.064,79,
+532211887,"1649510076160","Jerusalem","Male","18","18","join","Internet,Cables",2.849,74,
+541425142,"1649510020410","Acre","Female","18","11","report","Internet,Cellular",57.364,76,
+538626154,"1649514337654","Raanana","Male","18","24","join","Internet,Cellular",1.534,27,
+545789999,"1649514334760","Raanana","Male","26","13","join","Cables,Cellular",1.775,28,
+549632541,"1649514506462","Beer sheva","Female","18","12","join","Cellular",2.347,23,
+524477115,"1649514485392","Ramat aviv","Male","18","16","disconnect","Internet,Cellular",2.535,24,
+527455886,"1649514485215","Ariel","Male","18","14","join","Internet,Cables",2.078,25,
+529635875,"1649514485055","Raanana","Female","18","19","service","Internet",1.594,26,
+502255749,"1649514522538","Tel Aviv","Female","18","13","join","Internet,Cables",1.362,22,
+539875412,"1649514522714","Kfar saba","Female","18","12","join","Internet",1.844,21,
+525588552,"1649514710680","Omer","Male","18","11","join","Cables",4.479,36,
+500022558,"1649514709819","Haifa","Male","18","11","report","Internet,Cellular",4.41,37,
+502255749,"1649514704623","Tel Aviv","Female","18","13","join","Internet,Cables",8.874,38,
+502277495,"1649514751988","Hertzelia","Male","18","20","report","Internet,Cables",3.197,35,
+502211864,"1649514751524","Kfar bara","Male","18","13","service","Internet,Cables,Cellular",4.261,34,
+539875412,"1649514751362","Kfar saba","Female","18","12","join","Internet",5.261,33,
+502277495,"1649668258674","Hertzelia","Male","18","20","report","Internet,Cables",2.55,146,"Holidays"
+523322665,"1649668259025","Zihron yaakov","Male","18","11","disconnect","Internet,Cables",3.113,145,"Holidays"
+539875412,"1649668256070","Kfar saba","Female","18","12","join","Internet",4.348,147,"Holidays"
+525588552,"1649670813052","Omer","Male","18","11","join","Cables",2.426,183,"Holidays"
+539875412,"1649670809501","Kfar saba","Female","18","12","join","Internet",2.517,185,"Holidays"
+538626154,"1649670809994","Raanana","Male","18","24","join","Internet,Cellular",1.337,186,"Holidays"
+502255223,"1649670812864","Ramat hasharon","Male","18","17","disconnect","Internet,Cables",1.825,184,"Holidays"
+502255223,"1649670903571","Ramat hasharon","Male","18","17","disconnect","Internet,Cables",1.574,182,"Holidays"
+539875412,"1649670903723","Kfar saba","Female","18","12","join","Internet",1.966,181,"Holidays"
+529966524,"1649670903919","Naharia","Male","18","24","report","Internet,Cables,Cellular",2.274,180,"Holidays"
+545789999,"1649670904107","Raanana","Male","26","13","join","Cables,Cellular",2.698,179,"Holidays"
+545789999,"1649700700449","Raanana","Male","26","13","join","Cables,Cellular",10.048,144,"Holidays"
+545789999,"1649700701638","Raanana","Male","26","13","join","Cables,Cellular",20.553,143,"Holidays"
+524563218,"1649700700670","Ramat gan","Male","18","13","service","Cables",24.988,142,"Holidays"
+555566558,"1649700772054","Holon","Male","18","66","report","Internet,Cellular",2.083,141,"Holidays"
+535554447,"1649700772432","Ariel","Male","18","18","join","Cables",2.771,140,"Holidays"
+549632541,"1649712004745","Beer sheva","Female","18","12","join","Cellular",3.618,85,"Holidays"
+545789999,"1649712004220","Raanana","Male","26","13","join","Cables,Cellular",3.501,86,"Holidays"
+545698745,"1649761861324","Rishon lezion","Female","18","13","report","Internet,Cellular",3.637,190,"Holidays"
+525488569,"1649761860050","Raanana","Male","18","13","join","Internet",4.324,191,"Holidays"
+525488569,"1649761181744","Raanana","Male","18","13","join","Internet",12.088,80,"Holidays"
+547414741,"1649852929754","Tel sheva","Male","18","13","service","Internet,Cellular",2.007,82,"Holidays"
+555544554,"1649852929939","haifa","Male","18","16","service","Internet,Cables",2.548,81,"Holidays"
+527455886,"1649852930126","Ariel","Male","18","14","join","Internet,Cables",3.017,80,"Holidays"
+538626154,"1649853885579","Raanana","Male","18","24","join","Internet,Cellular",3.92,77,"Holidays"
+524563218,"1649853885355","Ramat gan","Male","18","13","service","Cables",3.59,78,"Holidays"
+538626154,"1649853885161","Raanana","Male","18","24","join","Internet,Cellular",2.992,79,"Holidays"
+502211864,"1649853885781","Kfar bara","Male","18","13","service","Internet,Cables,Cellular",4.308,76,"Holidays"
+527455886,"1649854012258","Ariel","Male","18","14","join","Internet,Cables",1.575,75,"Holidays"
+541425142,"1649854012410","Acre","Female","18","11","report","Internet,Cellular",2.208,74,"Holidays"
+529635875,"1649854012590","Raanana","Female","18","19","service","Internet",2.735,73,"Holidays"
+532211887,"1649860841151","Jerusalem","Male","18","18","join","Internet,Cables",2.145,72,"Holidays"
+524477115,"1649860841564","Ramat aviv","Male","18","16","disconnect","Internet,Cellular",2.311,71,"Holidays"
+538626154,"1649860841569","Raanana","Male","18","24","join","Internet,Cellular",2.821,70,"Holidays"
+555544554,"1649860841641","haifa","Male","18","16","service","Internet,Cables",3.348,69,"Holidays"
+523322665,"1649860970917","Zihron yaakov","Male","18","11","disconnect","Internet,Cables",3.698,65,"Holidays"
+529966524,"1649860970731","Naharia","Male","18","24","report","Internet,Cables,Cellular",3.219,66,"Holidays"
+502277495,"1649860970155","Hertzelia","Male","18","20","report","Internet,Cables",2.19,68,"Holidays"
+502211864,"1649860970479","Kfar bara","Male","18","13","service","Internet,Cables,Cellular",2.668,67,"Holidays"
+532211887,"1649861338123","Jerusalem","Male","18","18","join","Internet,Cables",8.572,61,"Holidays"
+539875412,"1649861337613","Kfar saba","Female","18","12","join","Internet",3.189,64,"Holidays"
+524563218,"1649861337779","Ramat gan","Male","18","13","service","Cables",5.105,63,"Holidays"
+547414741,"1649861337951","Tel sheva","Male","18","13","service","Internet,Cellular",7.215,62,"Holidays"
+502277495,"1649865457418","Hertzelia","Male","18","20","report","Internet,Cables",2.703,60,"Holidays"
+545698745,"1649865458315","Rishon lezion","Female","18","13","report","Internet,Cellular",4.05,57,"Holidays"
+549632541,"1649865458139","Beer sheva","Female","18","12","join","Cellular",3.5,58,"Holidays"
+524477115,"1649865457831","Ramat aviv","Male","18","16","disconnect","Internet,Cellular",3.042,59,"Holidays"
+527455886,"1649865463773","Ariel","Male","18","14","join","Internet,Cables",1.402,56,"Holidays"
+535554447,"1649865520677","Ariel","Male","18","18","join","Cables",1.861,55,"Holidays"
+525488569,"1649865520847","Raanana","Male","18","13","join","Internet",2.245,54,"Holidays"
+500022558,"1649865521065","Haifa","Male","18","11","report","Internet,Cellular",2.547,53,"Holidays"
+527455886,"1649865658028","Ariel","Male","18","14","join","Internet,Cables",2.168,51,"Holidays"
+529635875,"1649865657853","Raanana","Female","18","19","service","Internet",1.647,52,"Holidays"
+524477115,"1649865658210","Ramat aviv","Male","18","16","disconnect","Internet,Cellular",2.582,50,"Holidays"
+535554447,"1649865759447","Ariel","Male","18","18","join","Cables",1.999,49,"Holidays"
+532211887,"1649865759613","Jerusalem","Male","18","18","join","Internet,Cables",2.381,48,"Holidays"
+527455886,"1649865760057","Ariel","Male","18","14","join","Internet,Cables",2.496,47,"Holidays"
+502255223,"1649866828212","Ramat hasharon","Male","18","17","disconnect","Internet,Cables",2.011,45,"Holidays"
+524477115,"1649866827989","Ramat aviv","Male","18","16","disconnect","Internet,Cellular",1.579,46,"Holidays"
+500022558,"1649867198547","Haifa","Male","18","11","report","Internet,Cellular",3.576,43,"Holidays"
+555544554,"1649867197695","haifa","Male","18","16","service","Internet,Cables",3.299,44,"Holidays"
+502255223,"1649867225949","Ramat hasharon","Male","18","17","disconnect","Internet,Cables",5.62,41,"Holidays"
+555566558,"1649867225776","Holon","Male","18","66","report","Internet,Cellular",5.087,42,"Holidays"
+502211864,"1649867226131","Kfar bara","Male","18","13","service","Internet,Cables,Cellular",6.922,40,"Holidays"
+524477115,"1649867866021","Ramat aviv","Male","18","16","disconnect","Internet,Cellular",3.354,35,"Holidays"
+523322665,"1649867865571","Zihron yaakov","Male","18","11","disconnect","Internet,Cables",2.74,37,"Holidays"
+525588552,"1649867865183","Omer","Male","18","11","join","Cables",2.029,39,"Holidays"
+523322665,"1649867865359","Zihron yaakov","Male","18","11","disconnect","Internet,Cables",2.447,38,"Holidays"
+535554447,"1649867865753","Ariel","Male","18","18","join","Cables",3.088,36,"Holidays"
+524477115,"1649868725974","Ramat aviv","Male","18","16","disconnect","Internet,Cellular",3.466,32,"Holidays"
+502277495,"1649868726170","Hertzelia","Male","18","20","report","Internet,Cables",4.348,31,"Holidays"
+539875412,"1649868725529","Kfar saba","Female","18","12","join","Internet",1.747,34,"Holidays"
+549922125,"1649868725782","Ofakim","Female","18","12","disconnect","Cellular,Cables",3.012,33,"Holidays"
+541425142,"1649869000671","Acre","Female","18","11","report","Internet,Cellular",2.882,30,"Holidays"
+547414741,"1649869001418","Tel sheva","Male","18","13","service","Internet,Cellular",3.955,27,"Holidays"
+538626154,"1649869001228","Raanana","Male","18","24","join","Internet,Cellular",3.506,28,"Holidays"
+545698745,"1649869001040","Rishon lezion","Female","18","13","report","Internet,Cellular",3.022,29,"Holidays"
+529635875,"1649870332867","Raanana","Female","18","19","service","Internet",1.846,26,"Holidays"
+545789999,"1649870333437","Raanana","Male","26","13","join","Cables,Cellular",1.828,25,"Holidays"
+529635875,"1649873590476","Raanana","Female","18","19","service","Internet",1.725,24,"Holidays"
+555544554,"1649873590676","haifa","Male","18","16","service","Internet,Cables",2.161,23,"Holidays"
+539875412,"1649873594172","Kfar saba","Female","18","12","service","Internet",4.196,22,"Holidays"
+532211887,"1649873697603","Jerusalem","Male","18","18","join","Internet,Cables",1.823,21,"Holidays"
+524563218,"1649873698058","Ramat gan","Male","18","13","service","Cables",3.202,19,"Holidays"
+549632541,"1649873697805","Beer sheva","Female","18","12","join","Cellular",2.275,20,"Holidays"
+541425142,"1649874378776","Acre","Female","18","11","report","Internet,Cellular",1.906,18,"Holidays"
+502211864,"1649874379144","Kfar bara","Male","18","13","service","Internet,Cables,Cellular",2.654,16,"Holidays"
+547414741,"1649874378966","Tel sheva","Male","18","13","service","Internet,Cellular",2.282,17,"Holidays"
+549632541,"1649874413846","Beer sheva","Female","18","12","disconnect","Cellular",6.825,15,"Holidays"
+524477115,"1649874414082","Ramat aviv","Male","18","16","disconnect","Internet,Cellular",7.421,14,"Holidays"

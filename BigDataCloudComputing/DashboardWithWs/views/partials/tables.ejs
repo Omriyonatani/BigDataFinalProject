@@ -2,16 +2,16 @@
 <div class="col-lg-6 col-md-12">
   <div class="card">
     <div class="card-header card-header-warning">
-      <h4 class="card-title">Call Topics</h4>
-      <!-- <p class="card-category">New employees on 15th September, 2016</p> -->
-    </div>
+      <h4 class="card-title">Calls Details</h4>
+       </div>
     <script src="/socket.io/socket.io.js"></script>
   <script>
-    var socket = io.connect();
+    var socket = io();
+    socket.connect();
   </script>
     <div class="card-body table-responsive">
       <div style="height: 400px; overflow-y: scroll ">
-      <table id="topics" class="table table-hover">
+      <table  class="table table-hover">
         <thead class="text-warning">
           <th>Time</th>
           <th>Waiting Calls</th>
@@ -23,6 +23,7 @@
           
         </tbody>
         <script>
+           callsDetailsTable();
           function getTimeRanges(interval, language = window.navigator.language) {
             const ranges = [];
             const date = new Date();
@@ -39,37 +40,104 @@
 
             return ranges;
           }
-          var timeIs = getTimeRanges(5, 'ru');
-          var today = new Date();
-          var TimeInMin = (parseInt(today.getHours()) * 60) + parseInt(today.getMinutes());
-          for (let index = 0; index < timeIs.length; index++) {
-            
-            var labelsInMin = (parseInt(timeIs[index].split(":")[0]) * 60) + parseInt(timeIs[index].split(":")[1]);
-           
-            if (TimeInMin > labelsInMin) {
-              var tr= document.getElementById("callDetails").insertRow();
-              var cTime= tr.insertCell(0);
-              var cWaitingCalls = tr.insertCell(1);
-              var cWaitingTimen = tr.insertCell(2);
-               
-              // var cService = tr.insertCell(3);
-              // var cReport = tr.insertCell(4);
-              cTime.innerHTML = `<tr><td>${timeIs[index]}</td>`;         
-              cWaitingCalls.innerHTML = `<td>${1}</td>`;
-              cWaitingTimen.innerHTML = `<td>${2}</td></tr>`
-           
-             
+        
+          function callsDetailsTable(){
+              var timeIs = getTimeRanges(5, 'ru');
+              var today = new Date();
+              var TimeInMin = (parseInt(today.getHours()) * 60) + parseInt(today.getMinutes());
+              for (let index = 0; index < timeIs.length; index++) {
+                
+                var labelsInMin = (parseInt(timeIs[index].split(":")[0]) * 60) + parseInt(timeIs[index].split(":")[1]);
               
-              // cService.innerHTML = `<td>${4}</td>`
-              // cReport.innerHTML = `<td>${5}</td></tr>`
+                if (TimeInMin > labelsInMin) {
+                  var tr= document.getElementById("callDetails").insertRow();
+                  var cTime= tr.insertCell(0);
+                  var cWaitingCalls = tr.insertCell(1);
+                  var cWaitingTimen = tr.insertCell(2);
+                
+                  cTime.innerHTML = `<tr><td>${timeIs[index]}</td>`;             
+                   
+                
+                  var data_from_storage = sessionStorage.getItem(`total Waiting Calls at ${labelsInMin}`);
+                      // alert(data_from_storage)
+                  if(data_from_storage != null )  {
+                    // alert(waiting_time_from_storage)
+                    cWaitingCalls.innerHTML = `<td>${data_from_storage} </td>`;
+                    // cWaitingTimen.innerHTML = `<td>${data_from_storage} sec</td></tr>`
+                  }else{
+                    cWaitingCalls.innerHTML = `<td>${0} </td>`;
+                  }
+
+                  data_from_storage = sessionStorage.getItem(`waiting time at ${labelsInMin}`);
+                  if(data_from_storage != null )  {
+                    // alert(waiting_time_from_storage)
+                    cWaitingTimen.innerHTML = `<td>${data_from_storage} sec</td></tr>`
+                  }else{
+                    cWaitingTimen.innerHTML = `<td>${0} sec</td></tr>`
+                  }
+                
+            }else { 
+                getWaitingClls().then((res)=>{
+                  cWaitingCalls.innerHTML = `<td>${res}</td>`;
+                })
+            
+                getWaitingTime().then(res=>{
+                        cWaitingTimen.innerHTML = `<td>${res} sec</td></tr>`
+                
+                      })
+                    } 
+                  }
+                   
+          }
+          function updateFirstTable(){
+           
+            var tr= document.getElementById("callDetails").insertRow();
+          
+            var today = new Date();
+            var TimeInMin = (parseInt(today.getHours()) * 60) + parseInt(today.getMinutes());
+                     
+            var cTime= tr.insertCell(0);
+            var cWaitingCalls = tr.insertCell(1);
+            var cWaitingTimen = tr.insertCell(2);
+            
+            cTime.innerHTML = `<tr><td>${today.getHours()}:${today.getMinutes()}</td>`;
+            cWaitingCalls.innerHTML = `<td>${sessionStorage.getItem(`total Waiting Calls at ${(TimeInMin)}`)}</td>`;
+            cWaitingTimen.innerHTML = `<td>${sessionStorage.getItem(`waiting time at ${(TimeInMin)}`)} sec</td></tr>`;
+            setTimeout(updateFirstTable,300000)
+
+          }
+          function updateSecondTable(){
+            
+            socket.on("calls topics", (msg)=> {
+             sessionStorage.setItem(`topics`,msg.value)
+            });
+            var tr= document.getElementById("topicsDetails").insertRow(); 
+            var cJoin = tr.insertCell(0);
+            var cDisconnect = tr.insertCell(1);
+            var cService = tr.insertCell(2);
+            var cReport = tr.insertCell(3);
+           
+            var storage_topics= sessionStorage.getItem(`topics`);
+            
+            if (storage_topics != null ) {
+              let callsTopics1 = storage_topics.split(',');
+              cJoin.innerHTML = `<tr><td>${ callsTopics1[0]}</td>`;
+              cDisconnect.innerHTML=  `<tr><td>${callsTopics1[1]}</td>`;
+              cService.innerHTML = `<tr><td>${callsTopics1[2]}</td>`;
+              cReport.innerHTML= `<tr><td>${callsTopics1[3]}</td></tr>`;
+            
             }
-         }
-         getWaitingClls()
+                   setTimeout(updateSecondTable,300000)
+
+          }
+        
+        updateSecondTable();
+        updateFirstTable();
         async function getWaitingClls(){
           return new Promise (res=>{
             
-            io.on("totalWaitingCalls", (msg)=> {
-              alert(msg.value)
+            socket.on("totalWaitingCalls", (msg)=> {
+              // alert(msg.value)
               res(msg.value);
             });
           });      
@@ -81,9 +149,73 @@
             });
           });      
          }
+
         </script>
       </table>
+     
+      
     </div>
     </div>
+  </div>
+
+</div>
+<div class="col-lg-6 col-md-12">
+  <div class="card">
+    <div class="card-header card-header-warning">
+      <h4 class="card-title">Call Topics</h4>
+       </div>
+  <script src="/socket.io/socket.io.js"></script>
+  <script>
+    var socket = io();
+    socket.connect();
+  </script>
+<div class="card-body table-responsive">
+  <div style="height: 400px; overflow-y: scroll ">
+  <table id="topics" class="table table-hover">
+    <thead class="text-warning">
+    
+      <th>Join</th>
+      <th>Disconnect</th>
+      <th>Service</th>
+      <th>Report</th>
+    </thead>
+    <tbody id="topicsDetails">
+     
+    </tbody>
+    <script>
+    
+      
+      dayTopics();
+      function dayTopics(){
+        
+        var tr= document.getElementById("topicsDetails").insertRow();
+        
+        var cJoin = tr.insertCell(0);
+        var cDisconnect = tr.insertCell(1);
+        var cService = tr.insertCell(2);
+        var cReport = tr.insertCell(3);
+        var today = new Date();
+        var TimeInMin = (parseInt(today.getHours()) * 60) + parseInt(today.getMinutes());
+        var storage_topics= sessionStorage.getItem(`topics`);
+        // alert("1) "+TimeInMin)
+        if (storage_topics != null ) {
+          let callsTopics1 = storage_topics.split(',');
+          cJoin.innerHTML = `<tr><td>${ callsTopics1[0]}</td>`;
+          cDisconnect.innerHTML=  `<tr><td>${callsTopics1[1]}</td>`;
+          cService.innerHTML = `<tr><td>${callsTopics1[2]}</td>`;
+          cReport.innerHTML= `<tr><td>${callsTopics1[3]}</td></tr>`;
+        }else{
+          cJoin.innerHTML= `<tr><td>${0}</td>`;
+          cDisconnect.innerHTML=  `<tr><td>${0}</td>`;
+          cService.innerHTML= `<tr><td>${0}</td>`;
+          cReport.innerHTML= `<tr><td>${0}</td></tr>`;
+        }
+        
+      }
+
+      
+
+    </script>
+  </table>
   </div>
 </div>

@@ -68,7 +68,7 @@ function updateWaitingCalls(){
         cardId:"calls topics count",
         value: topicsCount
       }
-
+      waitingTime=waitingTime.toFixed(3);
       var waitingTimeSum = {
         cardId:"waiting time sum",
         value: waitingTime
@@ -78,7 +78,7 @@ function updateWaitingCalls(){
       io.emit('average waiting time', waitingCallsLast10min);
       io.emit('totalWaitingCalls', totalWaitingCalls);
       io.emit('calls topics',CallsTopicsCount);
-      io.emit('waiting time',waitingTimeSum)
+      io.emit('waiting time',waitingTimeSum);
       });
       // 5 min update 
     setTimeout(updateWaitingCalls,1000);
@@ -120,7 +120,15 @@ app.get('/', (req, res) => {
   res.render("pages/dashboard", data)
 })
 app.get('/tables',(req, res) => {
+  updateWaitingCalls();
   res.render("pages/tables")
+ 
+
+})
+
+app.get('/predictionBml',(req, res) => {
+  updateWaitingCalls();
+  res.render("pages/predictionBml")
  
 
 })
@@ -137,10 +145,17 @@ io.on('connection', (socket) => {
   //   console.log(msg);
   //   io.emit('newdata', msg);
   // });
+  socket.on('createCSV', (CSV)=>{
+    Mongo.exportToCsv();
+  });
   socket.on("delete", (Flush)=>{
+   window.sessionStorage.clear()
     redisSub.flushAll();
   });
   
 });
+
+
+
 //-----------
 
