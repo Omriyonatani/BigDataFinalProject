@@ -12,14 +12,28 @@
       socket.connect();
       
     function getPrediction(row){
-        socket.emit('createCSV',"createCSV");
-        const inpObj = (row.cells[2].getElementsByTagName('input')[0])
-        if (inpObj.checkValidity()) {
-            
-            document.getElementById("age").innerHTML = inpObj.validationMessage;
-              
+        var message = {};
         
-        let callsTopics= [1,1,1,1]
+        message.city = row.cells[0].getElementsByTagName('select')[0].value;
+        message.gender = row.cells[1].getElementsByTagName('select')[0].value;
+        message.age = (row.cells[2].getElementsByTagName('input')[0].value || 18);
+        message.prevCalls = row.cells[3].getElementsByTagName('input')[0].value ;
+        message.Product = row.cells[4].getElementsByTagName('select')[0].value;
+
+        socket.emit('Get Prediction',message);
+
+        const inpObj1 = (row.cells[2].getElementsByTagName('input')[0])
+        
+
+        if (inpObj1.checkValidity() ) {
+            
+            document.getElementById("age").innerHTML = inpObj1.validationMessage;
+          
+          socket.on('prediction Topic',ans=>{
+            alert(ans)
+            let callsTopics= [ans.join,ans.disconnect,ans.service,ans.report]
+          })
+          alert("in hereeeeeeeeee")
 
 
             const data3 = {
@@ -53,8 +67,9 @@
             const myChart3 = new Chart(document.getElementById('predictionChart'),config3);
             }else{
                 alert("Age must be between 0-100")
+               
                 }
-                }
+            }
     </script>
     
       <div class="card-body table-responsive">
@@ -96,33 +111,38 @@
                 </select></th>
                <th>
                     <select style="width: 3cm;  ">
-                        <option value='male'>גבר</option>
-                        <option value='female'>אישה</option>
+                        <option value='male'> גבר </option>
+                        <option value='female'> אישה </option>
                     </select></th>
                <th><input id="age" type="number" style="width: 3cm;" min="0" max="100" required /></th>
-               <th><input type="number" style="width: 3cm;" min="0" max="200" required/></th>
+               <th><input  type="number" style="width: 3cm;" min="0" max="200" required/></th>
                <th><select style="width: 3cm;  ">
-                    <option value='Internet'>אינטרנט</option>
-                    <option value='Cables'>כבלים</option>
-                    <option value='Cellular'>סלולרי</option>
-                    <option value='Internet,Cables,Cellular'>הכל</option>
+                    <option value='Internet'> אינטרנט </option>
+                    <option value='Cables'> כבלים </option>
+                    <option value='Cellular'> סלולרי </option>
+                    <option value='Internet,Cables,Cellular'> הכל </option>
                 </select></th>
      
                <th><button class="btn btn-info btn-round " onclick='getPrediction(this.parentNode.parentNode)' >Predict Topic</button></th>
 
                
-               
           </tbody>
-          <script>
-              
-               
-               
-          </script>
+          
+         
         </table>
-       
         </div>
       </div>
       </div>
+      <div>
+        <button style="background-color: brown;" class="btn btn-info btn-round " >Creat new ML Model</button>
+      </div>
+      <script>
+        // function getNewModel(){
+        //   alert("pleas wait...")
+        //   var model = "new model";
+        //   socket.emit("new model",model);
+        // }
+    </script>
     </div>
     <div class="card" style="width: 20rem; ">
         <div class="card-header card-header-tabs card-header-primary">

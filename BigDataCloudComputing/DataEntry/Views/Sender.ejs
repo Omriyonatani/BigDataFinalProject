@@ -30,6 +30,10 @@
     <script>
        
         function startConv() {
+            var totalCalls = parseInt(document.getElementById("total").value);
+            if (parseInt(totalCalls) > 0) {
+                
+           
             var tr = document.getElementById('openConversations').insertRow();
             var cStart = tr.insertCell(0);
             var cCity = tr.insertCell(1);
@@ -122,8 +126,10 @@
                                     <option value='Internet,Cables,Cellular'>הכל</option>
                                     </select>`;
             cEnd.innerHTML = `<button onclick='reportEndCall(this.parentNode.parentNode,${phNum})'>סיום</button>`;
+        }else{
+            alert("No more calls for now")
         }
-
+    }
 
 
         
@@ -271,6 +277,7 @@
 
             socket.emit("callDetails", message);
             deleteRow(row);
+            
         }
 
         function deleteRow(row) {

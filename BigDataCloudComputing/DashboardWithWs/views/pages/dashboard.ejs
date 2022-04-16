@@ -79,6 +79,7 @@ The above copyright notice and this permission notice shall be included in all c
 
       function flushAll() {
         var Flush = "delet data from redis";
+       sessionStorage.clear();
         socket.emit("delete", Flush);
         alert("data has been deleted..");
       }

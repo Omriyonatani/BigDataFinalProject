@@ -57,18 +57,34 @@
     while(i< labels.length){
 
       var labelsInMin = (parseInt(labels[i].split(":")[0]) * 60) + parseInt(labels[i].split(":")[1]);
-      if (TimeInMin > labelsInMin) {
-       var data_from_storage = sessionStorage.getItem(`${str} at ${labelsInMin}`);
+      if (TimeInMin >= labelsInMin) {
+        var data_from_storage = sessionStorage.getItem(`${str} at ${labelsInMin}`);
         if(data_from_storage != null )  {
-         
          newPoint.push(data_from_storage);
-         }else{
-          newPoint.push(0)
+         }else {
           
+          for(let j=4;j>0;j--){
+              data_from_storage = sessionStorage.getItem(`${str} at ${(labelsInMin-j)}`);
+              // alert("labels in min =" + labelsInMin +"\nlabels in min -j = " +(labelsInMin-j))
+              for (let k = j; k >0; k--) {
+                var data_from_storage2 = sessionStorage.getItem(`${str} at ${(labelsInMin-k)}`);
+                if (data_from_storage2 < data_from_storage  ) {
+                  
+                  data_from_storage = data_from_storage2;
+                }
+              }
+              if(data_from_storage != null )  {
+
+                  newPoint.push(data_from_storage);
+                // j=0 to exsit the for loop                
+                  // j=0;
+              }else{
+                  continue;
+                }   
+          }
+          newPoint.push(0)
         }
-        
-      }
-      else{
+      }else{
         break;
       }
       i+=1;
@@ -110,17 +126,22 @@
     const myChart = new Chart(
       document.getElementById('myChart'), config);
 
-    function addData(chart= myChart) {
-      chart.data.datasets.forEach((dataset) => {
+    async function addData(chart= myChart) {
+       
+     chart.data.datasets.forEach((dataset) => {
+      
         insertWatingCalls().then(data=>{ 
-        dataset.data.push(data);
+        
+          dataset.data.push(data);
         })
+        });
+       
+        await myChart.update();
+      }
      
-      });
-      myChart.update();
-      setTimeout(addData,300000)
-    }
-    addData(myChart);
+      // setTimeout(addData,300000)
+    
+   
   </script>
 </div>
 
@@ -171,18 +192,18 @@
     };
     const myChart2 = new Chart(document.getElementById('myChart2'),config2);
     
-    function updateWaitingTimeSum(chart= myChart2 ) {
+    function updateWaitingTimeSum(chart= myChart2 ) { 
+      
       chart.data.datasets.forEach((dataset) => {
         insertWatingTimeSum().then(data=>{ 
         dataset.data.push(data);
        })
-     
+        myChart2.update();
       });
-      myChart2.update();
-      setTimeout( updateWaitingTimeSum,300000)
+     
+      // setTimeout( updateWaitingTimeSum,300000)
     }
    
-    updateWaitingTimeSum(myChart2);
 
 
   </script>
@@ -199,7 +220,7 @@
   <script>
     var today = new Date();
     var TimeInMin = (parseInt(today.getHours()) * 60) + parseInt(today.getMinutes());
-    var storage_topics= sessionStorage.getItem(`topics at ${TimeInMin}`);
+    var storage_topics= sessionStorage.getItem(`topics`);
     let callsTopics=[] ;
     if (storage_topics != null ) {
       
@@ -258,8 +279,29 @@
      
       });
       myChart3.update();
-      setTimeout(updateTopics,300000)
+      // 
     }
-    updateTopics();
+    // we need to activate this function that every 5 min(:00 :05 :10 :15 ..) it will update
+   
+   
+    // setTimeout(updateAllChatrs,fiveMin);
+    
+    function updateAllChatrs(){
+      
+      
+      updateTopics();
+      updateWaitingTimeSum();
+      addData();
+      // updateAllChatrs();
+      var today = new Date();
+
+      var TimeInSec = ((parseInt(today.getMinutes()) % 5)*60 + parseInt(today.getSeconds()));
+
+      // alert(parseInt(today.getMinutes()))
+      var fiveMin = (5*60 - (TimeInSec))*1000;
+      // alert("time in sec = " + TimeInSec +"\n5 min-now =" +fiveMin);
+      setTimeout(updateAllChatrs,fiveMin)
+    }
+    updateAllChatrs();
   </script>
 </div>

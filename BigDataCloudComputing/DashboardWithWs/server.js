@@ -4,6 +4,7 @@ const socketIO = require('socket.io');
 const redisSub = require('../Redis/redissub')
 const redisPub = require('../Redis/redispub');
 const Mongo= require('../MongoDB/MongoDB')
+const BigML= require('../bigML/bml');
 
 
 
@@ -145,11 +146,19 @@ io.on('connection', (socket) => {
   //   console.log(msg);
   //   io.emit('newdata', msg);
   // });
-  socket.on('createCSV', (CSV)=>{
+  // socket.on('new model',(model)=>{
+  //   console.log(model);
+  //   BigML.generateNewModel();
+  // })
+  socket.on('Get Prediction', async (inputData)=>{
     Mongo.exportToCsv();
+   await BigML.predictTopic(inputData).then(res=>{
+      io.emit('prediction Topic',res)
+    });
+
   });
   socket.on("delete", (Flush)=>{
-   window.sessionStorage.clear()
+  
     redisSub.flushAll();
   });
   
