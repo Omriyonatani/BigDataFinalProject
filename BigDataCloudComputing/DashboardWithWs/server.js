@@ -150,10 +150,11 @@ io.on('connection', (socket) => {
   //   console.log(model);
   //   BigML.generateNewModel();
   // })
-  socket.on('Get Prediction', async (inputData)=>{
+  socket.on('Get Prediction',  (inputData)=>{
     Mongo.exportToCsv();
-   await BigML.predictTopic(inputData).then(res=>{
-      io.emit('prediction Topic',res)
+     BigML.predictTopic(inputData).then(res=>{
+      console.log("res")
+      socket.emit('prediction Topic',res)
     });
 
   });
