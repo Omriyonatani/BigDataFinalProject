@@ -5,11 +5,7 @@ const Kafka = require("node-rdkafka");
 const { async } = require("jshint/src/prod-params");
 
 
-
 // From data entry to kafka
-
-
-// use you own parameters
 const kafkaConf = {
   "group.id": "kafka",
   "metadata.broker.list": "tricycle-01.srvs.cloudkafka.com:9094,tricycle-02.srvs.cloudkafka.com:9094,tricycle-03.srvs.cloudkafka.com:9094".split(","),
@@ -30,11 +26,10 @@ const genMessage = m => new Buffer.alloc(m.length,m);
 producer.on("ready", function(arg) {
   console.log(`producer ${arg.name} ready.`); 
 });
+
 producer.connect();
 
-module.exports.publish= function(msg)
-{   
+module.exports.publish= function(msg){   
   m=JSON.stringify(msg);
-
   producer.produce(topic, -1, genMessage(m), uuid.v4());     
 }

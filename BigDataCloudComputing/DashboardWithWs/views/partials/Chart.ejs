@@ -11,7 +11,6 @@
   <script src="/socket.io/socket.io.js"></script>
   <script>
     var socket = io.connect();
-
   </script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script>
@@ -29,71 +28,65 @@
         date.setMinutes(minutes);
         ranges.push(date.toLocaleTimeString(language, format));
       }
-
       return ranges;
     }
 
-    async function insertWatingCalls(){
-      return new Promise (res=>{
-        
+    // Get "Total waiting calls" from the socket and update the chart & save it on the session storage (browser storage)
+    async function insertWaitingCalls(){
+      return new Promise (res=>{ 
         socket.on("totalWaitingCalls", (msg)=> {
           var today = new Date();
           var TimeInMin = (parseInt(today.getHours()) * 60) + parseInt(today.getMinutes());
-          sessionStorage.setItem(`total Waiting Calls at ${TimeInMin}`,msg.value);
+          sessionStorage.setItem(`total Waiting Calls at ${TimeInMin}`,msg.value); // browsser storage 
           res(msg.value);
         });
       });      
     }
    
-    
-     
-   function startFromNow(str){
-    let i=0;
-    let newPoint=[];
-   
-    const labels = getTimeRanges(5, 'ru') 
-    var today = new Date();
-    var TimeInMin = (parseInt(today.getHours()) * 60) + parseInt(today.getMinutes());
-    while(i< labels.length){
+    // initiallize the graphs with 5 mins aggregate from 00:00 to now..  
+    function startFromNow(str){
+      let i=0;
+      let newPoint=[];
+      const labels = getTimeRanges(5, 'ru'); // aggregation 5 mins
+      var today = new Date();
+      var TimeInMin = (parseInt(today.getHours()) * 60) + parseInt(today.getMinutes());
 
-      var labelsInMin = (parseInt(labels[i].split(":")[0]) * 60) + parseInt(labels[i].split(":")[1]);
-      if (TimeInMin >= labelsInMin) {
-        var data_from_storage = sessionStorage.getItem(`${str} at ${labelsInMin}`);
-        if(data_from_storage != null )  {
-         newPoint.push(data_from_storage);
-         }else {
-          
-          for(let j=4;j>0;j--){
-              data_from_storage = sessionStorage.getItem(`${str} at ${(labelsInMin-j)}`);
-              // alert("labels in min =" + labelsInMin +"\nlabels in min -j = " +(labelsInMin-j))
-              for (let k = j; k >0; k--) {
-                var data_from_storage2 = sessionStorage.getItem(`${str} at ${(labelsInMin-k)}`);
-                if (data_from_storage2 < data_from_storage  ) {
-                  
-                  data_from_storage = data_from_storage2;
+      // from 00:00 to now- everything is initillize to be the number from the session-storage OR zero (0)
+      while(i < labels.length){
+        var labelsInMin = (parseInt(labels[i].split(":")[0]) * 60) + parseInt(labels[i].split(":")[1]);
+        if (TimeInMin >= labelsInMin) {
+          // update the time that we over.. 
+          var data_from_storage = sessionStorage.getItem(`${str} at ${labelsInMin}`);
+          if(data_from_storage != null ){
+            newPoint.push(data_from_storage);
+          } else { // find the saved data in the session storage at the last 5 mins 
+            for(let j=4;j>0;j--){ // go to the last 4 mins and check if there some saved value in he session storage
+                data_from_storage = sessionStorage.getItem(`${str} at ${(labelsInMin-j)}`);
+                for (let k = j; k > 0; k--) { // check the minimum value 
+                  var data_from_storage2 = sessionStorage.getItem(`${str} at ${(labelsInMin-k)}`);
+                  if (data_from_storage2 < data_from_storage  ) {
+                    data_from_storage = data_from_storage2;
+                  }
+                }
+                if(data_from_storage != null )  {
+                  newPoint.push(data_from_storage);
+                }else{
+                    continue;
                 }
               }
-              if(data_from_storage != null )  {
-
-                  newPoint.push(data_from_storage);
-                // j=0 to exsit the for loop                
-                  // j=0;
-              }else{
-                  continue;
-                }   
+            newPoint.push(0)
           }
-          newPoint.push(0)
+        }else{
+          break;
         }
-      }else{
-        break;
+        i+=1;
       }
-      i+=1;
+      return newPoint;
     }
-    return newPoint;
-  }
 
-  let newPoint1 = startFromNow("total Waiting Calls");
-  const labels1 = getTimeRanges(5, 'ru')
+
+    let newPoint1 = startFromNow("total Waiting Calls");
+    const labels1 = getTimeRanges(5, 'ru')
 
     const data = {
       labels: labels1,
@@ -119,32 +112,23 @@
             max: 200
           }
         }
-
       }
     };
 
-    const myChart = new Chart(
-      document.getElementById('myChart'), config);
+    const myChart = new Chart(document.getElementById('myChart'), config);
 
-    async function addData(chart= myChart) {
-       
-     chart.data.datasets.forEach((dataset) => {
-      
-        insertWatingCalls().then(data=>{ 
-        
-          dataset.data.push(data);
+    function addData(chart= myChart) {
+      chart.data.datasets.forEach((dataset) => {
+        insertWaitingCalls().then(data=>{ 
+        dataset.data.push(data);
         })
-        });
-       
-        await myChart.update();
-      }
-     
-      // setTimeout(addData,300000)
-    
-   
+      });
+      myChart.update();
+    }
   </script>
 </div>
 
+<!-- Graph 2 -->
 <div class="card">
   <div class="card-header card-header-warning card-header-primary">
     <h4 class="card-title">Waiting Call time</h4>
@@ -156,18 +140,19 @@
   </div>
   <script>
     const labels2 = getTimeRanges(5, 'ru')
-    
-    async function insertWatingTimeSum(){
+  
+    // Waiting time from the start of the day.. 
+    async function insertWaitingTimeSum(){
       return new Promise (res=>{
         socket.on("waiting time", (msg)=> {
           var today = new Date();
           var TimeInMin = (parseInt(today.getHours()) * 60) + parseInt(today.getMinutes());
           sessionStorage.setItem(`waiting time at ${TimeInMin}`,msg.value);
-        
           res(msg.value);
         });
       });      
     }
+
     let newPoint2 = startFromNow("waiting time");
     const data2 = {
       labels: labels2,
@@ -175,7 +160,6 @@
         backgroundColor: 'rgba(95,158,160,1)',
         borderColor: 'rgb(33, 99, 132)',
         data: newPoint2,
-        
       }]
     };
 
@@ -190,26 +174,23 @@
         },
       }
     };
+
     const myChart2 = new Chart(document.getElementById('myChart2'),config2);
-    
-    function updateWaitingTimeSum(chart= myChart2 ) { 
-      
+
+    // Function that takes the socket data, insert to dataset of the chart and then updates the chart.
+    function updateWaitingTimeSum(chart= myChart2 ){
       chart.data.datasets.forEach((dataset) => {
-        insertWatingTimeSum().then(data=>{ 
+        insertWaitingTimeSum().then(data=>{ 
         dataset.data.push(data);
        })
         myChart2.update();
       });
-     
-      // setTimeout( updateWaitingTimeSum,300000)
     }
-   
-
 
   </script>
 </div>
 
-
+<!-- Graph 3 -->
 <div class="card " style="width: 20rem;">
   <div class="card-header card-header-tabs card-header-primary">
     <h4 class="card-title">Call Topic</h4>
@@ -217,31 +198,28 @@
   <div>
     <canvas id="myChart3" width="350" height="350"></canvas>
   </div>
+
   <script>
-    var today = new Date();
-    var TimeInMin = (parseInt(today.getHours()) * 60) + parseInt(today.getMinutes());
     var storage_topics= sessionStorage.getItem(`topics`);
     let callsTopics=[] ;
     if (storage_topics != null ) {
-      
       let callsTopics1 = storage_topics.split(',');
       callsTopics= [callsTopics1[0],callsTopics1[1],callsTopics1[2],callsTopics1[3]]
     }else{
       callsTopics= [1,1,1,1];
     }
-    
 
+    // listening to web socket, takes the data- and put it in the session storage, and return it to the table. 
     async function insertCallsTopic(){
       return new Promise (res=>{
         socket.on("calls topics", (msg)=> {
-          var today = new Date();
-          var TimeInMin = (parseInt(today.getHours()) * 60) + parseInt(today.getMinutes());
-          sessionStorage.setItem(`topics at ${TimeInMin}`,msg.value)
+          sessionStorage.setItem(`topics`,msg.value)
           res(msg.value);
         });
-      });      
+      });
     }
-      const data3 = {
+
+    const data3 = {
       labels: [
         'Join',
         'disconnect',
@@ -259,7 +237,6 @@
         ],
         hoverOffset: 8,
       }],
-
     };
 
     const config3 = {
@@ -268,40 +245,28 @@
 
     };
 
- 
     const myChart3 = new Chart(document.getElementById('myChart3'),config3);
     
-    function updateTopics(chart= myChart3) {
-      chart.data.datasets.forEach((dataset) => {
+    function updateTopics(chart= myChart3){
+      chart.data.datasets.forEach((dataset) =>{
         insertCallsTopic().then(data=>{ 
         dataset.data = data;
         })
-     
       });
       myChart3.update();
-      // 
     }
-    // we need to activate this function that every 5 min(:00 :05 :10 :15 ..) it will update
-   
-   
-    // setTimeout(updateAllChatrs,fiveMin);
-    
-    function updateAllChatrs(){
-      
-      
+
+    // Update everything every 5 mins.. 
+    function updateAllCharts(){
       updateTopics();
       updateWaitingTimeSum();
       addData();
-      // updateAllChatrs();
       var today = new Date();
-
-      var TimeInSec = ((parseInt(today.getMinutes()) % 5)*60 + parseInt(today.getSeconds()));
-
-      // alert(parseInt(today.getMinutes()))
-      var fiveMin = (5*60 - (TimeInSec))*1000;
-      // alert("time in sec = " + TimeInSec +"\n5 min-now =" +fiveMin);
-      setTimeout(updateAllChatrs,fiveMin)
+      var TimeInSec = ((parseInt(today.getMinutes()) % 5)*60 + parseInt(today.getSeconds())); // check the time modulo 5
+      var fiveMin = (5*60 - (TimeInSec))*1000; // update the chart with the time remaining.. 
+      setTimeout(updateAllCharts, fiveMin)
     }
-    updateAllChatrs();
+
+    updateAllCharts();
   </script>
 </div>

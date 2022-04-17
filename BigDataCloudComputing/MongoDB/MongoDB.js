@@ -5,54 +5,48 @@ const { Parser } = require('json2csv');
 var fs = require('fs');
 
 
-
 async function insertToMongoDB(data){
-    
-    client.connect(err => {
+  // Connect to our MongoDB's collection
+  client.connect(err => {
+    if (err) throw err;
     const collection = client.db("CallCenter").collection("Customers");
-        // perform actions on the collection object
-        // client.close(); 
-    });
-    client.connect(async function(err, db) {
-        data= JSON.parse(data)
-        if (err) throw err;
-        var dbo = db.db("CallCenter");
-        dbo.collection("Customers").insertOne(data, function(err, res) {
-          if (err) throw err;
-        //  db.close();
-        }); 
-      });
-      
-
+  });
+  // Connect + Insert to the MongoDB
+  client.connect(async function(err, db) {
+    data = JSON.parse(data)
+    if (err) throw err;
+    var dbo = db.db("CallCenter");
+    dbo.collection("Customers").insertOne(data, function(err, res) {
+      if (err) throw err;
+    }); 
+  });
 }
+
+// Function that exports the data to CSV (for BigML)
 function exportToCsv(){
-    client.connect(function(err, db) {
-        if (err) throw err;
-        var dbo = db.db("CallCenter");
-        var query = { };
-        dbo.collection("Customers").find(query).toArray(function(err, result) {
-          if (err) throw err;
-          var fields = ['phoneNumber', 'id', 'city', 'gender', 'age', 'prevCalls','topic','Product','totalTime','totalCalls','season'];
-          const opts = { fields };
-          try {
-            const parser = new Parser(opts);
-            const csv = parser.parse(result);
-            var path='../bigML/MongoData.csv';
-            fs.writeFile(path, csv, function(err,data) {
-                if (err) {throw err;}
-               
-            });
-          } catch (err) {
-            console.error(err);
-          }
-          db.close();
+  client.connect(function(err, db) {
+    if (err) throw err;
+    var dbo = db.db("CallCenter");
+    var query = { };
+    dbo.collection("Customers").find(query).toArray(function(err, result) {
+      if (err) throw err;
+      var fields = ['phoneNumber', 'id', 'city', 'gender', 'age', 'prevCalls','topic','Product','totalTime','totalCalls','season'];
+      const opts = { fields };
+      try {
+        const parser = new Parser(opts);
+        const csv = parser.parse(result);
+        var path='../bigML/MongoData.csv';
+        fs.writeFile(path, csv, function(err,data) {
+            if (err) {throw err;}
+            
         });
-      });
-
+      } catch (err) {
+        console.error(err);
+      }
+      db.close();
+    });
+  });
 }
-
-
-
 
 module.exports.insertToMongoDB = insertToMongoDB;
 module.exports.exportToCsv = exportToCsv;

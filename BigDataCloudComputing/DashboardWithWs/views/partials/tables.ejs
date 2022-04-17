@@ -16,14 +16,14 @@
           <th>Time</th>
           <th>Waiting Calls</th>
           <th>Waiting Time</th>
-          <!-- <th>Service</th>
-          <th>Report</th> -->
         </thead>
         <tbody id="callDetails">
-          
         </tbody>
         <script>
-           callsDetailsTable();
+          callsDetailsTable();
+          UpdateAll();
+
+          // Aggregation every "n" mins 
           function getTimeRanges(interval, language = window.navigator.language) {
             const ranges = [];
             const date = new Date();
@@ -37,77 +37,116 @@
               date.setMinutes(minutes);
               ranges.push(date.toLocaleTimeString(language, format));
             }
-
             return ranges;
           }
-        
-          function callsDetailsTable(){
-              var timeIs = getTimeRanges(5, 'ru');
-              var today = new Date();
-              var TimeInMin = (parseInt(today.getHours()) * 60) + parseInt(today.getMinutes());
-              for (let index = 0; index < timeIs.length; index++) {
-                
-                var labelsInMin = (parseInt(timeIs[index].split(":")[0]) * 60) + parseInt(timeIs[index].split(":")[1]);
-              
-                if (TimeInMin > labelsInMin) {
-                  var tr= document.getElementById("callDetails").insertRow();
-                  var cTime= tr.insertCell(0);
-                  var cWaitingCalls = tr.insertCell(1);
-                  var cWaitingTimen = tr.insertCell(2);
-                
-                  cTime.innerHTML = `<tr><td>${timeIs[index]}</td>`;             
-                   
-                
-                  var data_from_storage = sessionStorage.getItem(`total Waiting Calls at ${labelsInMin}`);
-                      // alert(data_from_storage)
-                  if(data_from_storage != null )  {
-                    // alert(waiting_time_from_storage)
-                    cWaitingCalls.innerHTML = `<td>${data_from_storage} </td>`;
-                    // cWaitingTimen.innerHTML = `<td>${data_from_storage} sec</td></tr>`
-                  }else{
-                    cWaitingCalls.innerHTML = `<td>${0} </td>`;
-                  }
 
-                  data_from_storage = sessionStorage.getItem(`waiting time at ${labelsInMin}`);
-                  if(data_from_storage != null )  {
-                    // alert(waiting_time_from_storage)
-                    cWaitingTimen.innerHTML = `<td>${data_from_storage} sec</td></tr>`
-                  }else{
-                    cWaitingTimen.innerHTML = `<td>${0} sec</td></tr>`
-                  }
-                
-            }else { 
+          // Build the table
+          function callsDetailsTable(){
+            var timeIs = getTimeRanges(5, 'ru');
+            var today = new Date();
+            var TimeInMin = (parseInt(today.getHours()) * 60) + parseInt(today.getMinutes());
+
+            for (let index = 0; index < timeIs.length; index++){
+              var labelsInMin = (parseInt(timeIs[index].split(":")[0]) * 60) + parseInt(timeIs[index].split(":")[1]);
+              if (TimeInMin >= labelsInMin) {
+                var tr= document.getElementById("callDetails").insertRow();
+                var cTime= tr.insertCell(0);
+                var cWaitingCalls = tr.insertCell(1);
+                var cWaitingTimen = tr.insertCell(2);
+                cTime.innerHTML = `<tr><td>${timeIs[index]}</td>`;              
+              
+                var data_from_storage = sessionStorage.getItem(`total Waiting Calls at ${labelsInMin}`);
+                if(data_from_storage != null )  {
+                  cWaitingCalls.innerHTML = `<td>${data_from_storage} </td>`;
+                } else { // find the saved data in the session storage at the last 5 mins
+                  for(let j=4;j>0;j--){ // go to the last 4 mins and check if there some saved value in he session storage
+                    data_from_storage = sessionStorage.getItem(`total Waiting Calls at ${(labelsInMin-j)}`);
+                      for (let k = j; k > 0; k--) { // check the minimum value 
+                        var data_from_storage2 = sessionStorage.getItem(`total Waiting Calls at ${(labelsInMin-k)}`);
+                        if (data_from_storage2 < data_from_storage  ) {
+                          data_from_storage = data_from_storage2;
+                        }
+                      }
+                      if(data_from_storage != null ){
+                        cWaitingCalls.innerHTML = `<td>${data_from_storage} </td>`;
+                      }else{
+                        continue;
+                      }
+                    }
+                  cWaitingCalls.innerHTML = `<td>${0} </td>`;
+                }
+                data_from_storage = sessionStorage.getItem(`waiting time at ${labelsInMin}`);
+
+                if(data_from_storage != null )  {
+                  cWaitingTimen.innerHTML = `<td>${data_from_storage} sec</td></tr>`;
+                } else { // find the saved data in the session storage at the last 5 mins
+                  for(let j=4;j>0;j--){ // go to the last 4 mins and check if there some saved value in he session storage
+                      data_from_storage = sessionStorage.getItem(`waiting time at ${(labelsInMin-j)}`);
+                      for (let k = j; k > 0; k--) { // check the minimum value 
+                        var data_from_storage2 = sessionStorage.getItem(`waiting time at ${(labelsInMin-k)}`);
+                        if (data_from_storage2 < data_from_storage) {
+                          data_from_storage = data_from_storage2;
+                        }
+                      }
+                      if(data_from_storage != null ){
+                        cWaitingTimen.innerHTML = `<td>${data_from_storage} </td>`;
+                      }else{
+                        continue;
+                      }
+                    }
+                  cWaitingTimen.innerHTML = `<td>${0} </td>`;
+                }
+              }else{ 
                 getWaitingClls().then((res)=>{
                   cWaitingCalls.innerHTML = `<td>${res}</td>`;
                 })
-            
                 getWaitingTime().then(res=>{
-                        cWaitingTimen.innerHTML = `<td>${res} sec</td></tr>`
-                
-                      })
-                    } 
-                  }
-                   
+                  cWaitingTimen.innerHTML = `<td>${res} sec</td></tr>`
+                })
+              }
+            }
           }
-          function updateFirstTable(){
-           
+
+          // Update the table
+          function updateCallDetails(){
             var tr= document.getElementById("callDetails").insertRow();
-          
             var today = new Date();
             var TimeInMin = (parseInt(today.getHours()) * 60) + parseInt(today.getMinutes());
-                     
             var cTime= tr.insertCell(0);
             var cWaitingCalls = tr.insertCell(1);
             var cWaitingTimen = tr.insertCell(2);
-            
             cTime.innerHTML = `<tr><td>${today.getHours()}:${today.getMinutes()}</td>`;
-            cWaitingCalls.innerHTML = `<td>${sessionStorage.getItem(`total Waiting Calls at ${(TimeInMin)}`)}</td>`;
-            cWaitingTimen.innerHTML = `<td>${sessionStorage.getItem(`waiting time at ${(TimeInMin)}`)} sec</td></tr>`;
-            setTimeout(updateFirstTable,300000)
-
+            for(let j=4;j>0;j--){ // go to the last 4 mins and check if there some saved value in he session storage
+              var TotalWC_from_storage = sessionStorage.getItem(`total Waiting Calls at ${(TimeInMin-j)}`);
+              var data_from_storage = sessionStorage.getItem(`waiting time at ${(TimeInMin-j)}`);
+              for (let k = j; k > 0; k--) { // check the minimum value
+                var TotalWC_from_storage2 = sessionStorage.getItem(`total Waiting Calls at ${(TimeInMin-k)}`);
+                var data_from_storage2 = sessionStorage.getItem(`waiting time at ${(TimeInMin-k)}`);
+                if (data_from_storage2 < data_from_storage) {
+                  data_from_storage = data_from_storage2;
+                }
+                if(TotalWC_from_storage2 < TotalWC_from_storage){
+                  TotalWC_from_storage = TotalWC_from_storage2;
+                }
+              }
+              if(TotalWC_from_storage != null ){
+                cWaitingCalls.innerHTML = `<td>${TotalWC_from_storage} </td>`;
+                alert(TotalWC_from_storage);
+              }else{
+                continue;
+              }
+              if(data_from_storage != null ){
+                cWaitingTimen.innerHTML = `<td>${data_from_storage} </td></tr>`;
+                alert(TotalWC_from_storage);
+              }else{
+                continue;
+              }
+            }
+            // cWaitingCalls.innerHTML = `<td>${sessionStorage.getItem(`total Waiting Calls at ${(TimeInMin)}`)}</td>`;
+            // cWaitingTimen.innerHTML = `<td>${sessionStorage.getItem(`waiting time at ${(TimeInMin)}`)} sec</td></tr>`;
           }
-          function updateSecondTable(){
-            
+
+          function updateTopicsDetails(){
             socket.on("calls topics", (msg)=> {
              sessionStorage.setItem(`topics`,msg.value)
             });
@@ -127,28 +166,40 @@
               cReport.innerHTML= `<tr><td>${callsTopics1[3]}</td></tr>`;
             
             }
-                   setTimeout(updateSecondTable,300000)
-
           }
-        
-        updateSecondTable();
-        updateFirstTable();
-        async function getWaitingClls(){
-          return new Promise (res=>{
-            
-            socket.on("totalWaitingCalls", (msg)=> {
-              // alert(msg.value)
-              res(msg.value);
-            });
-          });      
-         }
-        async function getWaitingTime(){
-          return new Promise (res=>{
-            socket.on("waiting time", (msg)=> {
-              res(msg.value);
-            });
-          });      
-         }
+
+          function UpdateAll(){
+            updateTopicsDetails();
+            updateCallDetails();
+            var today = new Date();
+            var TimeInSec = ((parseInt(today.getMinutes()) % 5)*60 + parseInt(today.getSeconds())); // check the time modulo 5
+            var fiveMin = (5*60 - (TimeInSec))*1000; // update the chart with the time remaining.. 
+            setTimeout(UpdateAll, fiveMin);
+          }
+
+          // 
+          async function getWaitingClls(){
+            return new Promise (res=>{
+              socket.on("totalWaitingCalls", (msg)=> {
+                var today = new Date();
+                var TimeInMin = (parseInt(today.getHours()) * 60) + parseInt(today.getMinutes());
+                sessionStorage.setItem(`total Waiting Calls at ${TimeInMin}`,msg.value);
+                res(msg.value);
+              });
+            });      
+          }
+
+          //
+          async function getWaitingTime(){
+            return new Promise (res=>{
+              socket.on("waiting time", (msg)=> {
+                var today = new Date();
+                var TimeInMin = (parseInt(today.getHours()) * 60) + parseInt(today.getMinutes());
+                sessionStorage.setItem(`waiting time at ${TimeInMin}`,msg.value);
+                res(msg.value);
+              });
+            });      
+          }
 
         </script>
       </table>
@@ -183,38 +234,26 @@
      
     </tbody>
     <script>
-    
-      
-      dayTopics();
-      function dayTopics(){
-        
-        var tr= document.getElementById("topicsDetails").insertRow();
-        
-        var cJoin = tr.insertCell(0);
-        var cDisconnect = tr.insertCell(1);
-        var cService = tr.insertCell(2);
-        var cReport = tr.insertCell(3);
-        var today = new Date();
-        var TimeInMin = (parseInt(today.getHours()) * 60) + parseInt(today.getMinutes());
-        var storage_topics= sessionStorage.getItem(`topics`);
-        // alert("1) "+TimeInMin)
-        if (storage_topics != null ) {
-          let callsTopics1 = storage_topics.split(',');
-          cJoin.innerHTML = `<tr><td>${ callsTopics1[0]}</td>`;
-          cDisconnect.innerHTML=  `<tr><td>${callsTopics1[1]}</td>`;
-          cService.innerHTML = `<tr><td>${callsTopics1[2]}</td>`;
-          cReport.innerHTML= `<tr><td>${callsTopics1[3]}</td></tr>`;
-        }else{
-          cJoin.innerHTML= `<tr><td>${0}</td>`;
-          cDisconnect.innerHTML=  `<tr><td>${0}</td>`;
-          cService.innerHTML= `<tr><td>${0}</td>`;
-          cReport.innerHTML= `<tr><td>${0}</td></tr>`;
-        }
-        
+      var tr= document.getElementById("topicsDetails").insertRow();
+
+      var cJoin = tr.insertCell(0);
+      var cDisconnect = tr.insertCell(1);
+      var cService = tr.insertCell(2);
+      var cReport = tr.insertCell(3);
+
+      var storage_topics= sessionStorage.getItem(`topics`);
+      if (storage_topics != null ) { // if there some storage in the session storage- take that
+        let callsTopics1 = storage_topics.split(',');
+        cJoin.innerHTML = `<tr><td>${ callsTopics1[0]}</td>`;
+        cDisconnect.innerHTML=  `<tr><td>${callsTopics1[1]}</td>`;
+        cService.innerHTML = `<tr><td>${callsTopics1[2]}</td>`;
+        cReport.innerHTML= `<tr><td>${callsTopics1[3]}</td></tr>`;
+      } else {                      // else put zero (0)
+        cJoin.innerHTML= `<tr><td>${0}</td>`;
+        cDisconnect.innerHTML=  `<tr><td>${0}</td>`;
+        cService.innerHTML= `<tr><td>${0}</td>`;
+        cReport.innerHTML= `<tr><td>${0}</td></tr>`;
       }
-
-      
-
     </script>
   </table>
   </div>
