@@ -40,7 +40,7 @@ function predictTopic(city,gender,age,prevCalls,produce){
     var connection = new bigml.BigML('RaafatMarzuq','2a5da361441e10eaee2258ad814e5f2d764181b0')
 
     var source = new bigml.Source(connection);
-    source.createAndWait('../bigML/MongoData.csv',true, function(error, sourceInfo) {
+    source.create('../bigML/MongoData.csv',true, function(error, sourceInfo) {
       if (!error && sourceInfo) {
         var dataset = new bigml.Dataset(connection);
         dataset.create(sourceInfo, function(error, datasetInfo) {

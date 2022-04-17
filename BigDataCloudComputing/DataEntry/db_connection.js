@@ -9,14 +9,15 @@ function connect(){
   var con = mysql.createConnection({
     host: "localhost",
     user: "root",
-    password: "13121994",
+    password: "PASSWORD",
     database: 'bigdatadb'
   });
+  return con;
 }
 
 // Connect the to MySQL DB and make an async call to pull the values of the MySQL DB
 function pullFromDB(){
-  connect();
+ var con= connect();
   return new Promise(res => {
     con.query(`SELECT * FROM customers`, function (err, result) {
       if (err) {
@@ -34,7 +35,7 @@ async function asyncCall(){
 }
 
 function updateDB(data){
-  connect();
+ var con= connect();
   var phoneNumber = data.phoneNumber; // Primary key
   con.query(`UPDATE customers SET 
               previouscalls = previouscalls + 1,
