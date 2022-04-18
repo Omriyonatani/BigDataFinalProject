@@ -2,7 +2,7 @@
 
 const uuid = require("uuid");
 const Kafka = require("node-rdkafka");
-const { async } = require("jshint/src/prod-params");
+
 
 
 // From data entry to kafka
