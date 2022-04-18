@@ -32,4 +32,4 @@ io.on("connection", (socket) => {
     });
 });
 
-server.listen(port, () => console.log(`Call Center app listening at http://localhost:${port}`));
+server.listen(process.env.PORT || port, () => console.log(`Call Center app listening at http://localhost:${port}`));
