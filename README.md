@@ -12,7 +12,7 @@ MySQL
 #### <ins> Message broker: </ins> ####
 Kafka
 
-#### <ins> Environment system: </ins> ####
+#### <ins> Containerization Platform: </ins> ####
 Docker
 
 #### <ins> Language: </ins> ####
