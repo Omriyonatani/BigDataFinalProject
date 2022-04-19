@@ -5,8 +5,8 @@
 
 ### <ins> Technologies: <ins> ###
 #### <ins> Data-bases: </ins> ####
-MongoDB
-Redis
+MongoDB,
+Redis,
 MySQL
 
 #### <ins> Message broker: </ins> ####
@@ -16,8 +16,8 @@ Kafka
 Docker
 
 #### <ins> Language: </ins> ####
-Node.js
-HTML
+Node.js,
+HTML,
 CSS
 
  
