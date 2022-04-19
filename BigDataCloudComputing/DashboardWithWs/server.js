@@ -145,8 +145,11 @@ io.on('connection', (socket) => {
   // })
   socket.on('Get Prediction',  (inputData)=>{
     Mongo.exportToCsv();
-     BigML.GetPred(inputData).then(res=>{
-      console.log("res")
+
+    // console.log(inputData)
+
+     BigML.GetPred(inputData.city,inputData.gender,inputData.age,inputData.prevCalls,inputData.Product).then(res=>{
+      // console.log(res)
       socket.emit('prediction Topic',res)
     });
   });

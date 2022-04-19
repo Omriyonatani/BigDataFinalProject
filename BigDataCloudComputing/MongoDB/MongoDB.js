@@ -1,5 +1,5 @@
 const { MongoClient, ServerApiVersion } = require('mongodb')
-const uri = "mongodb+srv://raafat:eRcywty8yYOG6s9q@cluster0.phfg8.mongodb.net/CallCenter?retryWrites=true&w=majority";
+const uri ="mongodb+srv://raafat:eRcywty8yYOG6s9q@cluster0.phfg8.mongodb.net/CallCenter?retryWrites=true&w=majority";
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true, serverApi: ServerApiVersion.v1 });
 const { Parser } = require('json2csv');
 var fs = require('fs');
@@ -47,6 +47,6 @@ function exportToCsv(){
     });
   });
 }
-
+exportToCsv();
 module.exports.insertToMongoDB = insertToMongoDB;
 module.exports.exportToCsv = exportToCsv;

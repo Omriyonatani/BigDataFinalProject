@@ -10,33 +10,12 @@
   <script>
     var socket = io();
     socket.connect();
-
-    // Takes the prediction data that the user insert, for BigML
-    function getPrediction(row){
-      var message = {};
-      
-      message.city = row.cells[0].getElementsByTagName('select')[0].value;
-      message.gender = row.cells[1].getElementsByTagName('select')[0].value;
-      message.age = (row.cells[2].getElementsByTagName('input')[0].value || 18);
-      message.prevCalls = row.cells[3].getElementsByTagName('input')[0].value ;
-      message.Product = row.cells[4].getElementsByTagName('select')[0].value;
-
-      socket.emit('Get Prediction',message);
-
-      // Check age validation
-      const inpObj1 = (row.cells[2].getElementsByTagName('input')[0])
-      if (inpObj1.checkValidity()){
-        document.getElementById("age").innerHTML = inpObj1.validationMessage;
-        socket.on('prediction Topic',ans=>{
-          alert(ans)
-          let callsTopics= [ans.join,ans.disconnect,ans.service,ans.report]
-        })
-
-        const data3 = {
+    function drawChart(data){
+      const data3 = {
           labels: ['Join','disconnect','service','report'],
           datasets: [{
           label: 'Call Topic',
-          data: callsTopics,
+          data: data,
           backgroundColor: [
           'rgb(255, 99, 132)',
           'rgb(54, 162, 235)',
@@ -54,6 +33,31 @@
 
 
         const myChart3 = new Chart(document.getElementById('predictionChart'),config3);
+    }
+    // Takes the prediction data that the user insert, for BigML
+    function getPrediction(row){
+      var message = {};
+      
+      message.city = row.cells[0].getElementsByTagName('select')[0].value;
+      message.gender = row.cells[1].getElementsByTagName('select')[0].value;
+      message.age = (row.cells[2].getElementsByTagName('input')[0].value || 18);
+      message.prevCalls = row.cells[3].getElementsByTagName('input')[0].value ;
+      message.Product = row.cells[4].getElementsByTagName('select')[0].value;
+
+      socket.emit('Get Prediction',message);
+
+      // Check age validation
+      const inpObj1 = (row.cells[2].getElementsByTagName('input')[0])
+      if (inpObj1.checkValidity()){
+        // let callsTopics=[];
+        document.getElementById("age").innerHTML = inpObj1.validationMessage;
+        socket.on('prediction Topic',ans=>{
+          // alert(ans.report)
+          let callsTopics= [ans.join,ans.disconnect,ans.service,ans.report]
+          drawChart(callsTopics)
+        })
+        // alert(callsTopics)
+       
       }else{
             alert("Age must be between 18-100")
             
@@ -107,7 +111,8 @@
             </th>
             <th><input id="age" type="number" style="width: 3cm;" min="18" max="100" required /></th>
             <th><input  type="number" style="width: 3cm;" min="0" max="200" required/></th>
-            <th><select style="width: 3cm;  ">
+            <th><select style="width: 3cm;">
+              <option value=''> מוצר </option>
               <option value='Internet'> אינטרנט </option>
               <option value='Cables'> כבלים </option>
               <option value='Cellular'> סלולרי </option>
