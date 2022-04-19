@@ -57,8 +57,6 @@ The above copyright notice and this permission notice shall be included in all c
 
       function totalCalls() {
         socket.on('average waiting time', function(msg) {
-         
-         
           var element = document.getElementById(msg.cardId);
           element.innerText = msg.value + " sec";
         })
@@ -78,7 +76,7 @@ The above copyright notice and this permission notice shall be included in all c
 
 
       function flushAll() {
-        var Flush = "delet data from redis";
+        var Flush = "delete data from redis";
        sessionStorage.clear();
         socket.emit("delete", Flush);
         alert("data has been deleted..");

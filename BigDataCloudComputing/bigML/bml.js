@@ -32,18 +32,14 @@ var connection = new bigml.BigML('RaafatMarzuq','2a5da361441e10eaee2258ad814e5f2
 //   }
 // });
 
-function predictTopic(city,gender,age,prevCalls,produce){
- 
- 
-  return new Promise( res =>{ 
-  
+async function predictTopic(city,gender,age,prevCalls,produce){
+  return await new Promise( res =>{
     var connection = new bigml.BigML('RaafatMarzuq','2a5da361441e10eaee2258ad814e5f2d764181b0')
-
     var source = new bigml.Source(connection);
-    source.create('../bigML/MongoData.csv',true, function(error, sourceInfo) {
+    source.create('../bigML/MongoData.csv',true, async function(error, sourceInfo) {
       if (!error && sourceInfo) {
         var dataset = new bigml.Dataset(connection);
-        dataset.create(sourceInfo, function(error, datasetInfo) {
+        dataset.create(sourceInfo, async function(error, datasetInfo) {
         if (!error && datasetInfo) {
           var predictionInput= {
           city:city,
@@ -53,7 +49,7 @@ function predictTopic(city,gender,age,prevCalls,produce){
           produce: produce
         }
         var prediction = new bigml.Prediction(connection);
-        prediction.create('model/625acee2049fde5d94001586',predictionInput, function(error, prediction) {
+        prediction.create('model/625acee2049fde5d94001586',predictionInput, async function(error, prediction) {
           if(error) throw error;
           // console.log(prediction.object.probabilities);
           // console.log(prediction.object.output);
@@ -67,18 +63,19 @@ function predictTopic(city,gender,age,prevCalls,produce){
           console.log(predictedTopic)
           res(predictedTopic)    
         });
-         
-        
       }
     });
     }
-    
-
   });
 }) 
 }
 
+async function GetPred(city,gender,age,prevCalls,produce){
+  var ans = await predictTopic(city,gender,age,prevCalls,produce);
+  return ans;
+}
 
 
 // predictTopic("Raanana","male","2","28","Internet");
-module.exports.predictTopic= predictTopic;
+// module.exports.predictTopic= predictTopic;
+module.exports.GetPred = GetPred;

@@ -145,15 +145,13 @@ io.on('connection', (socket) => {
   // })
   socket.on('Get Prediction',  (inputData)=>{
     Mongo.exportToCsv();
-     BigML.predictTopic(inputData).then(res=>{
+     BigML.GetPred(inputData).then(res=>{
       console.log("res")
       socket.emit('prediction Topic',res)
     });
-
   });
 
   socket.on("delete", (Flush)=>{
     redisSub.flushAll();
   });
-
 });
