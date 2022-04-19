@@ -2,6 +2,7 @@
 
 ## Call center dashboard that includes cloud services, data bases, big data support and prediction & analytics with machine learnig. ##
 
+
 ### <ins> Technologies: <ins> ###
 #### <ins> Data-bases: </ins> ####
 MongoDB
@@ -25,6 +26,18 @@ BigML
 
 * For install clone this project or download and run npm start
   
+ 
+ 
+ The System Diagram:
+ 
+ 
+ ![system](https://user-images.githubusercontent.com/57215842/164109709-8febe222-dc8d-403c-96ff-dbce9fe3b5c6.png)
+ 
+ 
+ 
+ 
+
+ 
   
 Answer calls page: 
   
@@ -57,3 +70,5 @@ Analytic tables:
  
  
  Raafat Marzuq and Omri Yonatani
+ 
+ 
