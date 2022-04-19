@@ -61,12 +61,12 @@
             newPoint.push(data_from_storage);
           } else { // find the saved data in the session storage at the last 5 mins 
             for(let j=4;j>0;j--){ // go to the last 4 mins and check if there some saved value in he session storage
-                data_from_storage = sessionStorage.getItem(`${str} at ${(labelsInMin-j)}`);
-                for (let k = j; k > 0; k--) { // check the minimum value 
-                  var data_from_storage2 = sessionStorage.getItem(`${str} at ${(labelsInMin-k)}`);
+                // data_from_storage = sessionStorage.getItem(`${str} at ${(labelsInMin-j)}`);
+                // for (let k = j; k > 0; k--) { // check the minimum value 
+                  var data_from_storage2 = sessionStorage.getItem(`${str} at ${(labelsInMin-j)}`);
                   if (data_from_storage2 < data_from_storage  ) {
                     data_from_storage = data_from_storage2;
-                  }
+                  // }
                 }
                 if(data_from_storage != null )  {
                   newPoint.push(data_from_storage);
@@ -254,11 +254,11 @@
         })
       });
       myChart3.update();
+      setTimeout(updateTopics, 60000)
     }
 
     // Update everything every 5 mins.. 
     function updateAllCharts(){
-      updateTopics();
       updateWaitingTimeSum();
       addData();
       var today = new Date();
@@ -266,7 +266,7 @@
       var fiveMin = (5*60 - (TimeInSec))*1000; // update the chart with the time remaining.. 
       setTimeout(updateAllCharts, fiveMin)
     }
-
+    updateTopics();
     updateAllCharts();
   </script>
 </div>

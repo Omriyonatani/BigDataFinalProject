@@ -111,7 +111,7 @@ app.get('/', (req, res) => {
   var data = {
     cards: [
       {cardId:"average waiting time", title: "זמן המתנה ממוצע", value:"0", unit: "", fotterIcon: "timer", fotterText: "", icon: "access_alarm",color:"warning" },
-      {cardId:"number of waiting calls", title: "מספר שיחות ממתינות", value: "", unit: "", fotterIcon: "", fotterText: "...", icon: "call",color:"success" },
+      {cardId:"number of waiting calls", title: "מספר שיחות ממתינות", value: "", unit: "", fotterIcon: "", fotterText: "", icon: "call",color:"success" },
       {cardId:"time", title: "שעה ", value: "", unit: "", fotterIcon: "", fotterText: "שעה ותאריך", icon: "access_time_rounded",color:"info" },
     ]
   }

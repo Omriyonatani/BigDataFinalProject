@@ -9,7 +9,7 @@ function connect(){
   var con = mysql.createConnection({
     host: "localhost",
     user: "root",
-    password: "R0546379423m",
+    password: "13121994",
     database: 'bigdatadb'
   });
   return con;
