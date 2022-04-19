@@ -1,0 +1,327 @@
+<html>
+<head>
+    <!--
+        https://medium.com/@noufel.gouirhate/build-a-simple-chat-app-with-node-js-and-socket-io-ea716c093088xc
+        https://hmh.engineering/experimenting-with-apache-kafka-and-nodejs-5c0604211196
+        https://www.sitepoint.com/using-redis-node-js/
+    -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.4/socket.io.js"></script>
+    
+    <script>
+        // Initiallize the web socket 
+        function initSocket() {     //socket is global
+            socket = io.connect();
+            alert("connected");
+            getTotalCalls();
+        }
+
+        // Get total calls to show it at the Answer-calls page
+        function getTotalCalls(){
+            var totalCalls = parseInt(document.getElementById("total").value) || 0;
+            document.getElementById("total").value = (totalCalls +  Math.floor(Math.random() * 200)) + "";
+        }
+    </script>
+
+    <script>
+        function startConv() {
+            var totalCalls = parseInt(document.getElementById("total").value);
+            // If there is a waiting calls- answer
+            // Fill the orange table at the Answer-calls page
+            if (totalCalls > 0) {
+                var tr = document.getElementById('openConversations').insertRow();
+                var cStart = tr.insertCell(0);
+                var cCity = tr.insertCell(1);
+                var cGender = tr.insertCell(2);
+                var cAge = tr.insertCell(3);
+                var cPrevCalls = tr.insertCell(4);
+                var cTopic = tr.insertCell(5);
+                var cProduct = tr.insertCell(6);
+                var cEnd = tr.insertCell(7);
+            
+                const date = Date.now();
+                const dateTimeFormat = new Intl.DateTimeFormat('en', { year: 'numeric', month: 'short', day: '2-digit', hour: 'numeric', minute: 'numeric' })
+                const [{ value: month }, , { value: day }, , { value: year }, , { value: hour }, , { value: minute }] = dateTimeFormat.formatToParts(date)
+
+                // Primary key- takes a random number
+            var phNum = getPhoneNumber();
+                
+            // Pull the data and make it in JSON format
+            var initData = JSON.parse('<%-JSON.stringify(data)%>');
+
+            // Go all over the data at the MySQL DB- and show them
+            for (let index = 0; index < initData.length; index++) {
+                var phone_Number_from_data = initData[index].phoneNumber;
+                if (phone_Number_from_data == phNum) { 
+                        var previous_Calls_from_data = initData[index].previouscalls;
+                        var address_from_data =[ initData[index].address ,' '] ;
+                        // Translate the Address
+                        address_from_data[1]= translateAddress(address_from_data[0]);
+                        var gender_from_data = [initData[index].gender ,' '];
+                        // Translate the gender
+                        if(gender_from_data[0] == 'Male') {
+                            gender_from_data[1] = 'גבר';
+                        } else {
+                            gender_from_data[1]='אישה';
+                        }
+                        var age_from_data = initData[index].age;
+                        var topic_from_data = [initData[index].topic];
+                        // Translate the Topic
+                        topic_from_data.push(translateTopic(initData[index].topic))
+                        var products_from_data=[initData[index].product]
+                        // Translate the product 
+                        products_from_data.push(translateProduct( initData[index].product));
+                    }
+                }
+                
+                // Show all customer data at the page
+
+                cStart.innerHTML = "<div id='" + date + "''>" + `${day}-${month}-${year} ,${hour}:${minute}` + "</div>";
+                cCity.innerHTML = `<select>
+                                    <option value='${address_from_data[0]}'>${address_from_data[1]}</option>
+                                    <option value='jerusalem'>ירושלים</option>
+                                    <option value='Naharia'>נהריה</option>
+                                    <option value='haifa'>חיפה</option>
+                                    <option value='tel Aviv'>תל אביב</option>
+                                    <option value='ashdod'>אשדוד</option>
+                                    <option value='Ashkelon'>אשקלון</option>
+                                    <option value='beer Sheva'>באר שבע</option>
+                                    <option value='Rishon Letzion'>ראשון לציון</option>
+                                    <option value='Holon'>חולון</option>
+                                    <option value='Ofakim'>אופקים</option>
+                                    <option value='Tel Sheva'>תל שבע</option>
+                                    <option value='Acre'>עכו</option>
+                                    <option value='Ariel'>אריאל</option>
+                                    <option value='Omer'>עומר</option>
+                                    <option value='Ramat gan'>רמת גן</option>
+                                    <option value='Ramat aviv'>רמת אביב</option>
+                                    <option value='Zihron yaakov'>זכרון יעקוב</option>
+                                    <option value='Hertzelia'>הרצליה</option>
+                                    <option value='Ramat hasharon'>רמת השרון</option>
+                                    <option value='Kfar bara'>כפר ברא</option>
+                                    <option value='Kfar saba'>כפר סבא</option>
+                                    <option value='Raanana'>רעננה</option>
+                                    </select>`;
+                cTopic.innerHTML = `<select>
+                                        <option value='${topic_from_data[0]}'>${topic_from_data[1]}</option>
+                                        <option value='report'>תלונה</option>
+                                        <option value='service'>שירות</option>
+                                        <option value='disconnect'>ניתוק</option>
+                                        <option value='join'>הצטרפות</option>
+                                    </select>`;
+                cAge.innerHTML = `<input value='${age_from_data}' disabled/>`;
+                cGender.innerHTML = `<select>
+                                        <option value='${gender_from_data[0]}'>${gender_from_data[1]}</option>
+                                        <option value='male'>גבר</option>
+                                        <option value='female'>אישה</option>
+                                    </select>`;
+                cPrevCalls.innerHTML = ` <input  value='${previous_Calls_from_data}'  disabled />` ;
+                cProduct.innerHTML = `<select>
+                                        <option value='${products_from_data[0]}'>${products_from_data[1]}</option>
+                                        <option value='Internet'>אינטרנט</option>
+                                        <option value='Cables'>כבלים</option>
+                                        <option value='Cellular'>סלולרי</option>
+                                        <option value='Internet,Cables,Cellular'>הכל</option>
+                                        </select>`;
+                cEnd.innerHTML = `<button onclick='reportEndCall(this.parentNode.parentNode,${phNum})'>סיום</button>`;
+            } else {
+                alert("No more calls for now")
+            }
+        }
+
+        // Translate functions.. 
+        function translateTopic(topic){
+            switch (topic) {
+                case 'join':
+                    return 'הצטרפות';
+                    break;
+                case 'disconnect':
+                    return 'ניתוק'
+                    break;
+                case 'service':
+                    return 'שירות';
+                    break;
+                case 'report':
+                    return 'תלונה';
+                    break;
+            }
+        }
+
+        function translateProduct(product){
+            var arr = product.split(',');
+            var translated_topic= '';
+       
+            for (let index = 0; index < arr.length; index++) {
+                const element = arr[index];
+                switch (element) {
+                    case 'Cellular':
+                        if (index == 0) {
+                            translated_topic = 'סלולרי';
+                        }else{
+                            translated_topic+= ',סלולרי'
+                        }
+                        break;
+                    case 'Cables':
+                        if (index == 0) {
+                            translated_topic = 'כבלים';
+                        }else{
+                            translated_topic+= ',כבלים'
+                        }
+                        break;
+                    case 'Internet':
+                        if (index == 0) {
+                            translated_topic = 'אינטרנט';
+                        }else{
+                            translated_topic+= ',אינטרנט'
+                        }
+                        break;
+                }
+            }
+            return translated_topic;
+        }
+
+        function translateAddress(address){
+            switch (address) {
+                case 'jerusalem':
+                    return'ירושלים';
+                    break;
+                case 'Naharia':
+                    return 'נהריה';
+                    break;
+                case 'Tel Aviv':
+                    return 'תל אביב';
+                    break;
+                case 'Haifa':
+                    return 'חיפה';
+                    break;
+                case 'ashdod':
+                    return'אשדוד';
+                    break;
+                case 'Ashkelon':
+                    return'אשקלון';
+                    break;
+                case 'Beer sheva':
+                    return 'באר שבע';
+                    break;
+                case 'Raanana':
+                    return 'רעננה';
+                    break;
+                case 'Kfar saba':
+                    return 'כפר סבא';
+                    break;
+                case 'Kfar bara':
+                    return 'כפרברא';
+                    break;
+                case 'Ramat hasharon':
+                    return 'רמת השרון';
+                    break;
+                case 'Hertzelia':
+                    return 'הרצליה';
+                    break;
+                case 'Zihron yaakov':
+                    return 'זכרון יעקוב';
+                    break;
+                case 'Ramat aviv':
+                    return 'רמת אביב';
+                    break;
+                case 'Ramat gan':
+                    return 'רמת גן';
+                    break;
+                case 'Omer':
+                    return 'עומר';
+                    break;
+                case 'Ariel':
+                    return 'אריאל';
+                    break;
+                case 'Acre':
+                    return 'עכו';
+                    break;
+                case 'Tel sheva':
+                    return 'תל שבע';
+                    break;
+                case 'Ofakim':
+                    return 'אופקים';
+                    break;
+                case 'Holon':
+                    return 'חולון';
+                    break;
+                case 'Rishon lezion':
+                    return 'ראשון לציון';
+                    break;
+            }
+        }  
+
+        // Function that made a socket emit after clicking "End call"
+        function reportEndCall(row,phNum) {
+            var totalCalls = parseInt(document.getElementById("total").value);
+            if (parseInt(totalCalls) > 0) {
+                document.getElementById("total").value = (--totalCalls) + "";
+            }
+            
+            var message = {};
+            message.phoneNumber = phNum;
+            message.id = row.cells[0].getElementsByTagName('div')[0].id;
+            message.city = row.cells[1].getElementsByTagName('select')[0].value;
+            message.gender = row.cells[2].getElementsByTagName('select')[0].value;
+            message.age = (row.cells[3].getElementsByTagName('input')[0].value || 18);
+            message.prevCalls = row.cells[4].getElementsByTagName('input')[0].value ;
+            message.topic = row.cells[5].getElementsByTagName('select')[0].value;
+            message.Product = row.cells[6].getElementsByTagName('select')[0].value;
+            message.totalTime = (parseInt(Date.now()) - parseInt(message.id)) / 1000; // seconds
+            message.totalCalls= parseInt(document.getElementById("total").value);
+            message.season = document.getElementById('season').value;
+
+            socket.emit("callDetails", message);
+            deleteRow(row);
+        }
+
+        // Deletes the row of the phone number and customer details
+        function deleteRow(row) {
+            var i = row.rowIndex;
+            document.getElementById('openConversations').deleteRow(i);
+            document.getElementById('PhoneNumber').deleteRow(i-1);
+        }
+
+        // Random customer's phone number function
+        function getPhoneNumber() {
+            var initData = JSON.parse('<%-JSON.stringify(data)%>');
+            var phNumber = [];
+            for (let index = 0; index < initData.length; index++) {
+                phNumber[index]= initData[index].phoneNumber;  
+            }
+          
+            var index = Math.floor(Math.random() * 25);
+            var resPhone= phNumber[index];
+            var tr1 = document.getElementById('PhoneNumber').insertRow();
+            var cPhoneNumber = tr1.insertCell(0);
+            cPhoneNumber.innerHTML =  `<tr> Phone Number : </tr> <input value='0${resPhone}' disabled /> `;
+            return resPhone;
+        }
+    </script>
+</head>
+
+<body onload="initSocket()">
+    Total Waiting calls:
+    <input type="number" id="total" min="0" max="200" value='0'>
+    &nbsp;
+    <select id="season">
+        <option value='Holidays'>חגים</option>
+        <option value='Summer vacation'>חופשת קיץ</option>
+        <option value='Normal days'>ימים רגילים</option>
+    </select>
+    <hr>
+    <input type="button" onclick="startConv()" value="Answer Call" />
+    <table id="PhoneNumber" border="1" style="background-color: burlywood;" ></table>
+    <table id="openConversations" border="1" style="background-color: burlywood;">
+        <tr>
+            <th>Start Time</th>
+            <th>City</th>
+            <th>Gender</th>
+            <th>Age</th>
+            <th>Prev. Calls</th>
+            <th>Topic</th>
+            <th>Product</th>
+            <th>End</th>
+        </tr>
+    </table>
+</body>
+</html>
