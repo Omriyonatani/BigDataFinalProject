@@ -32,35 +32,38 @@ var connection = new bigml.BigML('RaafatMarzuq','2a5da361441e10eaee2258ad814e5f2
 //   }
 // });
 
-async function predictTopic(city,gender,age,prevCalls,produce){
+async function predictTopic(city,gender,age,prevCalls,Product){
+    
   return await new Promise( res =>{
     var connection = new bigml.BigML('RaafatMarzuq','2a5da361441e10eaee2258ad814e5f2d764181b0')
     var source = new bigml.Source(connection);
     source.create('../bigML/MongoData.csv',true, async function(error, sourceInfo) {
+      if(error) throw error;
       if (!error && sourceInfo) {
         var dataset = new bigml.Dataset(connection);
         dataset.create(sourceInfo, async function(error, datasetInfo) {
-        if (!error && datasetInfo) {
+          if(error) throw error;
+          if (!error && datasetInfo) {
           var predictionInput= {
           city:city,
-          gender:gender,
+          gender : gender,
           age:age,
           prevCalls: prevCalls,
-          produce: produce
+          Product: Product
         }
-        var prediction = new bigml.Prediction(connection);
+        var prediction =  new bigml.Prediction(connection);
+        
         prediction.create('model/625acee2049fde5d94001586',predictionInput, async function(error, prediction) {
           if(error) throw error;
-          // console.log(prediction.object.probabilities);
-          // console.log(prediction.object.output);
-          var predictedTopic= {
-            report: prediction.object.probabilities[0][1]*100,
-            join: prediction.object.probabilities[1][1]*100,
-            disconnect:prediction.object.probabilities[2][1]*100,
-            service: prediction.object.probabilities[3][1]*100,
-            output:prediction.object.output
+          
+          var predictedTopic=  {
+            report: await prediction.object.probabilities[0][1]*100,
+            join:await prediction.object.probabilities[1][1]*100,
+            disconnect:await prediction.object.probabilities[2][1]*100,
+            service: await prediction.object.probabilities[3][1]*100,
+            output:await prediction.object.output
           };
-          console.log(predictedTopic)
+          // console.log(predictedTopic)
           res(predictedTopic)    
         });
       }
@@ -76,6 +79,6 @@ async function GetPred(city,gender,age,prevCalls,produce){
 }
 
 
-// predictTopic("Raanana","male","2","28","Internet");
+// GetPred("Raanana","male","2","28","Internet");
 // module.exports.predictTopic= predictTopic;
 module.exports.GetPred = GetPred;
