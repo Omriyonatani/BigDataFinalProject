@@ -4,25 +4,26 @@
 
 
 ### <ins> Technologies: <ins> ###
-#### <ins> Data-bases: </ins> ####
-MongoDB,
-Redis,
-MySQL
+ 
+* #### <ins> Data-bases: </ins> ####
+   * MongoDB
+   * Redis
+   * MySQL
 
-#### <ins> Message broker: </ins> ####
-Kafka
+* #### <ins> Message broker: </ins> ####
+   * Kafka
 
-#### <ins> Containerization Platform: </ins> ####
-Docker
+* #### <ins> Containerization Platform: </ins> ####
+   * Docker
 
-#### <ins> Language: </ins> ####
-Node.js,
-HTML,
-CSS
+* #### <ins> Languages: </ins> ####
+   * Node.js
+   * HTML
+   * CSS
 
  
-#### <ins>Machine learning:</ins> ####
-BigML
+* #### <ins>Machine learning:</ins> ####
+   * BigML
 
 * For install clone this project or download and run npm start
   
