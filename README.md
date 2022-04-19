@@ -28,6 +28,7 @@ BigML
   
 Answer calls page: 
   
+ 
   
 ![CallAnwerPage](https://user-images.githubusercontent.com/57215842/164105067-51b09b4a-52fd-45e3-b8cf-11d03306750d.png)
 
@@ -35,15 +36,24 @@ Answer calls page:
   
 Dashboard:
   
+ 
+ 
+ 
   
 Machine learning predictions:  
   
-  ![bigML](https://user-images.githubusercontent.com/57215842/164105883-c5baa159-86eb-4a3f-9cc0-af86adf40219.png)
+ 
+![bigMLPic](https://user-images.githubusercontent.com/57215842/164106165-d1ecac1b-2248-4dea-b3bd-649bd88deb8d.png)
 
   
   
 Analytic tables:
   
   
+ 
+ 
   
-  
+ <ins >Authors: </ins>
+ 
+ 
+ Raafat Marzuq and Omri Yonatani
