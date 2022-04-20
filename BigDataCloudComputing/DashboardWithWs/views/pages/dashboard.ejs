@@ -26,7 +26,7 @@ The above copyright notice and this permission notice shall be included in all c
         document.getElementById("3").className ="nav-item ";
 
         setClock();
-        totalCalls();
+        averageWaitingTime();
         totalWaitingCalls();
       }
 
@@ -55,12 +55,12 @@ The above copyright notice and this permission notice shall be included in all c
         setTimeout(setClock, 1000);
       }
 
-      function totalCalls() {
+      function averageWaitingTime() {
         socket.on('average waiting time', function(msg) {
           var element = document.getElementById(msg.cardId);
           element.innerText = msg.value + " sec";
         })
-        setTimeout(totalCalls, 100);
+        setTimeout(averageWaitingTime, 100);
       }
 
       function totalWaitingCalls() {
@@ -69,6 +69,8 @@ The above copyright notice and this permission notice shall be included in all c
           var TimeInMin = (parseInt(today.getHours()) * 60) + parseInt(today.getMinutes());
           sessionStorage.setItem(`total Waiting Calls at ${TimeInMin}`,msg.value);
           var element = document.getElementById(msg.cardId);
+          // alert(element.innerHTML)
+
           element.innerText = msg.value + " calls";
         })
         setTimeout(totalWaitingCalls, 100);

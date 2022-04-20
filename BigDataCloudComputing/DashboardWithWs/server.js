@@ -20,7 +20,7 @@ function updateNewData(){
     var data = JSON.parse(res);
     var data_length = 0;
     var totalTime=0 ;
-    var totalCalls = Infinity;
+    var totalCalls =[];
     var topicsCount= countCallsTopics(data)
     var waitingTime =0;
 
@@ -35,11 +35,9 @@ function updateNewData(){
         data_length = 1;
       }
       // Searching for total waitning calls and update if there is some lower totalCalls value
-      for (let i = 0; i < data.length; i++) {
-        if(totalCalls > data[i].totalCalls){
-          totalCalls=data[i].totalCalls;
-        }
-      }
+      totalCalls.push(parseInt( data[index].totalCalls))
+      
+    
     }
 
     // Validation for 0, not to divide by 0..
@@ -54,13 +52,13 @@ function updateNewData(){
       value: averageTime
     }
 
-    if (totalCalls == Infinity) {
+    if (totalCalls == []) {
       totalCalls=0;
     }     
 
     var totalWaitingCalls = {
       cardId:"number of waiting calls",
-      value: totalCalls
+      value: Math.min(...totalCalls).toString()
     }
 
     var CallsTopicsCount = {
@@ -111,7 +109,7 @@ app.get('/', (req, res) => {
   var data = {
     cards: [
       {cardId:"average waiting time", title: "זמן המתנה ממוצע", value:"0", unit: "", fotterIcon: "timer", fotterText: "", icon: "access_alarm",color:"warning" },
-      {cardId:"number of waiting calls", title: "מספר שיחות ממתינות", value: "", unit: "", fotterIcon: "", fotterText: "...", icon: "call",color:"success" },
+      {cardId:"number of waiting calls", title: "מספר שיחות ממתינות", value: "", unit: "", fotterIcon: "", fotterText: "", icon: "call",color:"success" },
       {cardId:"time", title: "שעה ", value: "", unit: "", fotterIcon: "", fotterText: "שעה ותאריך", icon: "access_time_rounded",color:"info" },
     ]
   }
