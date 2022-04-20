@@ -254,11 +254,12 @@
         })
       });
       myChart3.update();
+      setTimeout(updateTopics, 10000)
     }
 
     // Update everything every 5 mins.. 
     function updateAllCharts(){
-      updateTopics();
+     
       updateWaitingTimeSum();
       addData();
       var today = new Date();
@@ -266,7 +267,7 @@
       var fiveMin = (5*60 - (TimeInSec))*1000; // update the chart with the time remaining.. 
       setTimeout(updateAllCharts, fiveMin)
     }
-
+    updateTopics();
     updateAllCharts();
   </script>
 </div>
