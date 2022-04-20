@@ -52,13 +52,15 @@ function updateNewData(){
       value: averageTime
     }
 
-    if (totalCalls == []) {
+    if (totalCalls.length == 0) {
       totalCalls=0;
+    }else{
+      totalCalls=Math.min(...totalCalls).toString()
     }     
 
     var totalWaitingCalls = {
       cardId:"number of waiting calls",
-      value: Math.min(...totalCalls).toString()
+      value:totalCalls 
     }
 
     var CallsTopicsCount = {
