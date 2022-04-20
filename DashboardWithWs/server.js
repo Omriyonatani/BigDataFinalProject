@@ -20,7 +20,7 @@ function updateNewData(){
     var data = JSON.parse(res);
     var data_length = 0;
     var totalTime=0 ;
-    var totalCalls = Infinity;
+    var totalCalls = [];
     var topicsCount= countCallsTopics(data)
     var waitingTime =0;
 
@@ -34,12 +34,7 @@ function updateNewData(){
         totalTime += 0;
         data_length = 1;
       }
-      // Searching for total waitning calls and update if there is some lower totalCalls value
-      for (let i = 0; i < data.length; i++) {
-        if(totalCalls > data[i].totalCalls){
-          totalCalls=data[i].totalCalls;
-        }
-      }
+      totalCalls.push(parseInt(data[index.totalCalls]));
     }
 
     // Validation for 0, not to divide by 0..
@@ -60,7 +55,7 @@ function updateNewData(){
 
     var totalWaitingCalls = {
       cardId:"number of waiting calls",
-      value: totalCalls
+      value: Math.min(...totalCalls).toString()
     }
 
     var CallsTopicsCount = {

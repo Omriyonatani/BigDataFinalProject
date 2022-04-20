@@ -7,33 +7,29 @@ var bigml = require('bigml');
 
 
 // replace the username and the API KEY of your own
-var connection = new bigml.BigML('RaafatMarzuq','2a5da361441e10eaee2258ad814e5f2d764181b0')
+function createModel(){
+  var connection = new bigml.BigML('RaafatMarzuq','2a5da361441e10eaee2258ad814e5f2d764181b0')
+  var source = new bigml.Source(connection);
+  source.create('./MongoData.csv', function(error, sourceInfo) {
+    if (!error && sourceInfo) {
+      var dataset = new bigml.Dataset(connection);
+      dataset.create(sourceInfo, function(error, datasetInfo) {
+        if (!error && datasetInfo) {
+          var model = new bigml.Model(connection);
+          model.create(datasetInfo,{ 'objective_field': "000006" }, function (error, modelInfo) {
+            if (!error && modelInfo) {
+              console.log("\nModel number = " + modelInfo.resource);
+            }
+          
+          });
+        }
+      });
+    }
+  });
+}
 
-// var source = new bigml.Source(connection);
-// source.create('./MongoData.csv', function(error, sourceInfo) {
-//   if (!error && sourceInfo) {
-//     var dataset = new bigml.Dataset(connection);
-//     dataset.create(sourceInfo, function(error, datasetInfo) {
-//       if (!error && datasetInfo) {
-//         var model = new bigml.Model(connection);
-//         model.create(datasetInfo,{ 'objective_field': "000006" }, function (error, modelInfo) {
-//           if (!error && modelInfo) {
-//             var prediction = new bigml.Prediction(connection);
-//             prediction.create(modelInfo,{ 'city': 'Beer sheva','gender': 'male',  'age': '33','prevCalls': '10','Product': 'Cellular'},function(error, prediction) {
-              
-//               // console.log(prediction);
-//               // console.log("\n"+prediction.code)
-//             }); 
-//           }
-//           console.log("\nModel number = " + modelInfo.resource);
-//         });
-//       }
-//     });
-//   }
-// });
 
 async function predictTopic(city,gender,age,prevCalls,Product){
-    
   return await new Promise( res =>{
     var connection = new bigml.BigML('RaafatMarzuq','2a5da361441e10eaee2258ad814e5f2d764181b0')
     var source = new bigml.Source(connection);
@@ -82,3 +78,4 @@ async function GetPred(city,gender,age,prevCalls,produce){
 // GetPred("Raanana","male","2","28","Internet");
 // module.exports.predictTopic= predictTopic;
 module.exports.GetPred = GetPred;
+module.exports.createModel=createModel;
