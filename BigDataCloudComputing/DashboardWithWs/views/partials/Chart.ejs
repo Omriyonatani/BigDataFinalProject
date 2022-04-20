@@ -54,7 +54,7 @@
       // from 00:00 to now- everything is initillize to be the number from the session-storage OR zero (0)
       while(i < labels.length){
         var labelsInMin = (parseInt(labels[i].split(":")[0]) * 60) + parseInt(labels[i].split(":")[1]);
-        if (TimeInMin >= labelsInMin) {
+        if (TimeInMin > labelsInMin) {
           // update the time that we over.. 
           var data_from_storage = sessionStorage.getItem(`${str} at ${labelsInMin}`);
           if(data_from_storage != null ){
@@ -86,6 +86,7 @@
 
 
     let newPoint1 = startFromNow("total Waiting Calls");
+ 
     const labels1 = getTimeRanges(5, 'ru')
 
     const data = {
@@ -117,11 +118,14 @@
 
     const myChart = new Chart(document.getElementById('myChart'), config);
 
-    function addData(chart= myChart) {
+    function updateData(chart= myChart) {
       chart.data.datasets.forEach((dataset) => {
         insertWaitingCalls().then(data=>{ 
+          alert(data)
         dataset.data.push(data);
+        
         })
+        
       });
       myChart.update();
     }
@@ -261,7 +265,7 @@
     function updateAllCharts(){
      
       updateWaitingTimeSum();
-      addData();
+      updateData();
       var today = new Date();
       var TimeInSec = ((parseInt(today.getMinutes()) % 5)*60 + parseInt(today.getSeconds())); // check the time modulo 5
       var fiveMin = (5*60 - (TimeInSec))*1000; // update the chart with the time remaining.. 
