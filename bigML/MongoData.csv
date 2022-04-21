@@ -736,3 +736,8 @@
 502255223,"1650578389908","Ramat hasharon","Male","18","17","disconnect","Internet,Cables",2.26,128,"Normal days"
 523322665,"1650578390064","Zihron yaakov","Male","18","13","disconnect","Internet,Cables",3.034,127,"Normal days"
 545789999,"1650578389712","Raanana","Male","26","14","join","Cables,Cellular",4.068,126,"Normal days"
+555566558,"1650578510878","Holon","Male","18","68","report","Internet,Cellular",1.667,125,"Normal days"
+523322665,"1650578511040","Zihron yaakov","Male","18","13","disconnect","Internet,Cables",2.095,124,"Normal days"
+529966524,"1650578511206","Naharia","Male","18","24","report","Internet,Cables,Cellular",2.402,123,"Normal days"
+532211887,"1650578687066","Jerusalem","Male","18","20","join","Internet,Cables",3.194,173,"Holidays"
+545789999,"1650578687685","Raanana","Male","26","14","join","Cables,Cellular",3.208,172,"Holidays"
