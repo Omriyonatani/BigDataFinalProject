@@ -117,7 +117,7 @@
 
     const myChart = new Chart(document.getElementById('myChart'), config);
 
-    function addData(chart= myChart) {
+    function updateData(chart= myChart) {
       chart.data.datasets.forEach((dataset) => {
         insertWaitingCalls().then(data=>{ 
         dataset.data.push(data);
@@ -259,12 +259,14 @@
 
     // Update everything every 5 mins.. 
     function updateAllCharts(){
-      updateWaitingTimeSum();
-      addData();
+     
       var today = new Date();
       var TimeInSec = ((parseInt(today.getMinutes()) % 5)*60 + parseInt(today.getSeconds())); // check the time modulo 5
       var fiveMin = (5*60 - (TimeInSec))*1000; // update the chart with the time remaining.. 
+      updateWaitingTimeSum();
+      updateData();
       setTimeout(updateAllCharts, fiveMin)
+      
     }
     updateTopics();
     updateAllCharts();

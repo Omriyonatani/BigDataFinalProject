@@ -34,7 +34,7 @@ function updateNewData(){
         totalTime += 0;
         data_length = 1;
       }
-      totalCalls.push(parseInt(data[index.totalCalls]));
+      totalCalls.push(parseInt(data[index].totalCalls));
     }
 
     // Validation for 0, not to divide by 0..
@@ -49,13 +49,15 @@ function updateNewData(){
       value: averageTime
     }
 
-    if (totalCalls == Infinity) {
+    if (totalCalls.length == 0) {
       totalCalls=0;
+    }else{
+      totalCalls = Math.min(...totalCalls).toString();
     }     
 
     var totalWaitingCalls = {
       cardId:"number of waiting calls",
-      value: Math.min(...totalCalls).toString()
+      value: totalCalls
     }
 
     var CallsTopicsCount = {
