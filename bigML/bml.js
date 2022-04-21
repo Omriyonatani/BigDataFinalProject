@@ -8,6 +8,7 @@ var bigml = require('bigml');
 
 // replace the username and the API KEY of your own
 function createModel(){
+
   var connection = new bigml.BigML('RaafatMarzuq','2a5da361441e10eaee2258ad814e5f2d764181b0')
   var source = new bigml.Source(connection);
   source.create('./MongoData.csv', function(error, sourceInfo) {
@@ -27,9 +28,8 @@ function createModel(){
     }
   });
 }
-
-
 async function predictTopic(city,gender,age,prevCalls,Product){
+    
   return await new Promise( res =>{
     var connection = new bigml.BigML('RaafatMarzuq','2a5da361441e10eaee2258ad814e5f2d764181b0')
     var source = new bigml.Source(connection);
