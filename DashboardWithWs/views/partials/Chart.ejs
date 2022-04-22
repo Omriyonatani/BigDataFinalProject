@@ -61,7 +61,7 @@
             newPoint.push(data_from_storage);
           } else { // find the saved data in the session storage at the last 5 mins 
            let arr = [];
-            for(let j=5;j>0;j--){ // go to the last 4 mins and check if there some saved value in he session storage
+            for(let j=4;j>0;j--){ // go to the last 4 mins and check if there some saved value in he session storage
                 data_from_storage = sessionStorage.getItem(`${str} at ${(labelsInMin-j)}`);
                 if(data_from_storage != null && (parseInt(data_from_storage)!=0 ))  {
                   arr.push(parseInt(data_from_storage))

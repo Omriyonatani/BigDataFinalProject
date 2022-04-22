@@ -71,7 +71,7 @@
 
             for (let index = 0; index < timeIs.length; index++){
               var labelsInMin = (parseInt(timeIs[index].split(":")[0]) * 60) + parseInt(timeIs[index].split(":")[1]);
-              if (TimeInMin > labelsInMin) {
+              if (TimeInMin >= labelsInMin) {
                 var tr= document.getElementById("callDetails").insertRow();
                 var cTime= tr.insertCell(0);
                 var cWaitingCalls = tr.insertCell(1);
