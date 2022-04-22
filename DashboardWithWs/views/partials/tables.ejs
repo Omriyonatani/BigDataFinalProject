@@ -82,7 +82,7 @@
                 if(data_from_storage != null )  {
                   cWaitingCalls.innerHTML = `<td>${data_from_storage} </td>`;
                 } else { // find the saved data in the session storage at the last 5 mins
-                  for(let j=4;j>0;j--){ // go to the last 4 mins and check if there some saved value in he session storage
+                  for(let j=5;j>0;j--){ // go to the last 4 mins and check if there some saved value in he session storage
                     data_from_storage = sessionStorage.getItem(`total Waiting Calls at ${(labelsInMin-j)}`);
                       for (let k = j; k > 0; k--) { // check the minimum value 
                         var data_from_storage2 = sessionStorage.getItem(`total Waiting Calls at ${(labelsInMin-k)}`);

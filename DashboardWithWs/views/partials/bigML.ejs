@@ -66,7 +66,7 @@
   </script>
 
 <!-- Table Prediction -->
-  <div class="card-body table-responsive">
+  <div class="card-body table-responsive" >
     <div style="width: 500px; height: 200px; ">
       <table id=""  class="table table-hover" >
         <thead class="text-warning">
@@ -119,26 +119,25 @@
               <option value='Internet,Cables,Cellular'> הכל </option>
               </select>
             </th>
-            <th><button class="btn btn-info btn-round " onclick='getPrediction(this.parentNode.parentNode)' >Predict Topic</button></th>   
+            <th><button class="btn btn-warning btn-round " onclick='getPrediction(this.parentNode.parentNode)' >Predict Topic</button></th>   
       </tbody>
     </table>
     </div>
   </div>
 </div>
 <div>
-  <button style="background-color: brown;" class="btn btn-info btn-round " >Creat new ML Model</button>
+  <button style="background-color: gold;" class="btn btn-info btn-round " onclick="reload()" >New Prediction</button>
 </div>
 <script>
-  // function getNewModel(){
-  //   alert("pleas wait...")
-  //   var model = "new model";
-  //   socket.emit("new model",model);
-  // }
+  function reload(){
+    location.reload();
+    
+  }
 </script>
 </div>
 
 <!-- Prediction Chart -->
-<div class="card" style="width: 20rem; ">
+<div class="card" style="width: 20rem; position: absolute; top: 75%;left: 50%;">
   <div class="card-header card-header-tabs card-header-primary">
     <h4 class="card-title">Call Topic Prediction</h4>
   </div>
