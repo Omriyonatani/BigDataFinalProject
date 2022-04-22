@@ -54,27 +54,28 @@
       // from 00:00 to now- everything is initillize to be the number from the session-storage OR zero (0)
       while(i < labels.length){
         var labelsInMin = (parseInt(labels[i].split(":")[0]) * 60) + parseInt(labels[i].split(":")[1]);
-        if (TimeInMin >= labelsInMin) {
+        if ( TimeInMin  >= labelsInMin ) {
           // update the time that we over.. 
           var data_from_storage = sessionStorage.getItem(`${str} at ${labelsInMin}`);
           if(data_from_storage != null ){
             newPoint.push(data_from_storage);
           } else { // find the saved data in the session storage at the last 5 mins 
-            for(let j=4;j>0;j--){ // go to the last 4 mins and check if there some saved value in he session storage
-                // data_from_storage = sessionStorage.getItem(`${str} at ${(labelsInMin-j)}`);
-                // for (let k = j; k > 0; k--) { // check the minimum value 
-                  var data_from_storage2 = sessionStorage.getItem(`${str} at ${(labelsInMin-j)}`);
-                  if (data_from_storage2 < data_from_storage  ) {
-                    data_from_storage = data_from_storage2;
-                  // }
-                }
-                if(data_from_storage != null )  {
-                  newPoint.push(data_from_storage);
+           let arr = [];
+            for(let j=5;j>0;j--){ // go to the last 4 mins and check if there some saved value in he session storage
+                data_from_storage = sessionStorage.getItem(`${str} at ${(labelsInMin-j)}`);
+                if(data_from_storage != null && (parseInt(data_from_storage)!=0 ))  {
+                  arr.push(parseInt(data_from_storage))
                 }else{
                     continue;
                 }
-              }
-            newPoint.push(0)
+            }
+            
+            if(arr.length == 0){
+              newPoint.push(0)
+            }else{
+              newPoint.push(Math.min(...arr))
+            }
+            
           }
         }else{
           break;
@@ -85,7 +86,7 @@
     }
 
 
-    let newPoint1 = startFromNow("total Waiting Calls");
+    let newPoint1 = startFromNow("total Waiting Calls").slice(0,-1);
     const labels1 = getTimeRanges(5, 'ru')
 
     const data = {
@@ -120,10 +121,14 @@
     function updateData(chart= myChart) {
       chart.data.datasets.forEach((dataset) => {
         insertWaitingCalls().then(data=>{ 
-        dataset.data.push(data);
+          
+          dataset.data.push(data);
+          
+          myChart.update();
         })
       });
-      myChart.update();
+      
+
     }
   </script>
 </div>
@@ -153,7 +158,7 @@
       });      
     }
 
-    let newPoint2 = startFromNow("waiting time");
+    let newPoint2 = startFromNow("waiting time").slice(0,-1);
     const data2 = {
       labels: labels2,
       datasets: [{
@@ -182,8 +187,9 @@
       chart.data.datasets.forEach((dataset) => {
         insertWaitingTimeSum().then(data=>{ 
         dataset.data.push(data);
+          myChart2.update();
        })
-        myChart2.update();
+        
       });
     }
 

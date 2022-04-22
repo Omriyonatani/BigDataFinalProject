@@ -1,5 +1,22 @@
 <html>
 <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+body,html {
+  height: 100%;
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.hero-image {
+  background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("/images/word-image-21.jpeg");
+  height: 100%;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  position: relative;
+}
+</style>
     <!--
         https://medium.com/@noufel.gouirhate/build-a-simple-chat-app-with-node-js-and-socket-io-ea716c093088xc
         https://hmh.engineering/experimenting-with-apache-kafka-and-nodejs-5c0604211196
@@ -301,6 +318,7 @@
 
 <body onload="initSocket()">
     Total Waiting calls:
+    <div class="hero-image">
     <input type="number" id="total" min="0" max="200" value='0'>
     &nbsp;
     <select id="season">
@@ -323,5 +341,6 @@
             <th>End</th>
         </tr>
     </table>
+</div>
 </body>
 </html>

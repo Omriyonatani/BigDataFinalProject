@@ -18,7 +18,7 @@ const myDB = mysql.asyncCall();
 
 myDB.then(function(result) {
     result=JSON.parse(JSON.stringify(result));
-    app.get('/', function(req, res) {
+    app.get('/start', function(req, res) {
         res.render('Sender', { data: result});
     });
 });
