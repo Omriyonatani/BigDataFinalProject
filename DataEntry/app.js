@@ -27,7 +27,7 @@ myDB.then(function(result) {
 io.on("connection", (socket) => {
     console.log("new user connected");
     socket.on("callDetails", (msg) => {
-        // mysql.updateDB(msg); 
+        mysql.updateDB(msg); 
         kafka.publish(msg);
     });
 });

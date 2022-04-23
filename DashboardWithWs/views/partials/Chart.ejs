@@ -86,7 +86,7 @@
     }
 
 
-    let newPoint1 = startFromNow("total Waiting Calls").slice(0,-1);
+    let newPoint1 = startFromNow("total Waiting Calls").slice(0,-1); // update the last inserted point (ignore the last one..)
     const labels1 = getTimeRanges(5, 'ru')
 
     const data = {
@@ -121,15 +121,12 @@
     function updateData(chart= myChart) {
       chart.data.datasets.forEach((dataset) => {
         insertWaitingCalls().then(data=>{ 
-          
           dataset.data.push(data);
-          
           myChart.update();
         })
       });
-      
-
     }
+    
   </script>
 </div>
 
@@ -265,7 +262,6 @@
 
     // Update everything every 5 mins.. 
     function updateAllCharts(){
-     
       var today = new Date();
       var TimeInSec = ((parseInt(today.getMinutes()) % 5)*60 + parseInt(today.getSeconds())); // check the time modulo 5
       var fiveMin = (5*60 - (TimeInSec))*1000; // update the chart with the time remaining.. 
