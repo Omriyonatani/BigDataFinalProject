@@ -33,6 +33,21 @@
  node app.js      inside dir: /DataEntry
  
  
+ dependencies:
+ 
+ MySQL --> Local MySQL Server
+ Redis --> Docker Redis image
+ MongoDB --> Atlas MongoDB
+ 
+ Kafka --> cloudkarafka.com
+ BigML --> bigml.com
+ 
+ Ports 3000,3001,3002 free for Docker Redis, Server & App
+ 
+ run npm i - to install node modules
+ 
+ And make sure your login passwords to the services are correct.
+ 
  
  
  <ins> The System Diagram: </ins> 
