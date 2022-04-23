@@ -33,7 +33,7 @@
  node app.js      inside dir: /DataEntry
  
  
- dependencies:
+ <ins> dependencies: </ins>
  
  MySQL --> Local MySQL Server
  Redis --> Docker Redis image
